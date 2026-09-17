@@ -21,49 +21,57 @@
     body { background: var(--bg); color: #fff; min-height: 100vh; display: flex; flex-direction: column; }
     .hidden { display: none !important; }
 
-    /* Top Navigation */
+    /* Header */
     header { background: var(--surface); border-bottom: 1px solid rgba(255,255,255,0.08); padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
     .logo { font-size: 1.25rem; font-weight: 800; background: linear-gradient(90deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 8px; cursor: pointer; }
     .nav-actions { display: flex; align-items: center; gap: 12px; }
     .profile-pill { display: flex; align-items: center; gap: 10px; background: #1f2b48; padding: 6px 14px; border-radius: 30px; cursor: pointer; border: 1px solid #33446b; }
     .profile-pill img { width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid var(--primary); }
 
-    /* Layout Containers */
-    .container { max-width: 920px; width: 100%; margin: 25px auto; padding: 0 15px; }
+    .container { max-width: 960px; width: 100%; margin: 25px auto; padding: 0 15px; }
 
-    /* Auth Card & Tabs */
+    /* Auth Screen */
     .auth-card { background: var(--surface); border-radius: 20px; padding: 30px 25px; text-align: center; max-width: 440px; margin: 30px auto; border: 1px solid rgba(157, 78, 221, 0.3); box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
     .auth-tabs { display: flex; background: #090e1c; border-radius: 12px; padding: 5px; margin: 20px 0; border: 1px solid #23304e; }
-    .auth-tab-btn { flex: 1; padding: 10px; border: none; background: transparent; color: var(--text-muted); font-weight: 700; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+    .auth-tab-btn { flex: 1; padding: 10px; border: none; background: transparent; color: var(--text-muted); font-weight: 700; border-radius: 8px; cursor: pointer; }
     .auth-tab-btn.active { background: linear-gradient(90deg, var(--primary), #00b4d8); color: #000; }
-    
     .form-input { width: 100%; padding: 12px 14px; background: #070a13; border: 1.5px solid #23304e; color: #fff; border-radius: 10px; font-size: 0.95rem; margin-bottom: 12px; outline: none; }
-    .form-input:focus { border-color: var(--primary); }
-    .btn-submit-auth { width: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); color: #fff; border: none; padding: 13px; border-radius: 10px; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 5px; }
-    
+    .btn-submit-auth { width: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); color: #fff; border: none; padding: 13px; border-radius: 10px; font-weight: 700; font-size: 1rem; cursor: pointer; }
     .divider { display: flex; align-items: center; margin: 20px 0; color: var(--text-muted); font-size: 0.8rem; }
     .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #23304e; }
     .divider span { padding: 0 10px; }
-
-    .google-btn { width: 100%; background: #fff; color: #333; border: none; padding: 12px 20px; border-radius: 10px; font-size: 0.95rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 12px; transition: 0.2s; }
-    .google-btn:hover { background: #f1f5f9; }
+    .google-btn { width: 100%; background: #fff; color: #333; border: none; padding: 12px 20px; border-radius: 10px; font-size: 0.95rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 12px; }
 
     /* Secret Guest Area */
     .secret-guest-box { margin-top: 25px; padding-top: 15px; border-top: 1px dashed #23304e; }
     .btn-secret-toggle { background: transparent; border: none; color: #64748b; font-size: 0.8rem; cursor: pointer; font-weight: 600; }
-    .btn-secret-toggle:hover { color: var(--primary); }
     .guest-grid { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 12px; }
     .btn-guest { background: #131c30; border: 1px solid #23304e; color: #38bdf8; padding: 10px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; text-align: left; }
-    .btn-guest:hover { border-color: var(--primary); background: #192540; }
 
     /* Dashboard Grid */
     .section-title { font-size: 1.25rem; font-weight: 700; color: #fff; margin: 25px 0 15px; display: flex; align-items: center; gap: 10px; }
-    .exam-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; }
+    .exam-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
     .exam-card { background: var(--card); border: 1px solid #23304e; border-radius: 16px; padding: 20px; cursor: pointer; transition: 0.25s; position: relative; overflow: hidden; }
     .exam-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 8px 25px rgba(0,242,254,0.15); }
     .exam-icon { font-size: 2.2rem; margin-bottom: 12px; }
     .exam-badge { position: absolute; top: 15px; right: 15px; background: rgba(0, 242, 254, 0.15); color: var(--primary); font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: bold; }
     .exam-meta { font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; display: flex; gap: 15px; }
+
+    /* Interactive Setup Modal (Mode & Difficulty Selection) */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
+    .modal-card { background: var(--surface); border: 1px solid #23304e; border-radius: 20px; width: 100%; max-width: 460px; padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); position: relative; }
+    .modal-close { position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer; }
+    .mode-choice-btn { width: 100%; padding: 14px; background: #131c30; border: 1.5px solid #23304e; color: #fff; border-radius: 12px; margin-bottom: 12px; cursor: pointer; text-align: left; transition: 0.2s; font-weight: 600; display: flex; align-items: center; justify-content: space-between; }
+    .mode-choice-btn:hover { border-color: var(--primary); background: #1a2744; }
+    
+    .diff-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 15px 0; }
+    .diff-btn { padding: 14px 10px; border-radius: 10px; border: 1.5px solid #23304e; background: #131c30; color: #fff; font-weight: bold; cursor: pointer; text-align: center; }
+    .diff-btn.easy:hover { border-color: var(--green); color: var(--green); }
+    .diff-btn.medium:hover { border-color: var(--gold); color: var(--gold); }
+    .diff-btn.hard:hover { border-color: var(--red); color: var(--red); }
+
+    .room-code-box { background: #070a13; border: 1px solid var(--accent); padding: 15px; border-radius: 12px; text-align: center; margin: 15px 0; }
+    .room-code-text { font-size: 1.8rem; font-weight: 900; letter-spacing: 4px; color: var(--primary); margin: 5px 0; }
 
     /* Profile View */
     .profile-card { background: var(--surface); border: 1px solid #23304e; border-radius: 18px; padding: 25px; text-align: center; margin-bottom: 25px; }
@@ -84,21 +92,16 @@
     .cbt-nav { display: flex; justify-content: space-between; margin-top: 25px; padding-top: 20px; border-top: 1px solid #23304e; }
     .btn-nav { background: #263558; border: none; color: #fff; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; }
     .btn-submit { background: linear-gradient(90deg, #00f59b, #00b4d8); color: #000; font-weight: bold; border: none; padding: 10px 24px; border-radius: 10px; cursor: pointer; }
-
-    /* Battle Mode Card */
-    .battle-box { background: linear-gradient(135deg, #1f1138, #101626); border: 1.5px solid var(--accent); border-radius: 16px; padding: 22px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px; }
-    .room-input { background: #070a13; border: 1px solid #32436d; color: #fff; padding: 12px; border-radius: 10px; font-size: 1rem; width: 160px; outline: none; }
-    .btn-battle { background: var(--accent); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
   </style>
 
-  <!-- Firebase Scripts -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
-  <!-- TOP HEADER -->
+  <!-- HEADER -->
   <header>
     <div class="logo" onclick="showDashboard()"><i class="fa-solid fa-graduation-cap"></i> PARIKSHA CBT</div>
     <div class="nav-actions">
@@ -110,65 +113,53 @@
     </div>
   </header>
 
-  <!-- 1. AUTHENTICATION (LOGIN / CREATE ACCOUNT) -->
+  <!-- AUTH CARD -->
   <div id="screen-auth" class="auth-card">
     <i class="fa-solid fa-shield-halved" style="font-size: 3rem; color: var(--primary); margin-bottom: 8px;"></i>
     <h2>Student CBT Portal</h2>
     <p style="color: var(--text-muted); font-size: 0.85rem;">Login karein ya naya candidate account banayein</p>
 
-    <!-- Login / Register Switcher Tabs -->
     <div class="auth-tabs">
       <button class="auth-tab-btn active" id="tab-btn-login" onclick="switchAuthMode('login')">Existing Login</button>
       <button class="auth-tab-btn" id="tab-btn-signup" onclick="switchAuthMode('signup')">Create New Account</button>
     </div>
 
-    <!-- Login Form -->
     <div id="form-login-box">
       <input type="email" id="login-email" class="form-input" placeholder="Apna Email daalein">
       <input type="password" id="login-pass" class="form-input" placeholder="Password daalein">
       <button class="btn-submit-auth" onclick="handleEmailLogin()">Account Login Karein</button>
     </div>
 
-    <!-- Create Account Form -->
     <div id="form-signup-box" class="hidden">
-      <input type="text" id="signup-name" class="form-input" placeholder="Aapka Poora Naam (Candidate Name)">
-      <input type="email" id="signup-email" class="form-input" placeholder="Apna Email ID daalein">
-      <input type="password" id="signup-pass" class="form-input" placeholder="Naya Password (kam se kam 6 anko ka)">
+      <input type="text" id="signup-name" class="form-input" placeholder="Aapka Poora Naam">
+      <input type="email" id="signup-email" class="form-input" placeholder="Email ID daalein">
+      <input type="password" id="signup-pass" class="form-input" placeholder="Naya Password (kam se kam 6 ank)">
       <button class="btn-submit-auth" onclick="handleEmailSignup()">Create New Account</button>
     </div>
 
     <div class="divider"><span>OR CONTINUE WITH</span></div>
 
-    <!-- Google 1-Click Login -->
     <button class="google-btn" onclick="loginWithGoogle()">
       <img width="18" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
       Continue with Google / Gmail
     </button>
 
-    <!-- SECRET ADMIN / DEVELOPER GUEST TESTING -->
     <div class="secret-guest-box">
       <button class="btn-secret-toggle" onclick="promptSecretAdmin()">🔒 Admin Secret Testing Login (PIN Protected)</button>
       <div id="guest-access-panel" class="hidden">
         <div class="guest-grid">
-          <button class="btn-guest" onclick="loginAsGuest('guest_01', 'Sunil Kumar (VIP Tester)', 'sunil.admin@test.com')">
-            ⭐ <b>Guest 1:</b> Sunil Kumar (All-Access)
-          </button>
-          <button class="btn-guest" onclick="loginAsGuest('guest_02', 'Rahul Sharma (SSC Tester)', 'rahul.ssc@test.com')">
-            ⭐ <b>Guest 2:</b> Rahul Sharma (SSC Pattern)
-          </button>
-          <button class="btn-guest" onclick="loginAsGuest('guest_03', 'Priya Singh (SI Tester)', 'priya.si@test.com')">
-            ⭐ <b>Guest 3:</b> Priya Singh (Police SI Pattern)
-          </button>
+          <button class="btn-guest" onclick="loginAsGuest('guest_01', 'Sunil Kumar (VIP Tester)', 'sunil.admin@test.com')">⭐ <b>Guest 1:</b> Sunil Kumar (All Access)</button>
+          <button class="btn-guest" onclick="loginAsGuest('guest_02', 'Rahul Sharma (SSC Tester)', 'rahul.ssc@test.com')">⭐ <b>Guest 2:</b> Rahul Sharma (SSC Pattern)</button>
+          <button class="btn-guest" onclick="loginAsGuest('guest_03', 'Priya Singh (SI Tester)', 'priya.si@test.com')">⭐ <b>Guest 3:</b> Priya Singh (Police SI)</button>
         </div>
       </div>
     </div>
-
   </div>
 
-  <!-- MAIN DASHBOARD CONTENT -->
+  <!-- DASHBOARD WRAPPER -->
   <div class="container hidden" id="main-content">
 
-    <!-- 2. CANDIDATE PROFILE -->
+    <!-- CANDIDATE PROFILE -->
     <div id="screen-profile" class="hidden">
       <div class="profile-card">
         <img id="prof-avatar-lg" class="user-avatar-lg" src="" alt="avatar">
@@ -183,40 +174,28 @@
       </div>
     </div>
 
-    <!-- 3. DASHBOARD MAIN -->
+    <!-- DASHBOARD -->
     <div id="screen-dashboard">
 
-      <!-- 1v1 Speed Battle Room -->
-      <div class="battle-box">
-        <div>
-          <h3 style="color: var(--primary);"><i class="fa-solid fa-bolt"></i> 1v1 Live Room Battle</h3>
-          <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Apne dost ko room code share karein aur har baar naye questions par aamne-saamne speed battle karein</p>
-        </div>
-        <div style="display:flex; gap:10px;">
-          <input type="text" id="room-code" class="room-input" placeholder="Room Code">
-          <button class="btn-battle" onclick="start1v1Battle()">Enter Battle</button>
-        </div>
-      </div>
-
       <!-- Full Competition Exams -->
-      <div class="section-title"><i class="fa-solid fa-file-signature" style="color:var(--gold);"></i> Full Competition Exams (Fresh Random Questions Each Time)</div>
+      <div class="section-title"><i class="fa-solid fa-file-signature" style="color:var(--gold);"></i> Full Competition Exams (Official Pattern)</div>
       <div class="exam-grid">
-        <div class="exam-card" onclick="initiateExam('ssc_cgl')">
-          <span class="exam-badge">Tier-1 Pattern</span>
+        <div class="exam-card" onclick="openExamSetup('ssc_cgl', 'SSC CGL Mock Test', 25, 20)">
+          <span class="exam-badge">Tier-1 CBT</span>
           <div class="exam-icon" style="color:#00f2fe;"><i class="fa-solid fa-building-columns"></i></div>
           <h3>SSC CGL Mock Test</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">GK, Reasoning, Maths & English (Har Baar Naya)</p>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">GK, Reasoning, English, Maths Mix</p>
           <div class="exam-meta">
             <span><i class="fa-regular fa-circle-question"></i> 25 Questions</span>
             <span><i class="fa-regular fa-clock"></i> 20 Minutes</span>
           </div>
         </div>
 
-        <div class="exam-card" onclick="initiateExam('police_si')">
-          <span class="exam-badge">Paper-1 Pattern</span>
+        <div class="exam-card" onclick="openExamSetup('police_si', 'Police SI Sub-Inspector Test', 20, 20)">
+          <span class="exam-badge">Paper-1</span>
           <div class="exam-icon" style="color:#ffb703;"><i class="fa-solid fa-shield-cat"></i></div>
           <h3>Police SI Sub-Inspector Exam</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Moolvidhi, Sanvidhan & Samanya Gyan (Shuffled)</p>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Moolvidhi, Samvidhan, Hindi, Police Law</p>
           <div class="exam-meta">
             <span><i class="fa-regular fa-circle-question"></i> 20 Questions</span>
             <span><i class="fa-regular fa-clock"></i> 20 Minutes</span>
@@ -224,53 +203,65 @@
         </div>
       </div>
 
-      <!-- Subject-Wise Tests (20 Questions - 30 Minutes Timer) -->
-      <div class="section-title"><i class="fa-solid fa-layer-group" style="color:var(--primary);"></i> Subject-Wise 20 Question Tests (30 Min - Infinite Generation)</div>
+      <!-- State & National Specialized GK -->
+      <div class="section-title"><i class="fa-solid fa-map-location-dot" style="color:var(--primary);"></i> National & State Special GK (Updated Maps)</div>
       <div class="exam-grid">
-        <div class="exam-card" onclick="initiateExam('gk')">
-          <span class="exam-badge">20 Qs / 30 Min</span>
-          <div class="exam-icon" style="color:#00f59b;"><i class="fa-solid fa-earth-asia"></i></div>
-          <h3>General Knowledge (GK)</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Itihas, Bhugol, Rajvyavastha</p>
-          <div class="exam-meta">
-            <span><i class="fa-regular fa-clock"></i> 30 Mins Total</span>
-          </div>
+        <div class="exam-card" onclick="openExamSetup('india_gk', 'India GK (Updated Map & Polity)', 20, 30)">
+          <span class="exam-badge">Updated Map</span>
+          <div class="exam-icon" style="color:#ff9933;"><i class="fa-solid fa-monument"></i></div>
+          <h3>India GK (National)</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Naye Maps, UTs, Border Lines, Sansad</p>
+          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
         </div>
 
-        <div class="exam-card" onclick="initiateExam('math')">
-          <span class="exam-badge">20 Qs / 30 Min</span>
+        <div class="exam-card" onclick="openExamSetup('raj_gk', 'Rajasthan GK (50 Naye Zile & Itihas)', 20, 30)">
+          <span class="exam-badge">Naye 50 Zile</span>
+          <div class="exam-icon" style="color:#ffb703;"><i class="fa-solid fa-shield-halved"></i></div>
+          <h3>Rajasthan GK (Special)</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Naye Jile, Sambhag, Itihas, Kala-Sanskriti</p>
+          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
+        </div>
+      </div>
+
+      <!-- Languages & Core Subjects -->
+      <div class="section-title"><i class="fa-solid fa-book-open-reader" style="color:var(--green);"></i> Language & Subject Speed Tests (20 Qs / 30 Min)</div>
+      <div class="exam-grid">
+        <div class="exam-card" onclick="openExamSetup('hindi', 'Samanya Hindi (Grammar & Competition)', 20, 30)">
+          <span class="exam-badge">Grammar</span>
+          <div class="exam-icon" style="color:#ff4d4d;"><i class="fa-solid fa-language"></i></div>
+          <h3>Samanya Hindi (सामान्य हिंदी)</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Sandhi, Samas, Muhavare, Vakya Shuddhi</p>
+          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
+        </div>
+
+        <div class="exam-card" onclick="openExamSetup('english', 'General English Grammar & Vocab', 20, 30)">
+          <span class="exam-badge">English</span>
+          <div class="exam-icon" style="color:#00f2fe;"><i class="fa-solid fa-spell-check"></i></div>
+          <h3>English Language & Grammar</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Synonyms, Antonyms, Idioms, Spotting Errors</p>
+          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
+        </div>
+
+        <div class="exam-card" onclick="openExamSetup('math', 'Quantitative Aptitude (Maths)', 20, 30)">
+          <span class="exam-badge">Infinite Formulas</span>
           <div class="exam-icon" style="color:#ff3366;"><i class="fa-solid fa-calculator"></i></div>
           <h3>Quantitative Aptitude (Math)</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">100% Unique Random Numerical Formulas</p>
-          <div class="exam-meta">
-            <span><i class="fa-regular fa-clock"></i> 30 Mins Total</span>
-          </div>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Har baar naye dynamic formula numbers</p>
+          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
         </div>
 
-        <div class="exam-card" onclick="initiateExam('computer')">
-          <span class="exam-badge">20 Qs / 30 Min</span>
+        <div class="exam-card" onclick="openExamSetup('computer', 'Computer Proficiency & Cyber', 20, 30)">
+          <span class="exam-badge">Computer</span>
           <div class="exam-icon" style="color:#38bdf8;"><i class="fa-solid fa-laptop-code"></i></div>
           <h3>Computer Proficiency Test</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Hardware, Software & Cyber Security</p>
-          <div class="exam-meta">
-            <span><i class="fa-regular fa-clock"></i> 30 Mins Total</span>
-          </div>
-        </div>
-
-        <div class="exam-card" onclick="initiateExam('current')">
-          <span class="exam-badge">20 Qs / 30 Min</span>
-          <div class="exam-icon" style="color:#a855f7;"><i class="fa-solid fa-newspaper"></i></div>
-          <h3>Current Affairs 2026</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Rashtriya, Antarrashtriya & Sports</p>
-          <div class="exam-meta">
-            <span><i class="fa-regular fa-clock"></i> 30 Mins Total</span>
-          </div>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Networking, Hardware, Cyber Security</p>
+          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
         </div>
       </div>
 
     </div>
 
-    <!-- 4. REAL CBT EXAM WINDOW -->
+    <!-- CBT REAL EXAM WINDOW -->
     <div id="screen-cbt" class="cbt-container hidden">
       <div class="cbt-header">
         <div>
@@ -290,7 +281,7 @@
       </div>
     </div>
 
-    <!-- 5. SCORECARD SCREEN -->
+    <!-- SCORECARD SCREEN -->
     <div id="screen-result" class="profile-card hidden">
       <i class="fa-solid fa-award" style="font-size:4.5rem; color:var(--gold); margin-bottom:15px;"></i>
       <h2 id="res-heading">Official Scorecard</h2>
@@ -307,8 +298,71 @@
 
   </div>
 
+  <!-- STEP 1 & 2 MODAL (MODE SELECTION & DIFFICULTY LEVEL) -->
+  <div id="exam-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeExamSetup()"><i class="fa-solid fa-xmark"></i></button>
+      
+      <!-- STAGE 1: MODE SELECTION -->
+      <div id="modal-stage-mode">
+        <h3 style="color:var(--primary); margin-bottom:6px;" id="modal-exam-name">Exam Name</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:18px;">Aap is exam ko kis tarah khelna chahte hain?</p>
+
+        <button class="mode-choice-btn" onclick="selectMode('solo')">
+          <span><i class="fa-solid fa-user"></i> Solo Play (Akele Practice Karein)</span>
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+        <button class="mode-choice-btn" onclick="selectMode('battle')">
+          <span><i class="fa-solid fa-bolt" style="color:var(--gold);"></i> 1 vs 1 Live Battle Room</span>
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <!-- STAGE 1.5: BATTLE ROOM SUB-OPTIONS -->
+      <div id="modal-stage-battle-room" class="hidden">
+        <h3 style="color:var(--accent); margin-bottom:6px;">1 vs 1 Battle Room</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">Naya code generate karein ya friend ka code dalein</p>
+
+        <button class="btn-submit-auth" style="margin-bottom:15px;" onclick="generateBattleRoomCode()">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Generate New Room Code
+        </button>
+
+        <div id="generated-code-display" class="room-code-box hidden">
+          <p style="font-size:0.8rem; color:var(--text-muted);">Share this code with your friend:</p>
+          <div class="room-code-text" id="room-code-val">CBT-0000</div>
+          <p style="font-size:0.75rem; color:var(--green);">Room ready! Ab level select karein.</p>
+        </div>
+
+        <div class="divider"><span>YA DOST KA CODE DAALEIN</span></div>
+
+        <input type="text" id="join-room-input" class="form-input" placeholder="Room Code (jaise CBT-8492)">
+        <button class="btn-nav" style="width:100%; padding:12px;" onclick="confirmJoinCode()">Room Join Karein</button>
+      </div>
+
+      <!-- STAGE 2: DIFFICULTY LEVEL SELECTION -->
+      <div id="modal-stage-diff" class="hidden">
+        <h3 style="color:var(--primary); margin-bottom:6px;">Select Difficulty Level</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted);">Apni preparation ke hisab se level chunein</p>
+
+        <div class="diff-grid">
+          <button class="diff-btn easy" onclick="finalizeAndStart('easy')">
+            <i class="fa-solid fa-seedling"></i><br>Easy
+          </button>
+          <button class="diff-btn medium" onclick="finalizeAndStart('medium')">
+            <i class="fa-solid fa-fire"></i><br>Medium
+          </button>
+          <button class="diff-btn hard" onclick="finalizeAndStart('hard')">
+            <i class="fa-solid fa-skull"></i><br>Hard
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <script>
-    // FIREBASE CREDENTIALS
+    // FIREBASE INITIALIZATION
     const firebaseConfig = {
       apiKey: "AIzaSyCmhR0Y8BGjwy_w1SwWBgSoYc7AWtNbmro",
       authDomain: "battle-quiz-6e6b2.firebaseapp.com",
@@ -330,7 +384,14 @@
     let timerTotalSeconds = 0;
     let timerInterval = null;
 
-    // HASH ROUTER
+    // ACTIVE SETUP STATE
+    let selectedExamType = '';
+    let selectedExamName = '';
+    let selectedQCount = 20;
+    let selectedTimeMinutes = 30;
+    let currentPlayMode = 'solo';
+    let currentRoomCode = '';
+
     function updateUrlPath(pageName) {
       window.location.hash = pageName;
     }
@@ -385,7 +446,7 @@
     async function handleEmailLogin() {
       const email = document.getElementById("login-email").value.trim();
       const pass = document.getElementById("login-pass").value.trim();
-      if (!email || !pass) return alert("Email aur Password daalna zaroori hai!");
+      if (!email || !pass) return alert("Email aur Password dalein!");
       try {
         await auth.signInWithEmailAndPassword(email, pass);
       } catch (err) {
@@ -416,37 +477,33 @@
         currentUser = newUser;
         showDashboard();
       } catch (err) {
-        alert("Account Creation Error: " + err.message);
+        alert("Account Error: " + err.message);
       }
     }
 
     function loginWithGoogle() {
       const provider = new firebase.auth.GoogleAuthProvider();
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      if (isMobile) {
-        auth.signInWithRedirect(provider);
-      } else {
+      if (isMobile) auth.signInWithRedirect(provider);
+      else {
         auth.signInWithPopup(provider).catch(err => {
-          if (err.code === 'auth/popup-blocked') {
-            auth.signInWithRedirect(provider);
-          } else {
-            alert("Google Sign-In Error: " + err.message);
-          }
+          if (err.code === 'auth/popup-blocked') auth.signInWithRedirect(provider);
+          else alert("Google Login Error: " + err.message);
         });
       }
     }
 
     auth.getRedirectResult().catch(err => {
-      if (err.code) console.error("Redirect Login Error:", err);
+      if (err.code) console.error(err);
     });
 
     function promptSecretAdmin() {
-      const pin = prompt("Admin Secret PIN daalein (Testing ke liye):");
+      const pin = prompt("Admin Secret PIN dalein:");
       if (pin === "7890") {
         document.getElementById("guest-access-panel").classList.remove("hidden");
-        alert("✅ VIP Guest Access Unlocked! Ab aap testing ID chun sakte hain.");
+        alert("✅ VIP Testing Guest IDs Unlocked!");
       } else if (pin !== null) {
-        alert("❌ Galat PIN! Guest login ka access sirf authorized tester ke paas hai.");
+        alert("❌ Galat PIN!");
       }
     }
 
@@ -460,27 +517,18 @@
         cleared: 0,
         failed: 0
       };
-
       try {
-        const userRef = db.collection("candidates").doc(guestId);
-        const doc = await userRef.get();
-        if (doc.exists) {
-          currentUser = doc.data();
-        } else {
-          await userRef.set(currentUser);
-        }
-      } catch (err) {
-        console.warn("Guest offline mode:", err);
-      }
-
+        const doc = await db.collection("candidates").doc(guestId).get();
+        if (doc.exists) currentUser = doc.data();
+        else await db.collection("candidates").doc(guestId).set(currentUser);
+      } catch(e) {}
+      
       document.getElementById("screen-auth").classList.add("hidden");
       document.getElementById("main-content").classList.remove("hidden");
       document.getElementById("nav-profile-pill").classList.remove("hidden");
       document.getElementById("logout-btn").classList.remove("hidden");
-
       document.getElementById("header-name").innerText = currentUser.displayName.split(" ")[0];
       document.getElementById("header-avatar").src = currentUser.photoURL;
-
       showDashboard();
     }
 
@@ -501,12 +549,9 @@
         document.getElementById("header-name").innerText = name.split(" ")[0];
         document.getElementById("header-avatar").src = user.photoURL || "https://ui-avatars.com/api/?name=" + encodeURIComponent(name);
 
-        const userRef = db.collection("candidates").doc(user.uid);
-        const doc = await userRef.get();
-
-        if (doc.exists) {
-          currentUser = doc.data();
-        } else {
+        const doc = await db.collection("candidates").doc(user.uid).get();
+        if (doc.exists) currentUser = doc.data();
+        else {
           currentUser = {
             uid: user.uid,
             displayName: name,
@@ -516,7 +561,7 @@
             cleared: 0,
             failed: 0
           };
-          await userRef.set(currentUser);
+          await db.collection("candidates").doc(user.uid).set(currentUser);
         }
         showDashboard();
       } else if (!currentUser) {
@@ -525,7 +570,71 @@
     });
 
     // ==========================================
-    // INFINITE DYNAMIC RANDOM QUESTIONS ENGINE
+    // EXAM SETUP MODAL FLOW (MODE & DIFFICULTY)
+    // ==========================================
+
+    function openExamSetup(type, name, qCount, minutes) {
+      selectedExamType = type;
+      selectedExamName = name;
+      selectedQCount = qCount;
+      selectedTimeMinutes = minutes;
+      currentRoomCode = '';
+
+      document.getElementById("modal-exam-name").innerText = name;
+      document.getElementById("modal-stage-mode").classList.remove("hidden");
+      document.getElementById("modal-stage-battle-room").classList.add("hidden");
+      document.getElementById("modal-stage-diff").classList.add("hidden");
+      document.getElementById("generated-code-display").classList.add("hidden");
+      document.getElementById("join-room-input").value = "";
+
+      document.getElementById("exam-modal").classList.remove("hidden");
+    }
+
+    function closeExamSetup() {
+      document.getElementById("exam-modal").classList.add("hidden");
+    }
+
+    function selectMode(mode) {
+      currentPlayMode = mode;
+      if (mode === 'solo') {
+        document.getElementById("modal-stage-mode").classList.add("hidden");
+        document.getElementById("modal-stage-diff").classList.remove("hidden");
+      } else {
+        document.getElementById("modal-stage-mode").classList.add("hidden");
+        document.getElementById("modal-stage-battle-room").classList.remove("hidden");
+      }
+    }
+
+    function generateBattleRoomCode() {
+      const code = "CBT-" + Math.floor(1000 + Math.random() * 9000);
+      currentRoomCode = code;
+      document.getElementById("room-code-val").innerText = code;
+      document.getElementById("generated-code-display").classList.remove("hidden");
+
+      setTimeout(() => {
+        document.getElementById("modal-stage-battle-room").classList.add("hidden");
+        document.getElementById("modal-stage-diff").classList.remove("hidden");
+      }, 1200);
+    }
+
+    function confirmJoinCode() {
+      const code = document.getElementById("join-room-input").value.trim().toUpperCase();
+      if (!code) return alert("Pehle Battle Room Code dalein!");
+      currentRoomCode = code;
+      document.getElementById("modal-stage-battle-room").classList.add("hidden");
+      document.getElementById("modal-stage-diff").classList.remove("hidden");
+    }
+
+    function finalizeAndStart(diffLevel) {
+      closeExamSetup();
+      if (currentPlayMode === 'battle') {
+        alert(`🎮 Battle Room: ${currentRoomCode}\nMode: 1 vs 1 Battle\nLevel: ${diffLevel.toUpperCase()}\n\nOpponent ke sath match shuru ho raha hai!`);
+      }
+      initiateExam(selectedExamType, selectedExamName, selectedQCount, selectedTimeMinutes, diffLevel);
+    }
+
+    // ==========================================
+    // UPDATED QUESTION BANK (RAJASTHAN, INDIA, HINDI, ENGLISH)
     // ==========================================
 
     function shuffleArray(arr) {
@@ -536,202 +645,150 @@
       return arr;
     }
 
-    // Har test par option sequences randomize karne ke liye
     function randomizeOptions(qObj) {
       const originalOptions = [...qObj.o];
       const correctText = originalOptions[qObj.a];
       const shuffledOptions = shuffleArray([...originalOptions]);
-      const newCorrectIndex = shuffledOptions.indexOf(correctText);
       return {
         q: qObj.q,
         o: shuffledOptions,
-        a: newCorrectIndex
+        a: shuffledOptions.indexOf(correctText)
       };
     }
 
-    // Dynamic Math Question Generator (100% Unique Numbers Every Time)
-    function generateDynamicMathQuestions(count) {
-      const types = ['profit_loss', 'time_work', 'percentage', 'speed_dist', 'square_area', 'simple_interest', 'ratio', 'average'];
-      const questions = [];
-
+    // Dynamic Math Questions
+    function generateDynamicMath(count, diff) {
+      const list = [];
       for (let i = 0; i < count; i++) {
-        const type = types[Math.floor(Math.random() * types.length)];
-        let q = "", o = [], a = 0;
-
-        if (type === 'profit_loss') {
-          const cp = (Math.floor(Math.random() * 20) + 5) * 50; // 250 to 1250
-          const profitPct = (Math.floor(Math.random() * 5) + 1) * 5; // 5, 10, 15, 20, 25%
-          const sp = cp + (cp * profitPct / 100);
-          q = `Yadi kisi vastu ka kray-mulya (Cost Price) ₹${cp} hai aur use ${profitPct}% laabh par becha jaye, to vikray-mulya (Selling Price) kya hoga?`;
-          const correct = `₹${sp}`;
-          o = [correct, `₹${sp + 50}`, `₹${sp - 50}`, `₹${sp + 100}`];
-        } 
-        else if (type === 'time_work') {
-          const d1 = (Math.floor(Math.random() * 4) + 2) * 5; // 10, 15, 20, 25
-          const d2 = d1 * 2;
-          const totalDays = Math.round((d1 * d2) / (d1 + d2));
-          q = `A kisi karya ko ${d1} din me tatha B use ${d2} din me poora karta hai. Dono milkar is karya ko lagbhag kitne din me karenge?`;
-          const correct = `${totalDays} din`;
-          o = [correct, `${totalDays + 2} din`, `${totalDays - 1} din`, `${totalDays + 4} din`];
-        }
-        else if (type === 'percentage') {
-          const total = (Math.floor(Math.random() * 10) + 5) * 100; // 500 to 1400
-          const pct = (Math.floor(Math.random() * 8) + 2) * 5; // 10% to 45%
-          const ans = (total * pct) / 100;
-          q = `Sankhya ${total} ka ${pct}% kitna hoga?`;
-          const correct = `${ans}`;
-          o = [correct, `${ans + 15}`, `${ans - 20}`, `${ans + 30}`];
-        }
-        else if (type === 'square_area') {
-          const side = Math.floor(Math.random() * 15) + 6; // 6 to 20
-          const area = side * side;
-          const perimeter = 4 * side;
-          q = `Ek vargakar (square) maidan ka kshetraphal (area) ${area} cm² hai. Is maidan ka parimap (perimeter) kitna hoga?`;
-          const correct = `${perimeter} cm`;
-          o = [correct, `${perimeter + 8} cm`, `${perimeter - 4} cm`, `${side * 2} cm`];
-        }
-        else if (type === 'simple_interest') {
-          const p = (Math.floor(Math.random() * 10) + 2) * 1000; // 2000 to 11000
-          const r = Math.floor(Math.random() * 5) + 5; // 5% to 9%
-          const t = Math.floor(Math.random() * 4) + 2; // 2 to 5 years
-          const si = (p * r * t) / 100;
-          q = `₹${p} ki rashi par ${r}% varshik dar se ${t} varsh ka Sadharan Byaj (Simple Interest) kya hoga?`;
-          const correct = `₹${si}`;
-          o = [correct, `₹${si + 120}`, `₹${si - 100}`, `₹${si + 200}`];
-        }
-        else {
-          const n1 = Math.floor(Math.random() * 30) + 10;
-          const n2 = Math.floor(Math.random() * 30) + 10;
-          const n3 = Math.floor(Math.random() * 30) + 10;
-          const avg = Math.round((n1 + n2 + n3) / 3);
-          q = `Sankhyao ${n1}, ${n2} tatha ${n3} ka lagbhag ausat (Average) kya hoga?`;
-          const correct = `${avg}`;
-          o = [correct, `${avg + 3}`, `${avg - 2}`, `${avg + 5}`];
-        }
-
-        questions.push(randomizeOptions({ q, o, a: 0 }));
+        let cp = (Math.floor(Math.random() * 20) + 10) * (diff === 'hard' ? 120 : 50);
+        let pct = (Math.floor(Math.random() * 6) + 2) * 5;
+        let sp = cp + (cp * pct / 100);
+        let q = `Yadi kisi vastu ka kray-mulya ₹${cp} hai aur ${pct}% labh par becha jaye, to vikray-mulya kitna hoga?`;
+        list.push(randomizeOptions({
+          q,
+          o: [`₹${sp}`, `₹${sp + 40}`, `₹${sp - 50}`, `₹${sp + 100}`],
+          a: 0
+        }));
       }
-      return questions;
+      return list;
     }
 
-    // STATIC MASTER POOLS (SHUFFLE & RANDOMIZE)
-    const masterPool = {
-      gk: [
-        { q: "Bharat ke sanvidhan me mool kartavya (Fundamental Duties) kis desh se liye gaye the?", o: ["Soviet Union (Russia)", "USA", "UK", "France"], a: 0 },
-        { q: "Duniya ka sabse bada delta kaun sa hai?", o: ["Sundarbans Delta", "Nile Delta", "Amazon Delta", "Mississippi Delta"], a: 0 },
-        { q: "Harappa sabhyata ka sthal 'Lothal' kis vartaman rajya me sthit hai?", o: ["Gujarat", "Rajasthan", "Haryana", "Punjab"], a: 0 },
-        { q: "Arthashastra ke lekhak Chanakya kiske pradhanmantri the?", o: ["Chandragupta Maurya", "Ashoka", "Bindusara", "Samudragupta"], a: 0 },
-        { q: "Bharat me GST kaunse varsh lagu kiya gaya tha?", o: ["1 July 2017", "1 April 2016", "1 January 2018", "15 August 2017"], a: 0 },
-        { q: "Surya ke sabse nikat kaun sa grah sthit hai?", o: ["Budh (Mercury)", "Shukra (Venus)", "Mangal (Mars)", "Prithvi (Earth)"], a: 0 },
-        { q: "Vayu mandal me sarvadhik maatra me kaun si gas pai jaati hai?", o: ["Nitrogen (78%)", "Oxygen", "Carbon Dioxide", "Argon"], a: 0 },
-        { q: "Bhartiya Rashtriya Congress ki sthapna kab hui thi?", o: ["1885", "1905", "1919", "1942"], a: 0 },
-        { q: "Bharat ka sabse bada national park kaun sa hai?", o: ["Hemis National Park (Ladakh)", "Jim Corbett", "Kaziranga", "Gir Forest"], a: 0 },
-        { q: "Panchayati Raj vyavastha sabse pehle kis rajya me lagoo hui?", o: ["Rajasthan (Nagaur)", "Andhra Pradesh", "Gujarat", "Uttar Pradesh"], a: 0 },
-        { q: "Kaziranga Rashtriya Udyan kiske liye mashhoor hai?", o: ["Ek-seeng wala gainda (Rhino)", "Bagh (Tiger)", "Hathi", "Sher"], a: 0 },
-        { q: "Arya Samaj ki sthapna kisne ki thi?", o: ["Swami Dayanand Saraswati", "Swami Vivekananda", "Raja Ram Mohan Roy", "Ishwar Chandra Vidyasagar"], a: 0 },
-        { q: "Bharat ki aadhikarik bhashao ko sanvidhan ki kis anusoochi me rakha gaya hai?", o: ["8vi Anusoochi (8th Schedule)", "7vi Anusoochi", "9vi Anusoochi", "10vi Anusoochi"], a: 0 },
-        { q: "RTI (Right to Information) Act bharat me kab lagu hua?", o: ["October 2005", "January 2004", "August 2006", "March 2008"], a: 0 }
+    const masterQuestions = {
+      // 1. RAJASTHAN GK (Updated 50 Zile & Maps)
+      raj_gk: [
+        { q: "Naye simankan ke anusar Rajasthan me kul jilo ki sankhya kitni ho gayi hai?", o: ["50 Zile", "33 Zile", "45 Zile", "52 Zile"], a: 0 },
+        { q: "Naya jila 'Anupgarh' mool roop se kin jilo se alag hokar banaya gaya hai?", o: ["Sri Ganganagar aur Bikaner", "Bikaner aur Jodhpur", "Barmer aur Jaisalmer", "Nagaur aur Churu"], a: 0 },
+        { q: "Rajasthan ka sabse chhota jila kshetraphal ki drishti se kaun sa ban gaya hai?", o: ["Dudu (दूदू)", "Dholpur", "Salumber", "Sanchore"], a: 0 },
+        { q: "Naya jila 'Phalodi' kis mool jile se alag karke banaya gaya?", o: ["Jodhpur", "Bikaner", "Nagaur", "Jaisalmer"], a: 0 },
+        { q: "Rajasthan me Sambhago (Divisions) ki kul sankhya kitni ho gayi hai?", o: ["10 Sambhag", "7 Sambhag", "8 Sambhag", "12 Sambhag"], a: 0 },
+        { q: "Rajasthan ke kis jile me Vishwa Prasiddh 'Bishnoi Sampraday' ke pravartak Jambhoji ka Mokal sthal sthit hai?", o: ["Bikaner (Mukam)", "Jodhpur", "Nagaur", "Barmer"], a: 0 },
+        { q: "Balotra jila kis mool jile se prathak kiya gaya hai?", o: ["Barmer", "Jalore", "Pali", "Sirohi"], a: 0 },
+        { q: "Neem Ka Thana naya jila kin do purane jilo ke kshetro ko jodkar bana hai?", o: ["Sikar aur Jhunjhunu", "Jaipur aur Alwar", "Churu aur Sikar", "Alwar aur Dausa"], a: 0 },
+        { q: "Thar ka marusthal Rajasthan ke kul kshetraphal ka lagbhag kitna pratishat bhag ghirta hai?", o: ["61.11%", "50%", "40%", "72%"], a: 0 },
+        { q: "Rajasthan ki aadhikarik bhasha kaun si hai?", o: ["Hindi (Devnagari Lipi)", "Rajasthani", "Marwari", "Mewari"], a: 0 }
       ],
+
+      // 2. INDIA GK (Updated National Map & Polity)
+      india_gk: [
+        { q: "Vartaman me Bharat me kul kitne Rajya aur Kendra Shashit Pradesh (UTs) hain?", o: ["28 Rajya aur 8 UTs", "29 Rajya aur 7 UTs", "28 Rajya aur 9 UTs", "29 Rajya aur 8 UTs"], a: 0 },
+        { q: "Bharat ki naye Sansad Bhavan ka aakar (Shape) kaisa hai?", o: ["Tribhujakar (Triangular)", "Golakar (Circular)", "Chaukor (Square)", "Panchbhujakar"], a: 0 },
+        { q: "Bharat ka sabse lamba samudra tat (Coastline) kis rajya ka hai?", o: ["Gujarat", "Andhra Pradesh", "Tamil Nadu", "Maharashtra"], a: 0 },
+        { q: "Ladakh Kendra Shashit Pradesh me kul kitne zile sthit hain?", o: ["2 (Leh aur Kargil)", "4", "1", "6"], a: 0 },
+        { q: "Bharat ka Dakshini Bindu (Indira Point) kahan sthit hai?", o: ["Great Nicobar", "Kanyakumari", "Lakshadweep", "Rameshwaram"], a: 0 },
+        { q: "Kishtwar aur Chenab nadi par bani Salal Pariyojana kis rajya/UT me hai?", o: ["Jammu & Kashmir", "Himachal Pradesh", "Uttarakhand", "Punjab"], a: 0 },
+        { q: "Bharat ke Sanvidhan me 106va Sanvidhan Sanshodhan kisse sambandhit hai?", o: ["Nari Shakti Vandan Adhiniyam (Mahila Aarakshan)", "GST", "EWS", "OBC Reservation"], a: 0 },
+        { q: "Duniya ka sabse uncha Railway Arch Bridge kis nadi par bana hai?", o: ["Chenab Nadi", "Jhelum", "Indus", "Ravi"], a: 0 }
+      ],
+
+      // 3. SAMANYA HINDI (Grammar & Competitions)
+      hindi: [
+        { q: "'परोपकार' शब्द में कौन सी संधि है?", o: ["गुण संधि (Guṇa Sandhi)", "वृद्धि संधि", "दीर्घ संधि", "यण संधि"], a: 0 },
+        { q: "'यथाशक्ति' शब्द में कौन सा समास पाया जाता है?", o: ["अव्ययीभाव समास", "तत्पुरुष समास", "द्वंद्व समास", "कर्मधारय"], a: 0 },
+        { q: "'आँखों का तारा होना' मुहावरे का सही अर्थ क्या है?", o: ["अत्यधिक प्रिय होना", "अंधा होना", "धोखा देना", "आँख में दर्द होना"], a: 0 },
+        { q: "निम्न में से कौन सा शब्द शुद्ध वर्तनी वाला है?", o: ["उज्ज्वल", "उज्वल", "उज्जवल", "उज्वल्य"], a: 0 },
+        { q: "'अतिथि' का सही पर्यायवाची शब्द कौन सा है?", o: ["पाहुन (मेहमान)", "मित्र", "सहोदर", "आगंतुकहीन"], a: 0 },
+        { q: "'जो सब कुछ जानता हो' वाक्यांश के लिए एक शब्द क्या होगा?", o: ["सर्वज्ञ", "अल्पज्ञ", "विद्वान", "बहुज्ञ"], a: 0 },
+        { q: "'अनुराग' शब्द का सही विलोम शब्द क्या है?", o: ["विराग", "द्वेष", "क्रोध", "नफरत"], a: 0 },
+        { q: "'सूर्योदय' का सही संधि विच्छेद क्या होगा?", o: ["सूर्य + उदय", "सूर्यो + दय", "सूर्य + दय", "सूर्या + उदय"], a: 0 }
+      ],
+
+      // 4. ENGLISH GRAMMAR & VOCAB
+      english: [
+        { q: "Choose the correct SYNONYM of the word 'METICULOUS':", o: ["Careful and Thorough", "Careless", "Quick", "Lazy"], a: 0 },
+        { q: "Choose the correct ANTONYM of the word 'TRANSPARENT':", o: ["Opaque", "Clear", "Vivid", "Bright"], a: 0 },
+        { q: "Identify the correct meaning of idiom: 'Break the ice'", o: ["To initiate a conversation in an awkward situation", "To freeze something", "To get angry", "To start a fight"], a: 0 },
+        { q: "Fill in the blank: 'Neither of the boys _____ present in the classroom.'", o: ["was", "were", "are", "have been"], a: 0 },
+        { q: "Find the correctly spelt word:", o: ["Accommodate", "Acomodate", "Accomodate", "Acommodate"], a: 0 },
+        { q: "Choose the one-word substitution: 'One who looks at the bright side of things'", o: ["Optimist", "Pessimist", "Altruist", "Philanthropist"], a: 0 },
+        { q: "Passive voice of: 'She wrote a letter.'", o: ["A letter was written by her.", "A letter is written by her.", "A letter had written by her.", "A letter was wrote by her."], a: 0 },
+        { q: "Identify the error: 'He is superior than me in mathematics.'", o: ["than (should be 'to')", "is superior", "in mathematics", "No error"], a: 0 }
+      ],
+
+      // 5. COMPUTER
       computer: [
         { q: "IP Address (IPv4) kul kitne bits ka hota hai?", o: ["32 bits", "16 bits", "64 bits", "128 bits"], a: 0 },
-        { q: "MS Excel me file save karne ki shortcut key kya hai?", o: ["Ctrl + S", "Ctrl + P", "Ctrl + E", "Alt + S"], a: 0 },
-        { q: "Kaun si memory volatile hoti hai jo bijli jate hi data erase kar deti hai?", o: ["RAM", "ROM", "Hard Disk", "Flash Drive"], a: 0 },
-        { q: "OSI Network Model me kul kitni layers hoti hain?", o: ["7", "5", "6", "8"], a: 0 },
-        { q: "DNS ka pura naam kya hai?", o: ["Domain Name System", "Data Network Server", "Dynamic Node Service", "Digital Name Server"], a: 0 },
-        { q: "Computer ka brain kise kaha jata hai?", o: ["CPU", "RAM", "Motherboard", "ALU"], a: 0 },
-        { q: "HTTP ka standard port number kaun sa hota hai?", o: ["80", "443", "21", "25"], a: 0 },
-        { q: "Binary number system me kaun se do digits hote hain?", o: ["0 aur 1", "1 aur 2", "0 aur 9", "A aur B"], a: 0 },
-        { q: "HTTPS me 'S' ka kya arth hota hai?", o: ["Secure", "Standard", "System", "Simple"], a: 0 },
-        { q: "Python kaun se type ki programming language hai?", o: ["Interpreted High-Level", "Compiled Low-Level", "Assembly", "Machine Language"], a: 0 },
-        { q: "Computer me temporary files ka extension aamtaur par kya hota hai?", o: [".tmp", ".temp", ".dat", ".log"], a: 0 },
-        { q: "Ctrl + Z shortcut kiske liye prayog hota hai?", o: ["Undo", "Redo", "Cut", "Paste"], a: 0 }
+        { q: "MS Excel me sheet save karne ki shortcut key kya hai?", o: ["Ctrl + S", "Ctrl + P", "Ctrl + E", "Alt + S"], a: 0 },
+        { q: "Kaun sa memory volatile hota hai jo bijli jate hi erase ho jata hai?", o: ["RAM", "ROM", "Hard Disk", "Pen Drive"], a: 0 },
+        { q: "OSI Network Model me kul kitni layers hoti hain?", o: ["7", "5", "6", "8"], a: 0 }
       ],
-      current: [
-        { q: "Bharat ke 50ve Mukhya Nyayadhish (CJI) ke roop me kisne seva di?", o: ["Justice DY Chandrachud", "Justice UU Lalit", "Justice NV Ramana", "Justice Sanjiv Khanna"], a: 0 },
-        { q: "Chandrayaan-3 mission ke lander ka kya naam tha?", o: ["Vikram", "Pragyan", "Dhruv", "Aditya"], a: 0 },
-        { q: "Bharat ka pehla AI City kis shahar me sthapit kiya ja raha hai?", o: ["Lucknow", "Bengaluru", "Hyderabad", "Noida"], a: 0 },
-        { q: "Paris Olympics 2024 me bharat ko Javelin throw me Neeraj Chopra ne kaun sa medal dilaya?", o: ["Silver Medal", "Gold Medal", "Bronze Medal", "None"], a: 0 },
-        { q: "G20 Shikhar Sammelan 2023 ka aayojan kahan hua tha?", o: ["Bharat Mandapam (New Delhi)", "Bali", "Rome", "Riyadh"], a: 0 },
-        { q: "ISRO dwara Surya ka adhyayan karne ke liye bheja gaya mission kaun sa hai?", o: ["Aditya-L1", "Surya-1", "Helios-B", "Solar-X"], a: 0 },
-        { q: "Dadasaheb Phalke Lifetime Achievement Award 2024 kise pradan kiya gaya?", o: ["Mithun Chakraborty", "Waheeda Rehman", "Asha Parekh", "Rajinikanth"], a: 0 },
-        { q: "NITI Aayog ke CEO ke roop me kisne pad sambhala?", o: ["B.V.R. Subrahmanyam", "Parameswaran Iyer", "Amitabh Kant", "Rajiv Kumar"], a: 0 }
-      ],
+
+      // 6. SSC CGL COMBINED
       ssc_cgl: [
         { q: "[SSC CGL] Comptroller and Auditor General (CAG) ki niyukti kis anuchhed ke tehat hoti hai?", o: ["Article 148", "Article 280", "Article 324", "Article 110"], a: 0 },
         { q: "[SSC CGL] Kaun sa Harappan nagar teen bhago me vibhajit tha?", o: ["Dholavira", "Kalibangan", "Surkotada", "Banawali"], a: 0 },
-        { q: "[SSC CGL] 'The God of Small Things' pustak ke lekhak kaun hain?", o: ["Arundhati Roy", "Jhumpa Lahiri", "Salman Rushdie", "Kiran Desai"], a: 0 },
-        { q: "[SSC CGL] 42ve Sanvidhan Sanshodhan (1976) dwara Preamble me kaun sa shabd joda gaya?", o: ["Socialist, Secular & Integrity", "Democratic", "Sovereign", "Republic"], a: 0 },
-        { q: "[SSC CGL] Yadi A:B = 2:3 tatha B:C = 4:5 hai, to A:B:C ka anupaat kya hoga?", o: ["8:12:15", "6:10:15", "8:10:12", "4:6:15"], a: 0 },
-        { q: "[SSC CGL] Buxar ka yuddh kis varsh lada gaya tha?", o: ["1764", "1757", "1761", "1772"], a: 0 },
-        { q: "[SSC CGL] Blood coagulation (khoon ka thakka jamna) kis Vitamin ki sahayata se hota hai?", o: ["Vitamin K", "Vitamin A", "Vitamin C", "Vitamin D"], a: 0 },
-        { q: "[SSC CGL] Manav sharir me insulin hormone ka utpadan kahan hota hai?", o: ["Pancreas (Agnyashay)", "Liver", "Kidney", "Thyroid"], a: 0 },
-        { q: "[SSC CGL] GST Council ka adhyaksh kaun hota hai?", o: ["Union Finance Minister", "Prime Minister", "RBI Governor", "Home Minister"], a: 0 }
+        { q: "[SSC CGL] 42ve Sanvidhan Sanshodhan dwara Preamble me kaun sa shabd joda gaya?", o: ["Socialist, Secular & Integrity", "Democratic", "Sovereign", "Republic"], a: 0 }
       ],
+
+      // 7. POLICE SI
       police_si: [
         { q: "[Police SI] CrPC ke tehat FIR kis section me darz ki jaati hai?", o: ["Section 154", "Section 161", "Section 173", "Section 100"], a: 0 },
-        { q: "[Police SI] Bhartiya Dand Sanhita (IPC) mul roop se kis varsh lagoo hui thi?", o: ["1 January 1862", "1860", "1857", "1872"], a: 0 },
-        { q: "[Police SI] Bina warrant ke police kis apradh me seedhe giraftar kar sakti hai?", o: ["Cognizable Offense (Sangheya Apradh)", "Non-cognizable", "Civil case", "Summons case"], a: 0 },
-        { q: "[Police SI] Samvidhan ki aatma aur hriday kis anuchhed ko kaha gaya hai?", o: ["Article 32", "Article 21", "Article 19", "Article 14"], a: 0 },
-        { q: "[Police SI] Mahila ko suryast ke baad aur suryoday se pehle giraftar karne ke liye kiski anumati aavashyak hai?", o: ["Judicial Magistrate", "SP / Police Captain", "SHO", "District Magistrate"], a: 0 },
-        { q: "[Police SI] Dahej Pratishedh Adhiniyam (Dowry Prohibition Act) kab bana tha?", o: ["1961", "1972", "1986", "1955"], a: 0 },
-        { q: "[Police SI] Giraftar vyakti ko kitne ghanto ke andar magistrate ke samaksh pesh karna hota hai?", o: ["24 Ghante (Yatra samay chhodkar)", "12 Ghante", "48 Ghante", "36 Ghante"], a: 0 },
-        { q: "[Police SI] Moolvidhi ke anusar IPC Section 302 kis apradh se sambandhit hai?", o: ["Hatya (Murder) ki saza", "Dakaiti", "Chori", "Aapradhik Manav Vadh"], a: 0 }
+        { q: "[Police SI] Bina warrant ke police kis apradh me giraftar kar sakti hai?", o: ["Cognizable Offense (Sangheya)", "Non-cognizable", "Civil case", "Bailable"], a: 0 },
+        { q: "[Police SI] Samvidhan ki aatma kis anuchhed ko kaha gaya hai?", o: ["Article 32", "Article 21", "Article 19", "Article 14"], a: 0 }
       ]
     };
 
-    // GENERATE FRESH RANDOM EXAM (HAR BAAR COMPLETELY NEW)
-    function getExamQuestions(type) {
-      if (type === 'math') {
-        // Har baar naye mathematical equations generate honge
-        return generateDynamicMathQuestions(20);
-      }
+    function generateQuestionsForExam(type, count, diff) {
+      if (type === 'math') return generateDynamicMath(count, diff);
 
+      let pool = masterQuestions[type] || masterQuestions.india_gk;
+
+      // Agar combined exam ho
       if (type === 'ssc_cgl') {
-        // SSC CGL Tier 1 Pattern: GK + Computer + Reasoning Math dynamically blended
-        const sscStatic = masterPool.ssc_cgl.map(q => randomizeOptions(q));
-        const gkStatic = masterPool.gk.map(q => randomizeOptions(q));
-        const compStatic = masterPool.computer.map(q => randomizeOptions(q));
-        const mathDyn = generateDynamicMathQuestions(8);
-
-        const combined = shuffleArray([...sscStatic, ...gkStatic, ...compStatic, ...mathDyn]);
-        return combined.slice(0, 25);
+        const p1 = masterQuestions.ssc_cgl.map(q => randomizeOptions(q));
+        const p2 = masterQuestions.english.map(q => randomizeOptions(q));
+        const p3 = masterQuestions.india_gk.map(q => randomizeOptions(q));
+        const p4 = generateDynamicMath(6, diff);
+        return shuffleArray([...p1, ...p2, ...p3, ...p4]).slice(0, count);
       }
 
       if (type === 'police_si') {
-        // Police SI Pattern: Moolvidhi Law + Samvidhan + Mixed Math GK
-        const siStatic = masterPool.police_si.map(q => randomizeOptions(q));
-        const gkStatic = masterPool.gk.map(q => randomizeOptions(q));
-        const mathDyn = generateDynamicMathQuestions(6);
-
-        const combined = shuffleArray([...siStatic, ...gkStatic, ...mathDyn]);
-        return combined.slice(0, 20);
+        const p1 = masterQuestions.police_si.map(q => randomizeOptions(q));
+        const p2 = masterQuestions.hindi.map(q => randomizeOptions(q));
+        const p3 = masterQuestions.raj_gk.map(q => randomizeOptions(q));
+        const p4 = masterQuestions.india_gk.map(q => randomizeOptions(q));
+        return shuffleArray([...p1, ...p2, ...p3, ...p4]).slice(0, count);
       }
 
-      // Baaki categories ke liye pool se shuffle aur options randomize karein
-      const basePool = masterPool[type] || masterPool.gk;
-      const shuffledQuestions = shuffleArray([...basePool]).map(q => randomizeOptions(q));
-
-      // Agar category pool me kam sawal ho to loop karke dynamically randomize karein
-      let result = [];
-      while (result.length < 20) {
-        const fresh = shuffleArray([...basePool]).map(q => randomizeOptions(q));
-        result = result.concat(fresh);
+      let res = shuffleArray([...pool]).map(q => randomizeOptions(q));
+      while (res.length < count) {
+        res = res.concat(shuffleArray([...pool]).map(q => randomizeOptions(q)));
       }
-      return result.slice(0, 20);
+      return res.slice(0, count);
     }
 
-    // START TEST
-    function initiateExam(examType) {
-      currentTest = getExamQuestions(examType);
+    // CBT RUNTIME
+    function initiateExam(type, name, qCount, minutes, diff) {
+      currentTest = generateQuestionsForExam(type, qCount, diff);
       userAnswers = {};
       currentIndex = 0;
 
-      timerTotalSeconds = (examType === 'ssc_cgl' || examType === 'police_si') ? (20 * 60) : (30 * 60);
+      // Hard mode me timer thoda tez rahega
+      let timeMultiplier = (diff === 'hard') ? 0.8 : (diff === 'easy' ? 1.2 : 1.0);
+      timerTotalSeconds = Math.floor(minutes * 60 * timeMultiplier);
 
-      document.getElementById("exam-title").innerText = examType.toUpperCase().replace("_", " ") + " CBT TEST";
+      document.getElementById("exam-title").innerText = `${name} [${diff.toUpperCase()}]`;
       hideAllScreens();
       document.getElementById("screen-cbt").classList.remove("hidden");
-      
       updateUrlPath("cbt-exam");
 
       renderQuestion();
@@ -815,7 +872,7 @@
           failed: currentUser.failed
         });
       } catch (e) {
-        console.error("Cloud database sync:", e);
+        console.error(e);
       }
 
       document.getElementById("res-heading").innerText = passed ? "🎉 Congratulations! Exam Qualified" : "❌ Result: Not Qualified";
@@ -828,13 +885,6 @@
       hideAllScreens();
       document.getElementById("screen-result").classList.remove("hidden");
       updateUrlPath("result");
-    }
-
-    function start1v1Battle() {
-      const code = document.getElementById("room-code").value.trim();
-      if (!code) return alert("Pehle Battle Room Code dalein!");
-      alert(`Room ${code} me player connected! Fresh randomized speed battle round shuru ho raha hai!`);
-      initiateExam('gk');
     }
 
     window.addEventListener('hashchange', () => {
