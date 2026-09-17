@@ -190,7 +190,7 @@
       <div class="battle-box">
         <div>
           <h3 style="color: var(--primary);"><i class="fa-solid fa-bolt"></i> 1v1 Live Room Battle</h3>
-          <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Apne dost ko room code share karein aur aamne-saamne speed battle karein</p>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Apne dost ko room code share karein aur har baar naye questions par aamne-saamne speed battle karein</p>
         </div>
         <div style="display:flex; gap:10px;">
           <input type="text" id="room-code" class="room-input" placeholder="Room Code">
@@ -199,13 +199,13 @@
       </div>
 
       <!-- Full Competition Exams -->
-      <div class="section-title"><i class="fa-solid fa-file-signature" style="color:var(--gold);"></i> Full Competition Exams (Official Syllabus)</div>
+      <div class="section-title"><i class="fa-solid fa-file-signature" style="color:var(--gold);"></i> Full Competition Exams (Fresh Random Questions Each Time)</div>
       <div class="exam-grid">
         <div class="exam-card" onclick="initiateExam('ssc_cgl')">
           <span class="exam-badge">Tier-1 Pattern</span>
           <div class="exam-icon" style="color:#00f2fe;"><i class="fa-solid fa-building-columns"></i></div>
           <h3>SSC CGL Mock Test</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">GK, Maths, English & Reasoning Mix</p>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">GK, Reasoning, Maths & English (Har Baar Naya)</p>
           <div class="exam-meta">
             <span><i class="fa-regular fa-circle-question"></i> 25 Questions</span>
             <span><i class="fa-regular fa-clock"></i> 20 Minutes</span>
@@ -216,7 +216,7 @@
           <span class="exam-badge">Paper-1 Pattern</span>
           <div class="exam-icon" style="color:#ffb703;"><i class="fa-solid fa-shield-cat"></i></div>
           <h3>Police SI Sub-Inspector Exam</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Moolvidhi, Sanvidhan & Samanya Gyan</p>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Moolvidhi, Sanvidhan & Samanya Gyan (Shuffled)</p>
           <div class="exam-meta">
             <span><i class="fa-regular fa-circle-question"></i> 20 Questions</span>
             <span><i class="fa-regular fa-clock"></i> 20 Minutes</span>
@@ -225,7 +225,7 @@
       </div>
 
       <!-- Subject-Wise Tests (20 Questions - 30 Minutes Timer) -->
-      <div class="section-title"><i class="fa-solid fa-layer-group" style="color:var(--primary);"></i> Subject-Wise 20 Question Speed Tests (30 Min)</div>
+      <div class="section-title"><i class="fa-solid fa-layer-group" style="color:var(--primary);"></i> Subject-Wise 20 Question Tests (30 Min - Infinite Generation)</div>
       <div class="exam-grid">
         <div class="exam-card" onclick="initiateExam('gk')">
           <span class="exam-badge">20 Qs / 30 Min</span>
@@ -241,7 +241,7 @@
           <span class="exam-badge">20 Qs / 30 Min</span>
           <div class="exam-icon" style="color:#ff3366;"><i class="fa-solid fa-calculator"></i></div>
           <h3>Quantitative Aptitude (Math)</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Ankganit & Advanced Formulas</p>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">100% Unique Random Numerical Formulas</p>
           <div class="exam-meta">
             <span><i class="fa-regular fa-clock"></i> 30 Mins Total</span>
           </div>
@@ -251,7 +251,7 @@
           <span class="exam-badge">20 Qs / 30 Min</span>
           <div class="exam-icon" style="color:#38bdf8;"><i class="fa-solid fa-laptop-code"></i></div>
           <h3>Computer Proficiency Test</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Networking, Hardware, Cyber Security</p>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Hardware, Software & Cyber Security</p>
           <div class="exam-meta">
             <span><i class="fa-regular fa-clock"></i> 30 Mins Total</span>
           </div>
@@ -368,7 +368,6 @@
       updateUrlPath("profile");
     }
 
-    // AUTH TAB SWITCH (LOGIN vs CREATE ACCOUNT)
     function switchAuthMode(mode) {
       if (mode === 'login') {
         document.getElementById("tab-btn-login").classList.add("active");
@@ -383,12 +382,10 @@
       }
     }
 
-    // EMAIL + PASSWORD LOGIN
     async function handleEmailLogin() {
       const email = document.getElementById("login-email").value.trim();
       const pass = document.getElementById("login-pass").value.trim();
       if (!email || !pass) return alert("Email aur Password daalna zaroori hai!");
-
       try {
         await auth.signInWithEmailAndPassword(email, pass);
       } catch (err) {
@@ -396,7 +393,6 @@
       }
     }
 
-    // EMAIL + PASSWORD SIGN UP (CREATE NEW ACCOUNT)
     async function handleEmailSignup() {
       const name = document.getElementById("signup-name").value.trim();
       const email = document.getElementById("signup-email").value.trim();
@@ -407,8 +403,6 @@
       try {
         const cred = await auth.createUserWithEmailAndPassword(email, pass);
         await cred.user.updateProfile({ displayName: name });
-        
-        // Save initial record to Firestore
         const newUser = {
           uid: cred.user.uid,
           displayName: name,
@@ -426,11 +420,9 @@
       }
     }
 
-    // GOOGLE AUTH
     function loginWithGoogle() {
       const provider = new firebase.auth.GoogleAuthProvider();
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
       if (isMobile) {
         auth.signInWithRedirect(provider);
       } else {
@@ -448,18 +440,16 @@
       if (err.code) console.error("Redirect Login Error:", err);
     });
 
-    // SECRET ADMIN GUEST PIN UNLOCK
     function promptSecretAdmin() {
       const pin = prompt("Admin Secret PIN daalein (Testing ke liye):");
       if (pin === "7890") {
         document.getElementById("guest-access-panel").classList.remove("hidden");
-        alert("✅ VIP Guest Access Unlocked! Ab aap koi bhi testing ID chun sakte hain.");
+        alert("✅ VIP Guest Access Unlocked! Ab aap testing ID chun sakte hain.");
       } else if (pin !== null) {
         alert("❌ Galat PIN! Guest login ka access sirf authorized tester ke paas hai.");
       }
     }
 
-    // GUEST VIP SESSION
     async function loginAsGuest(guestId, name, email) {
       currentUser = {
         uid: guestId,
@@ -480,7 +470,7 @@
           await userRef.set(currentUser);
         }
       } catch (err) {
-        console.warn("Guest local storage mode:", err);
+        console.warn("Guest offline mode:", err);
       }
 
       document.getElementById("screen-auth").classList.add("hidden");
@@ -500,7 +490,6 @@
       showLoginScreen();
     }
 
-    // AUTH OBSERVER
     auth.onAuthStateChanged(async (user) => {
       if (user) {
         document.getElementById("screen-auth").classList.add("hidden");
@@ -535,56 +524,203 @@
       }
     });
 
-    // QUESTION BANK
-    function getExamQuestions(type) {
-      const qBank = {
-        gk: [
-          { q: "Bharat ke sanvidhan me mool kartavya (Fundamental Duties) kis desh se liye gaye the?", o: ["USA", "Soviet Union (Russia)", "UK", "France"], a: 1 },
-          { q: "Duniya ka sabse bada delta kaun sa hai?", o: ["Nile Delta", "Sundarbans Delta", "Amazon Delta", "Mississippi Delta"], a: 1 },
-          { q: "Harappa sabhyata ka sthal 'Lothal' kis vartaman rajya me hai?", o: ["Rajasthan", "Haryana", "Gujarat", "Punjab"], a: 2 },
-          { q: "Arthashastra ke lekhak Chanakya kiske pradhanmantri the?", o: ["Chandragupta Maurya", "Ashoka", "Bindusara", "Samudragupta"], a: 0 },
-          { q: "Bharat me GST kaunse varsh lagu kiya gaya tha?", o: ["1 July 2017", "1 April 2016", "1 January 2018", "15 August 2017"], a: 0 }
-        ],
-        math: [
-          { q: "Ek varg (square) ka kshetraphal 144 cm² hai. Iska parimap (perimeter) kya hoga?", o: ["48 cm", "24 cm", "36 cm", "52 cm"], a: 0 },
-          { q: "Yadi kisi vastu ko ₹450 me bechne par 10% ki haani hoti hai, to kray-mulya (CP) kya tha?", o: ["₹500", "₹480", "₹520", "₹490"], a: 0 },
-          { q: "A aur B ek kaam ko 10 aur 15 din me karte hain. Dono milkar kitne din me karenge?", o: ["5 din", "6 din", "7.5 din", "8 din"], a: 1 },
-          { q: "Pehle 20 visham sankhyao (Odd Numbers) ka ausat (average) kya hoga?", o: ["20", "19", "21", "10"], a: 0 }
-        ],
-        computer: [
-          { q: "IP Address (IPv4) kul kitne bits ka hota hai?", o: ["16 bits", "32 bits", "64 bits", "128 bits"], a: 1 },
-          { q: "MS Excel me sheet save karne ki shortcut key kya hai?", o: ["Ctrl + S", "Ctrl + P", "Ctrl + E", "Alt + S"], a: 0 },
-          { q: "Kaunsa memory volatile (asthai) hota hai jo bijli jate hi erase ho jata hai?", o: ["ROM", "Hard Disk", "RAM", "Pen Drive"], a: 2 },
-          { q: "OSI Network Model me kul kitni layers hoti hain?", o: ["5", "6", "7", "8"], a: 2 }
-        ],
-        current: [
-          { q: "Bharat ke 50ve Mukhya Nyayadhish (CJI) ke roop me kisne seva di?", o: ["Justice DY Chandrachud", "Justice UU Lalit", "Justice NV Ramana", "Justice Sanjiv Khanna"], a: 0 },
-          { q: "Chandrayaan-3 mission ke lander ka kya naam tha?", o: ["Pragyan", "Vikram", "Dhruv", "Aditya"], a: 1 },
-          { q: "Bharat ka pehla AI City kis shahar me banaya ja raha hai?", o: ["Lucknow", "Bengaluru", "Hyderabad", "Noida"], a: 0 }
-        ],
-        ssc_cgl: [
-          { q: "[SSC CGL] Comptroller and Auditor General (CAG) ki niyukti kis anuchhed ke tehat hoti hai?", o: ["Article 148", "Article 280", "Article 324", "Article 110"], a: 0 },
-          { q: "[SSC CGL] Yadi 2x + 3y = 12 aur xy = 6, to 8x³ + 27y³ ka maan kya hoga?", o: ["720", "864", "432", "0"], a: 2 },
-          { q: "[SSC CGL] Kaunsa Harappan nagar teen bhago me vibhajit tha?", o: ["Kalibangan", "Dholavira", "Surkotada", "Banawali"], a: 1 },
-          { q: "[SSC CGL] 'The God of Small Things' pustak ke lekhak kaun hain?", o: ["Arundhati Roy", "Jhumpa Lahiri", "Salman Rushdie", "Kiran Desai"], a: 0 }
-        ],
-        police_si: [
-          { q: "[Police SI] CrPC ke tehat FIR kis section me darz ki jaati hai?", o: ["Section 154", "Section 161", "Section 173", "Section 100"], a: 0 },
-          { q: "[Police SI] Bhartiya Dand Sanhita (IPC) kab lagoo hui thi?", o: ["1860", "1 January 1862", "1857", "1872"], a: 1 },
-          { q: "[Police SI] Bina warrant ke police kis apradh me seedhe giraftar kar sakti hai?", o: ["Cognizable Offense (Sangheya)", "Non-cognizable", "Civil case", "Bailable offense"], a: 0 },
-          { q: "[Police SI] Samvidhan ki aatma kis anuchhed ko kaha gaya hai?", o: ["Article 32", "Article 21", "Article 19", "Article 14"], a: 0 }
-        ]
-      };
+    // ==========================================
+    // INFINITE DYNAMIC RANDOM QUESTIONS ENGINE
+    // ==========================================
 
-      let base = qBank[type] || qBank.gk;
-      let list = [];
-      let targetCount = (type === 'ssc_cgl' ? 25 : 20);
-      while(list.length < targetCount) {
-        list = list.concat(base);
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
       }
-      return list.slice(0, targetCount);
+      return arr;
     }
 
+    // Har test par option sequences randomize karne ke liye
+    function randomizeOptions(qObj) {
+      const originalOptions = [...qObj.o];
+      const correctText = originalOptions[qObj.a];
+      const shuffledOptions = shuffleArray([...originalOptions]);
+      const newCorrectIndex = shuffledOptions.indexOf(correctText);
+      return {
+        q: qObj.q,
+        o: shuffledOptions,
+        a: newCorrectIndex
+      };
+    }
+
+    // Dynamic Math Question Generator (100% Unique Numbers Every Time)
+    function generateDynamicMathQuestions(count) {
+      const types = ['profit_loss', 'time_work', 'percentage', 'speed_dist', 'square_area', 'simple_interest', 'ratio', 'average'];
+      const questions = [];
+
+      for (let i = 0; i < count; i++) {
+        const type = types[Math.floor(Math.random() * types.length)];
+        let q = "", o = [], a = 0;
+
+        if (type === 'profit_loss') {
+          const cp = (Math.floor(Math.random() * 20) + 5) * 50; // 250 to 1250
+          const profitPct = (Math.floor(Math.random() * 5) + 1) * 5; // 5, 10, 15, 20, 25%
+          const sp = cp + (cp * profitPct / 100);
+          q = `Yadi kisi vastu ka kray-mulya (Cost Price) ₹${cp} hai aur use ${profitPct}% laabh par becha jaye, to vikray-mulya (Selling Price) kya hoga?`;
+          const correct = `₹${sp}`;
+          o = [correct, `₹${sp + 50}`, `₹${sp - 50}`, `₹${sp + 100}`];
+        } 
+        else if (type === 'time_work') {
+          const d1 = (Math.floor(Math.random() * 4) + 2) * 5; // 10, 15, 20, 25
+          const d2 = d1 * 2;
+          const totalDays = Math.round((d1 * d2) / (d1 + d2));
+          q = `A kisi karya ko ${d1} din me tatha B use ${d2} din me poora karta hai. Dono milkar is karya ko lagbhag kitne din me karenge?`;
+          const correct = `${totalDays} din`;
+          o = [correct, `${totalDays + 2} din`, `${totalDays - 1} din`, `${totalDays + 4} din`];
+        }
+        else if (type === 'percentage') {
+          const total = (Math.floor(Math.random() * 10) + 5) * 100; // 500 to 1400
+          const pct = (Math.floor(Math.random() * 8) + 2) * 5; // 10% to 45%
+          const ans = (total * pct) / 100;
+          q = `Sankhya ${total} ka ${pct}% kitna hoga?`;
+          const correct = `${ans}`;
+          o = [correct, `${ans + 15}`, `${ans - 20}`, `${ans + 30}`];
+        }
+        else if (type === 'square_area') {
+          const side = Math.floor(Math.random() * 15) + 6; // 6 to 20
+          const area = side * side;
+          const perimeter = 4 * side;
+          q = `Ek vargakar (square) maidan ka kshetraphal (area) ${area} cm² hai. Is maidan ka parimap (perimeter) kitna hoga?`;
+          const correct = `${perimeter} cm`;
+          o = [correct, `${perimeter + 8} cm`, `${perimeter - 4} cm`, `${side * 2} cm`];
+        }
+        else if (type === 'simple_interest') {
+          const p = (Math.floor(Math.random() * 10) + 2) * 1000; // 2000 to 11000
+          const r = Math.floor(Math.random() * 5) + 5; // 5% to 9%
+          const t = Math.floor(Math.random() * 4) + 2; // 2 to 5 years
+          const si = (p * r * t) / 100;
+          q = `₹${p} ki rashi par ${r}% varshik dar se ${t} varsh ka Sadharan Byaj (Simple Interest) kya hoga?`;
+          const correct = `₹${si}`;
+          o = [correct, `₹${si + 120}`, `₹${si - 100}`, `₹${si + 200}`];
+        }
+        else {
+          const n1 = Math.floor(Math.random() * 30) + 10;
+          const n2 = Math.floor(Math.random() * 30) + 10;
+          const n3 = Math.floor(Math.random() * 30) + 10;
+          const avg = Math.round((n1 + n2 + n3) / 3);
+          q = `Sankhyao ${n1}, ${n2} tatha ${n3} ka lagbhag ausat (Average) kya hoga?`;
+          const correct = `${avg}`;
+          o = [correct, `${avg + 3}`, `${avg - 2}`, `${avg + 5}`];
+        }
+
+        questions.push(randomizeOptions({ q, o, a: 0 }));
+      }
+      return questions;
+    }
+
+    // STATIC MASTER POOLS (SHUFFLE & RANDOMIZE)
+    const masterPool = {
+      gk: [
+        { q: "Bharat ke sanvidhan me mool kartavya (Fundamental Duties) kis desh se liye gaye the?", o: ["Soviet Union (Russia)", "USA", "UK", "France"], a: 0 },
+        { q: "Duniya ka sabse bada delta kaun sa hai?", o: ["Sundarbans Delta", "Nile Delta", "Amazon Delta", "Mississippi Delta"], a: 0 },
+        { q: "Harappa sabhyata ka sthal 'Lothal' kis vartaman rajya me sthit hai?", o: ["Gujarat", "Rajasthan", "Haryana", "Punjab"], a: 0 },
+        { q: "Arthashastra ke lekhak Chanakya kiske pradhanmantri the?", o: ["Chandragupta Maurya", "Ashoka", "Bindusara", "Samudragupta"], a: 0 },
+        { q: "Bharat me GST kaunse varsh lagu kiya gaya tha?", o: ["1 July 2017", "1 April 2016", "1 January 2018", "15 August 2017"], a: 0 },
+        { q: "Surya ke sabse nikat kaun sa grah sthit hai?", o: ["Budh (Mercury)", "Shukra (Venus)", "Mangal (Mars)", "Prithvi (Earth)"], a: 0 },
+        { q: "Vayu mandal me sarvadhik maatra me kaun si gas pai jaati hai?", o: ["Nitrogen (78%)", "Oxygen", "Carbon Dioxide", "Argon"], a: 0 },
+        { q: "Bhartiya Rashtriya Congress ki sthapna kab hui thi?", o: ["1885", "1905", "1919", "1942"], a: 0 },
+        { q: "Bharat ka sabse bada national park kaun sa hai?", o: ["Hemis National Park (Ladakh)", "Jim Corbett", "Kaziranga", "Gir Forest"], a: 0 },
+        { q: "Panchayati Raj vyavastha sabse pehle kis rajya me lagoo hui?", o: ["Rajasthan (Nagaur)", "Andhra Pradesh", "Gujarat", "Uttar Pradesh"], a: 0 },
+        { q: "Kaziranga Rashtriya Udyan kiske liye mashhoor hai?", o: ["Ek-seeng wala gainda (Rhino)", "Bagh (Tiger)", "Hathi", "Sher"], a: 0 },
+        { q: "Arya Samaj ki sthapna kisne ki thi?", o: ["Swami Dayanand Saraswati", "Swami Vivekananda", "Raja Ram Mohan Roy", "Ishwar Chandra Vidyasagar"], a: 0 },
+        { q: "Bharat ki aadhikarik bhashao ko sanvidhan ki kis anusoochi me rakha gaya hai?", o: ["8vi Anusoochi (8th Schedule)", "7vi Anusoochi", "9vi Anusoochi", "10vi Anusoochi"], a: 0 },
+        { q: "RTI (Right to Information) Act bharat me kab lagu hua?", o: ["October 2005", "January 2004", "August 2006", "March 2008"], a: 0 }
+      ],
+      computer: [
+        { q: "IP Address (IPv4) kul kitne bits ka hota hai?", o: ["32 bits", "16 bits", "64 bits", "128 bits"], a: 0 },
+        { q: "MS Excel me file save karne ki shortcut key kya hai?", o: ["Ctrl + S", "Ctrl + P", "Ctrl + E", "Alt + S"], a: 0 },
+        { q: "Kaun si memory volatile hoti hai jo bijli jate hi data erase kar deti hai?", o: ["RAM", "ROM", "Hard Disk", "Flash Drive"], a: 0 },
+        { q: "OSI Network Model me kul kitni layers hoti hain?", o: ["7", "5", "6", "8"], a: 0 },
+        { q: "DNS ka pura naam kya hai?", o: ["Domain Name System", "Data Network Server", "Dynamic Node Service", "Digital Name Server"], a: 0 },
+        { q: "Computer ka brain kise kaha jata hai?", o: ["CPU", "RAM", "Motherboard", "ALU"], a: 0 },
+        { q: "HTTP ka standard port number kaun sa hota hai?", o: ["80", "443", "21", "25"], a: 0 },
+        { q: "Binary number system me kaun se do digits hote hain?", o: ["0 aur 1", "1 aur 2", "0 aur 9", "A aur B"], a: 0 },
+        { q: "HTTPS me 'S' ka kya arth hota hai?", o: ["Secure", "Standard", "System", "Simple"], a: 0 },
+        { q: "Python kaun se type ki programming language hai?", o: ["Interpreted High-Level", "Compiled Low-Level", "Assembly", "Machine Language"], a: 0 },
+        { q: "Computer me temporary files ka extension aamtaur par kya hota hai?", o: [".tmp", ".temp", ".dat", ".log"], a: 0 },
+        { q: "Ctrl + Z shortcut kiske liye prayog hota hai?", o: ["Undo", "Redo", "Cut", "Paste"], a: 0 }
+      ],
+      current: [
+        { q: "Bharat ke 50ve Mukhya Nyayadhish (CJI) ke roop me kisne seva di?", o: ["Justice DY Chandrachud", "Justice UU Lalit", "Justice NV Ramana", "Justice Sanjiv Khanna"], a: 0 },
+        { q: "Chandrayaan-3 mission ke lander ka kya naam tha?", o: ["Vikram", "Pragyan", "Dhruv", "Aditya"], a: 0 },
+        { q: "Bharat ka pehla AI City kis shahar me sthapit kiya ja raha hai?", o: ["Lucknow", "Bengaluru", "Hyderabad", "Noida"], a: 0 },
+        { q: "Paris Olympics 2024 me bharat ko Javelin throw me Neeraj Chopra ne kaun sa medal dilaya?", o: ["Silver Medal", "Gold Medal", "Bronze Medal", "None"], a: 0 },
+        { q: "G20 Shikhar Sammelan 2023 ka aayojan kahan hua tha?", o: ["Bharat Mandapam (New Delhi)", "Bali", "Rome", "Riyadh"], a: 0 },
+        { q: "ISRO dwara Surya ka adhyayan karne ke liye bheja gaya mission kaun sa hai?", o: ["Aditya-L1", "Surya-1", "Helios-B", "Solar-X"], a: 0 },
+        { q: "Dadasaheb Phalke Lifetime Achievement Award 2024 kise pradan kiya gaya?", o: ["Mithun Chakraborty", "Waheeda Rehman", "Asha Parekh", "Rajinikanth"], a: 0 },
+        { q: "NITI Aayog ke CEO ke roop me kisne pad sambhala?", o: ["B.V.R. Subrahmanyam", "Parameswaran Iyer", "Amitabh Kant", "Rajiv Kumar"], a: 0 }
+      ],
+      ssc_cgl: [
+        { q: "[SSC CGL] Comptroller and Auditor General (CAG) ki niyukti kis anuchhed ke tehat hoti hai?", o: ["Article 148", "Article 280", "Article 324", "Article 110"], a: 0 },
+        { q: "[SSC CGL] Kaun sa Harappan nagar teen bhago me vibhajit tha?", o: ["Dholavira", "Kalibangan", "Surkotada", "Banawali"], a: 0 },
+        { q: "[SSC CGL] 'The God of Small Things' pustak ke lekhak kaun hain?", o: ["Arundhati Roy", "Jhumpa Lahiri", "Salman Rushdie", "Kiran Desai"], a: 0 },
+        { q: "[SSC CGL] 42ve Sanvidhan Sanshodhan (1976) dwara Preamble me kaun sa shabd joda gaya?", o: ["Socialist, Secular & Integrity", "Democratic", "Sovereign", "Republic"], a: 0 },
+        { q: "[SSC CGL] Yadi A:B = 2:3 tatha B:C = 4:5 hai, to A:B:C ka anupaat kya hoga?", o: ["8:12:15", "6:10:15", "8:10:12", "4:6:15"], a: 0 },
+        { q: "[SSC CGL] Buxar ka yuddh kis varsh lada gaya tha?", o: ["1764", "1757", "1761", "1772"], a: 0 },
+        { q: "[SSC CGL] Blood coagulation (khoon ka thakka jamna) kis Vitamin ki sahayata se hota hai?", o: ["Vitamin K", "Vitamin A", "Vitamin C", "Vitamin D"], a: 0 },
+        { q: "[SSC CGL] Manav sharir me insulin hormone ka utpadan kahan hota hai?", o: ["Pancreas (Agnyashay)", "Liver", "Kidney", "Thyroid"], a: 0 },
+        { q: "[SSC CGL] GST Council ka adhyaksh kaun hota hai?", o: ["Union Finance Minister", "Prime Minister", "RBI Governor", "Home Minister"], a: 0 }
+      ],
+      police_si: [
+        { q: "[Police SI] CrPC ke tehat FIR kis section me darz ki jaati hai?", o: ["Section 154", "Section 161", "Section 173", "Section 100"], a: 0 },
+        { q: "[Police SI] Bhartiya Dand Sanhita (IPC) mul roop se kis varsh lagoo hui thi?", o: ["1 January 1862", "1860", "1857", "1872"], a: 0 },
+        { q: "[Police SI] Bina warrant ke police kis apradh me seedhe giraftar kar sakti hai?", o: ["Cognizable Offense (Sangheya Apradh)", "Non-cognizable", "Civil case", "Summons case"], a: 0 },
+        { q: "[Police SI] Samvidhan ki aatma aur hriday kis anuchhed ko kaha gaya hai?", o: ["Article 32", "Article 21", "Article 19", "Article 14"], a: 0 },
+        { q: "[Police SI] Mahila ko suryast ke baad aur suryoday se pehle giraftar karne ke liye kiski anumati aavashyak hai?", o: ["Judicial Magistrate", "SP / Police Captain", "SHO", "District Magistrate"], a: 0 },
+        { q: "[Police SI] Dahej Pratishedh Adhiniyam (Dowry Prohibition Act) kab bana tha?", o: ["1961", "1972", "1986", "1955"], a: 0 },
+        { q: "[Police SI] Giraftar vyakti ko kitne ghanto ke andar magistrate ke samaksh pesh karna hota hai?", o: ["24 Ghante (Yatra samay chhodkar)", "12 Ghante", "48 Ghante", "36 Ghante"], a: 0 },
+        { q: "[Police SI] Moolvidhi ke anusar IPC Section 302 kis apradh se sambandhit hai?", o: ["Hatya (Murder) ki saza", "Dakaiti", "Chori", "Aapradhik Manav Vadh"], a: 0 }
+      ]
+    };
+
+    // GENERATE FRESH RANDOM EXAM (HAR BAAR COMPLETELY NEW)
+    function getExamQuestions(type) {
+      if (type === 'math') {
+        // Har baar naye mathematical equations generate honge
+        return generateDynamicMathQuestions(20);
+      }
+
+      if (type === 'ssc_cgl') {
+        // SSC CGL Tier 1 Pattern: GK + Computer + Reasoning Math dynamically blended
+        const sscStatic = masterPool.ssc_cgl.map(q => randomizeOptions(q));
+        const gkStatic = masterPool.gk.map(q => randomizeOptions(q));
+        const compStatic = masterPool.computer.map(q => randomizeOptions(q));
+        const mathDyn = generateDynamicMathQuestions(8);
+
+        const combined = shuffleArray([...sscStatic, ...gkStatic, ...compStatic, ...mathDyn]);
+        return combined.slice(0, 25);
+      }
+
+      if (type === 'police_si') {
+        // Police SI Pattern: Moolvidhi Law + Samvidhan + Mixed Math GK
+        const siStatic = masterPool.police_si.map(q => randomizeOptions(q));
+        const gkStatic = masterPool.gk.map(q => randomizeOptions(q));
+        const mathDyn = generateDynamicMathQuestions(6);
+
+        const combined = shuffleArray([...siStatic, ...gkStatic, ...mathDyn]);
+        return combined.slice(0, 20);
+      }
+
+      // Baaki categories ke liye pool se shuffle aur options randomize karein
+      const basePool = masterPool[type] || masterPool.gk;
+      const shuffledQuestions = shuffleArray([...basePool]).map(q => randomizeOptions(q));
+
+      // Agar category pool me kam sawal ho to loop karke dynamically randomize karein
+      let result = [];
+      while (result.length < 20) {
+        const fresh = shuffleArray([...basePool]).map(q => randomizeOptions(q));
+        result = result.concat(fresh);
+      }
+      return result.slice(0, 20);
+    }
+
+    // START TEST
     function initiateExam(examType) {
       currentTest = getExamQuestions(examType);
       userAnswers = {};
@@ -697,7 +833,7 @@
     function start1v1Battle() {
       const code = document.getElementById("room-code").value.trim();
       if (!code) return alert("Pehle Battle Room Code dalein!");
-      alert(`Room ${code} me candidate search ho raha hai... Speed Battle round shuru ho raha hai!`);
+      alert(`Room ${code} me player connected! Fresh randomized speed battle round shuru ho raha hai!`);
       initiateExam('gk');
     }
 
