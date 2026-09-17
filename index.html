@@ -71,7 +71,7 @@
     .btn-battle { background: var(--accent); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
   </style>
 
-  <!-- Firebase v9 Scripts -->
+  <!-- Firebase v9 SDK Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
@@ -266,15 +266,9 @@
     let timerTotalSeconds = 0;
     let timerInterval = null;
 
-    // URL ROUTER FUNCTIONS (Requested by you)
+    // SAFE ROUTER (404 Error se bachane ke liye Hash Routing)
     function updateUrlPath(pageName) {
-      try {
-        const currentPath = window.location.pathname.replace(/\/login|\/dashboard|\/cbt-exam|\/profile|\/result/g, '');
-        const cleanPath = currentPath.endsWith('/') ? currentPath : currentPath + '/';
-        window.history.pushState({ page: pageName }, '', cleanPath + pageName);
-      } catch (e) {
-        console.log("Router notice:", e);
-      }
+      window.location.hash = pageName;
     }
 
     function hideAllScreens() {
@@ -313,13 +307,28 @@
       updateUrlPath("profile");
     }
 
-    // 1. GOOGLE LOGIN HANDLER
+    // MOBILE + PC COMPATIBLE GOOGLE LOGIN
     function loginWithGoogle() {
       const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider).catch(err => {
-        alert("Google Login Error: " + err.message);
-      });
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+      if (isMobile) {
+        auth.signInWithRedirect(provider);
+      } else {
+        auth.signInWithPopup(provider).catch(err => {
+          if (err.code === 'auth/popup-blocked') {
+            auth.signInWithRedirect(provider);
+          } else {
+            alert("Google Login Error: " + err.message);
+          }
+        });
+      }
     }
+
+    // Redirect login handling for mobile
+    auth.getRedirectResult().catch(err => {
+      if (err.code) console.error("Redirect Login Error:", err);
+    });
 
     function logout() {
       auth.signOut();
@@ -416,17 +425,13 @@
       userAnswers = {};
       currentIndex = 0;
 
-      // Timer Setup:
-      // SSC CGL: 20 Mins
-      // Police SI: 20 Mins
-      // Subject Tests: 30 Mins (1.5 min per question)
+      // Timer: SSC/SI 20 Mins, Subject Tests 30 Mins
       timerTotalSeconds = (examType === 'ssc_cgl' || examType === 'police_si') ? (20 * 60) : (30 * 60);
 
       document.getElementById("exam-title").innerText = examType.toUpperCase().replace("_", " ") + " CBT TEST";
       hideAllScreens();
       document.getElementById("screen-cbt").classList.remove("hidden");
       
-      // CBT Exam URL
       updateUrlPath("cbt-exam");
 
       renderQuestion();
@@ -522,8 +527,6 @@
 
       hideAllScreens();
       document.getElementById("screen-result").classList.remove("hidden");
-      
-      // Result URL
       updateUrlPath("result");
     }
 
@@ -534,13 +537,12 @@
       initiateExam('gk');
     }
 
-    // Handle Browser Back / Forward Button
-    window.addEventListener('popstate', (e) => {
-      if (e.state && e.state.page) {
-        if (e.state.page === 'dashboard' && currentUser) showDashboard();
-        else if (e.state.page === 'profile' && currentUser) openProfileView();
-        else if (e.state.page === 'login') showLoginScreen();
-      }
+    // BROWSER HASH NAVIGATION LISTENER
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash === 'dashboard' && currentUser) showDashboard();
+      else if (hash === 'profile' && currentUser) openProfileView();
+      else if (hash === 'login' && !currentUser) showLoginScreen();
     });
   </script>
 </body>
