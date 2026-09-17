@@ -3,306 +3,511 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cyber Battle Quiz - Live Arena</title>
+  <title>PARIKSHA ARENA - Real CBT Exam & Battle Portal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --bg: #070913;
-      --card: #121829;
-      --accent: #00f2fe;
-      --neon-purple: #9d4edd;
-      --neon-green: #00f59b;
-      --neon-red: #ff3366;
+      --bg: #070a13;
+      --surface: #101626;
+      --card: #172138;
+      --primary: #00f2fe;
+      --accent: #9d4edd;
+      --green: #00f59b;
+      --red: #ff3366;
       --gold: #ffb703;
+      --text-muted: #8e9bb4;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
-    body { background: radial-gradient(circle at top, #181135, var(--bg)); color: #fff; display: flex; justify-content: center; min-height: 100vh; padding: 15px; }
-    .container { width: 100%; max-width: 500px; background: var(--card); border-radius: 20px; padding: 22px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); border: 1px solid rgba(157, 78, 221, 0.3); }
-    
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+    body { background: var(--bg); color: #fff; min-height: 100vh; display: flex; flex-direction: column; }
     .hidden { display: none !important; }
-    h2, h3 { text-align: center; margin-bottom: 12px; color: var(--accent); }
 
-    /* Inputs & Buttons */
-    .input-box { width: 100%; padding: 13px; margin: 10px 0; border-radius: 12px; border: 1.5px solid #2e3856; background: #0b0f19; color: #fff; font-size: 1rem; outline: none; }
-    .input-box:focus { border-color: var(--accent); }
-    .btn { width: 100%; padding: 13px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; background: linear-gradient(90deg, var(--accent), var(--neon-purple)); color: #fff; margin-top: 10px; font-size: 1rem; transition: 0.2s; }
-    .btn:active { transform: scale(0.98); }
-    .btn-secondary { background: #222d4a; color: #fff; border: 1px solid #364468; }
+    /* Top Navigation Bar */
+    header { background: var(--surface); border-bottom: 1px solid rgba(255,255,255,0.08); padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.3rem; font-weight: 800; background: linear-gradient(90deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 8px; }
+    .nav-actions { display: flex; align-items: center; gap: 15px; }
+    .profile-pill { display: flex; align-items: center; gap: 10px; background: #1f2b48; padding: 6px 14px; border-radius: 30px; cursor: pointer; border: 1px solid #33446b; }
+    .profile-pill img { width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid var(--primary); }
 
-    /* Profile Dashboard */
-    .profile-card { background: #0a0e1c; padding: 16px; border-radius: 14px; border: 1px solid #263353; margin-bottom: 20px; }
-    .stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center; margin-top: 12px; }
-    .stat-item { background: #162038; padding: 10px; border-radius: 10px; font-size: 0.8rem; }
-    .stat-item span { display: block; font-size: 1.3rem; font-weight: bold; color: var(--gold); }
+    /* Layout Containers */
+    .container { max-width: 900px; width: 100%; margin: 25px auto; padding: 0 15px; }
 
-    /* Category Grid */
-    .categories { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-    .cat-btn { padding: 14px 10px; background: #18223c; border: 1.5px solid #283659; color: #fff; border-radius: 12px; cursor: pointer; text-align: center; font-weight: bold; font-size: 0.95rem; }
-    .cat-btn:hover { border-color: var(--accent); background: #212e52; }
+    /* Google Auth Screen */
+    .auth-card { background: var(--surface); border-radius: 20px; padding: 40px 25px; text-align: center; max-width: 440px; margin: 60px auto; border: 1px solid rgba(157, 78, 221, 0.3); box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+    .google-btn { background: #fff; color: #333; border: none; padding: 14px 24px; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 12px; margin-top: 25px; transition: 0.2s; box-shadow: 0 4px 15px rgba(255,255,255,0.15); }
+    .google-btn:hover { background: #f1f5f9; transform: translateY(-2px); }
 
-    /* Quiz Gameplay */
-    .timer-ring { font-size: 1.6rem; color: var(--accent); text-align: center; font-weight: bold; margin: 15px 0; text-shadow: 0 0 10px var(--accent); }
-    .question-box { background: #0c1020; padding: 18px; border-radius: 14px; min-height: 85px; margin-bottom: 15px; text-align: center; font-size: 1.05rem; border: 1px solid #24304f; display: flex; align-items: center; justify-content: center; }
-    .options-box { display: grid; gap: 10px; }
-    .opt-btn { padding: 13px; background: #18223c; border: 1.5px solid #283659; color: #fff; border-radius: 10px; font-size: 0.95rem; cursor: pointer; text-align: left; transition: 0.2s; }
-    .opt-btn.correct { background: rgba(0, 245, 155, 0.2) !important; border-color: var(--neon-green) !important; color: var(--neon-green) !important; font-weight: bold; }
-    .opt-btn.wrong { background: rgba(255, 51, 102, 0.2) !important; border-color: var(--neon-red) !important; color: var(--neon-red) !important; }
+    /* Dashboard Grid */
+    .section-title { font-size: 1.25rem; font-weight: 700; color: #fff; margin: 25px 0 15px; display: flex; align-items: center; gap: 10px; }
+    .exam-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; }
+    .exam-card { background: var(--card); border: 1px solid #23304e; border-radius: 16px; padding: 20px; cursor: pointer; transition: 0.25s; position: relative; overflow: hidden; }
+    .exam-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 8px 25px rgba(0,242,254,0.15); }
+    .exam-icon { font-size: 2rem; margin-bottom: 12px; }
+    .exam-badge { position: absolute; top: 15px; right: 15px; background: rgba(0, 242, 254, 0.15); color: var(--primary); font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: bold; }
+    .exam-meta { font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; display: flex; gap: 15px; }
+
+    /* Profile Modal / View */
+    .profile-card { background: var(--surface); border: 1px solid #23304e; border-radius: 18px; padding: 25px; text-align: center; margin-bottom: 25px; }
+    .user-avatar-lg { width: 85px; height: 85px; border-radius: 50%; border: 3px solid var(--primary); margin-bottom: 12px; }
+    .stat-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 20px; }
+    .stat-box { background: var(--card); padding: 12px; border-radius: 12px; border: 1px solid #23304e; }
+    .stat-num { font-size: 1.4rem; font-weight: 800; color: var(--gold); display: block; }
+
+    /* CBT Real Exam Window */
+    .cbt-container { background: var(--surface); border: 1px solid #23304e; border-radius: 18px; padding: 25px; }
+    .cbt-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #23304e; padding-bottom: 15px; margin-bottom: 20px; }
+    .cbt-timer { font-size: 1.3rem; font-weight: 800; color: var(--gold); background: #221808; border: 1px solid rgba(255,183,3,0.3); padding: 6px 16px; border-radius: 25px; }
+    .q-text { font-size: 1.15rem; line-height: 1.6; margin-bottom: 25px; }
+    .opt-list { display: grid; gap: 12px; }
+    .cbt-opt { background: var(--card); border: 1.5px solid #23304e; padding: 14px 18px; border-radius: 12px; font-size: 1rem; color: #fff; cursor: pointer; text-align: left; transition: 0.2s; }
+    .cbt-opt:hover { border-color: var(--primary); background: #1e2c4a; }
+    .cbt-opt.selected { border-color: var(--primary); background: rgba(0, 242, 254, 0.15); }
+    .cbt-nav { display: flex; justify-content: space-between; margin-top: 25px; padding-top: 20px; border-top: 1px solid #23304e; }
+    .btn-nav { background: #263558; border: none; color: #fff; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; }
+    .btn-submit { background: linear-gradient(90deg, #00f59b, #00b4d8); color: #000; font-weight: bold; border: none; padding: 10px 24px; border-radius: 10px; cursor: pointer; }
+
+    /* Battle Mode Card */
+    .battle-box { background: linear-gradient(135deg, #1f1138, #101626); border: 1.5px solid var(--accent); border-radius: 16px; padding: 22px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px; }
+    .room-input { background: #070a13; border: 1px solid #32436d; color: #fff; padding: 12px; border-radius: 10px; font-size: 1rem; width: 160px; outline: none; }
+    .btn-battle { background: var(--accent); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
   </style>
 
-  <!-- Firebase v9 Compat Scripts -->
+  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
-<div class="container">
+  <!-- TOP HEADER -->
+  <header>
+    <div class="logo"><i class="fa-solid fa-graduation-cap"></i> PARIKSHA CBT</div>
+    <div class="nav-actions">
+      <div id="nav-profile-pill" class="profile-pill hidden" onclick="openProfileView()">
+        <img id="header-avatar" src="" alt="avatar">
+        <span id="header-name" style="font-size:0.9rem; font-weight:600;">Player</span>
+      </div>
+      <button id="logout-btn" class="btn-nav hidden" onclick="logout()"><i class="fa-solid fa-power-off"></i></button>
+    </div>
+  </header>
 
-  <!-- 1. LOGIN / PROFILE REGISTRATION -->
-  <div id="screen-auth">
-    <h2>🎮 Battle Quiz Arena</h2>
-    <p style="text-align:center; color:#94a3b8; font-size:0.9rem; margin-bottom:15px;">Unique username banayein, data cloud par save hoga.</p>
-    <input type="text" id="username-input" class="input-box" placeholder="Apna Username likhein (e.g. Rahul_99)">
-    <button class="btn" onclick="registerOrLogin()">Enter Game</button>
+  <!-- 1. GOOGLE LOGIN SCREEN -->
+  <div id="screen-auth" class="auth-card">
+    <i class="fa-solid fa-shield-halved" style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"></i>
+    <h2>Student CBT & Battle Portal</h2>
+    <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 8px;">Official Exam Papers, 1v1 Battle aur Scorecard ke liye login karein</p>
+    <button class="google-btn" onclick="loginWithGoogle()">
+      <img width="20" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+      Continue with Gmail
+    </button>
   </div>
 
-  <!-- 2. DASHBOARD -->
-  <div id="screen-dashboard" class="hidden">
-    <div class="profile-card">
-      <h3 id="prof-name" style="text-align:left; color:#fff; margin-bottom:0;">Player</h3>
-      <div class="stats-row">
-        <div class="stat-item">Matches<span id="prof-played">0</span></div>
-        <div class="stat-item">Won<span id="prof-won" style="color:var(--neon-green);">0</span></div>
-        <div class="stat-item">Lost<span id="prof-lost" style="color:var(--neon-red);">0</span></div>
+  <!-- MAIN WRAPPER FOR LOGGED IN USERS -->
+  <div class="container hidden" id="main-content">
+
+    <!-- 2. PROFILE VIEW -->
+    <div id="screen-profile" class="hidden">
+      <div class="profile-card">
+        <img id="prof-avatar-lg" class="user-avatar-lg" src="" alt="avatar">
+        <h2 id="prof-display-name">Candidate Name</h2>
+        <p id="prof-email" style="color:var(--text-muted); font-size:0.9rem;"></p>
+        <div class="stat-bar">
+          <div class="stat-box">Total Tests<span class="stat-num" id="prof-total">0</span></div>
+          <div class="stat-box">Cleared / Won<span class="stat-num" id="prof-won" style="color:var(--green);">0</span></div>
+          <div class="stat-box">Failed / Lost<span class="stat-num" id="prof-lost" style="color:var(--red);">0</span></div>
+        </div>
+        <button class="btn-nav" style="margin-top:20px;" onclick="showDashboard()">Back to Dashboard</button>
       </div>
     </div>
 
-    <h3>⚡ Real-Time 1v1 Room Battle</h3>
-    <input type="text" id="room-input" class="input-box" placeholder="Room Code (jaise: 1234)">
-    <div style="display:flex; gap:10px;">
-      <button class="btn" onclick="startBattleRoom('create')">Create Room</button>
-      <button class="btn btn-secondary" onclick="startBattleRoom('join')">Join Room</button>
+    <!-- 3. DASHBOARD -->
+    <div id="screen-dashboard">
+
+      <!-- 1v1 Room Battle Banner -->
+      <div class="battle-box">
+        <div>
+          <h3 style="color: var(--primary);"><i class="fa-solid fa-bolt"></i> 1v1 Live Room Battle</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Dost ke sath code share karke real-time speed battle karein</p>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <input type="text" id="room-code" class="room-input" placeholder="Room Code">
+          <button class="btn-battle" onclick="start1v1Battle()">Enter Battle</button>
+        </div>
+      </div>
+
+      <!-- Full Competition Mock Tests (Official Pattern & Time) -->
+      <div class="section-title"><i class="fa-solid fa-file-signature" style="color:var(--gold);"></i> Full Competition Exams (Official Pattern)</div>
+      <div class="exam-grid">
+        <div class="exam-card" onclick="initiateExam('ssc_cgl')">
+          <span class="exam-badge">Tier-1 CBT</span>
+          <div class="exam-icon" style="color:#00f2fe;"><i class="fa-solid fa-building-columns"></i></div>
+          <h3>SSC CGL Mock Test</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">GK, Maths, English & Reasoning</p>
+          <div class="exam-meta">
+            <span><i class="fa-regular fa-circle-question"></i> 25 Questions</span>
+            <span><i class="fa-regular fa-clock"></i> 20 Minutes</span>
+          </div>
+        </div>
+
+        <div class="exam-card" onclick="initiateExam('police_si')">
+          <span class="exam-badge">Paper-1</span>
+          <div class="exam-icon" style="color:#ffb703;"><i class="fa-solid fa-shield-cat"></i></div>
+          <h3>Police SI Exam Test</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Moolvidhi, Samvidhan & GK</p>
+          <div class="exam-meta">
+            <span><i class="fa-regular fa-circle-question"></i> 20 Questions</span>
+            <span><i class="fa-regular fa-clock"></i> 20 Minutes</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subject-Wise Tests (20 Questions - 1.5 Mins each = 30 Mins) -->
+      <div class="section-title"><i class="fa-solid fa-layer-group" style="color:var(--primary);"></i> Subject-Wise 20 Question Speed Tests</div>
+      <div class="exam-grid">
+        <div class="exam-card" onclick="initiateExam('gk')">
+          <span class="exam-badge">20 Qs / 30 Min</span>
+          <div class="exam-icon" style="color:#00f59b;"><i class="fa-solid fa-earth-asia"></i></div>
+          <h3>General Knowledge (GK)</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">History, Geography, Polity</p>
+          <div class="exam-meta">
+            <span><i class="fa-regular fa-clock"></i> 30 Mins Total</span>
+          </div>
+        </div>
+
+        <div class="exam-card" onclick="initiateExam('math')">
+          <span class="exam-badge">20 Qs / 30 Min</span>
+          <div class="exam-icon" style="color:#ff3366;"><i class="fa-solid fa-calculator"></i></div>
+          <h3>Quantitative Aptitude (Math)</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Arithmetic & Advanced Maths</p>
+          <div class="exam-meta">
+            <span><i class="fa-regular fa-clock"></i> 30 Mins Total</span>
+          </div>
+        </div>
+
+        <div class="exam-card" onclick="initiateExam('computer')">
+          <span class="exam-badge">20 Qs / 30 Min</span>
+          <div class="exam-icon" style="color:#38bdf8;"><i class="fa-solid fa-laptop-code"></i></div>
+          <h3>Computer Proficiency</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">MS Office, Internet, Hardware</p>
+          <div class="exam-meta">
+            <span><i class="fa-regular fa-clock"></i> 30 Mins Total</span>
+          </div>
+        </div>
+
+        <div class="exam-card" onclick="initiateExam('current')">
+          <span class="exam-badge">20 Qs / 30 Min</span>
+          <div class="exam-icon" style="color:#a855f7;"><i class="fa-solid fa-newspaper"></i></div>
+          <h3>Current Affairs 2026</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">National, International & Sports</p>
+          <div class="exam-meta">
+            <span><i class="fa-regular fa-clock"></i> 30 Mins Total</span>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <h3 style="margin-top: 25px;">📚 Category Mock Tests</h3>
-    <div class="categories">
-      <div class="cat-btn" onclick="startPractice('all')">🎯 All Mix Quiz</div>
-      <div class="cat-btn" onclick="startPractice('gk')">🌍 GK Special</div>
-      <div class="cat-btn" onclick="startPractice('math')">🔢 Math Test</div>
-      <div class="cat-btn" onclick="startPractice('computer')">💻 Computer MCQs</div>
-      <div class="cat-btn" onclick="startPractice('current')">📰 Current Affairs</div>
-      <div class="cat-btn" onclick="startPractice('ssc')">🏛️ SSC CGL Mock</div>
-      <div class="cat-btn" onclick="startPractice('si')">👮 Police SI Test</div>
+    <!-- 4. REAL CBT EXAM WINDOW -->
+    <div id="screen-cbt" class="cbt-container hidden">
+      <div class="cbt-header">
+        <div>
+          <h3 id="exam-title">CBT Examination</h3>
+          <p style="color:var(--text-muted); font-size:0.85rem;" id="exam-q-counter">Question 1 of 20</p>
+        </div>
+        <div class="cbt-timer" id="timer-display"><i class="fa-regular fa-clock"></i> 30:00</div>
+      </div>
+
+      <div class="q-text" id="cbt-question-text">Question loading...</div>
+      <div class="opt-list" id="cbt-options-box"></div>
+
+      <div class="cbt-nav">
+        <button class="btn-nav" onclick="prevQuestion()" id="btn-prev"><i class="fa-solid fa-arrow-left"></i> Previous</button>
+        <button class="btn-submit" onclick="submitExam()">Final Submit <i class="fa-solid fa-check"></i></button>
+        <button class="btn-nav" onclick="nextQuestion()" id="btn-next">Next <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
     </div>
-  </div>
 
-  <!-- 3. ACTIVE QUIZ SCREEN -->
-  <div id="screen-quiz" class="hidden">
-    <div style="display:flex; justify-content:space-between; font-size:0.9rem; color:#94a3b8;">
-      <span id="quiz-cat-title">Quiz Round</span>
-      <span id="round-counter">Question 1/5</span>
+    <!-- 5. SCORECARD SCREEN -->
+    <div id="screen-result" class="profile-card hidden">
+      <i class="fa-solid fa-award" style="font-size:4rem; color:var(--gold); margin-bottom:15px;"></i>
+      <h2 id="res-heading">Exam Scorecard</h2>
+      <p id="res-sub" style="margin: 10px 0; font-size: 1.1rem;"></p>
+      
+      <div class="stat-bar" style="margin:20px 0;">
+        <div class="stat-box">Score<span class="stat-num" id="res-score">0</span></div>
+        <div class="stat-box">Accuracy<span class="stat-num" id="res-acc">0%</span></div>
+        <div class="stat-box">Result<span class="stat-num" id="res-status" style="font-size:1rem;">PASS</span></div>
+      </div>
+
+      <button class="btn-submit" onclick="showDashboard()">Dashboard Par Wapas Jayein</button>
     </div>
-    <div class="timer-ring" id="timer-box">10</div>
-    <div class="question-box" id="q-text">Sawaal load ho raha hai...</div>
-    <div class="options-box" id="opt-container"></div>
+
   </div>
 
-  <!-- 4. FINAL RESULT -->
-  <div id="screen-result" class="hidden" style="text-align:center;">
-    <h2>Battle Results</h2>
-    <p id="res-status" style="font-size:1.3rem; margin:15px 0; font-weight:bold;"></p>
-    <p id="res-score" style="font-size:1.1rem; margin-bottom:20px;"></p>
-    <button class="btn" onclick="returnDashboard()">Back to Dashboard</button>
-  </div>
+  <script>
+    // FIREBASE INITIALIZATION WITH YOUR CREDENTIALS
+    const firebaseConfig = {
+      apiKey: "AIzaSyCmhR0Y8BGjwy_w1SwWBgSoYc7AWtNbmro",
+      authDomain: "battle-quiz-6e6b2.firebaseapp.com",
+      projectId: "battle-quiz-6e6b2",
+      storageBucket: "battle-quiz-6e6b2.firebasestorage.app",
+      messagingSenderId: "304320579013",
+      appId: "1:304320579013:web:6dd8bdef508572f709f7ac",
+      measurementId: "G-ZSDE6SP7Z3"
+    };
 
-</div>
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
-<script>
-  // YOUR FIREBASE CONFIGURATION (Already integrated)
-  const firebaseConfig = {
-    apiKey: "AIzaSyCmhR0Y8BGjwy_w1SwWBgSoYc7AWtNbmro",
-    authDomain: "battle-quiz-6e6b2.firebaseapp.com",
-    projectId: "battle-quiz-6e6b2",
-    storageBucket: "battle-quiz-6e6b2.firebasestorage.app",
-    messagingSenderId: "304320579013",
-    appId: "1:304320579013:web:6dd8bdef508572f709f7ac",
-    measurementId: "G-ZSDE6SP7Z3"
-  };
+    let currentUser = null;
+    let currentTest = [];
+    let userAnswers = {};
+    let currentIndex = 0;
+    let timerTotalSeconds = 0;
+    let timerInterval = null;
 
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-
-  // CATEGORY QUESTION REPOSITORY
-  const questionsBank = {
-    all: [
-      { q: "Bharat ka sanvidhan kab lagu hua tha?", o: ["15 August 1947", "26 January 1950", "2 October 1950", "26 November 1949"], a: 1 },
-      { q: "CPU ka pura naam kya hai?", o: ["Central Processing Unit", "Control Power Unit", "Core Power Utility", "Central Performance Unit"], a: 0 }
-    ],
-    gk: [
-      { q: "Bharat ki sabse lambi nadi kaunsi hai?", o: ["Yamuna", "Ganga", "Godavari", "Brahmaputra"], a: 1 },
-      { q: "Surya mandir (Konark) kis rajya mein sthit hai?", o: ["Odisha", "Gujarat", "Rajasthan", "Madhya Pradesh"], a: 0 }
-    ],
-    math: [
-      { q: "Agar 5x = 25 hai, toh x ka maan kya hoga?", o: ["2", "5", "10", "15"], a: 1 },
-      { q: "Ek triangle ke teeno angles ka sum kitna hota hai?", o: ["90°", "180°", "360°", "270°"], a: 1 }
-    ],
-    computer: [
-      { q: "Computer me 'IP' ka full form kya hai?", o: ["Internet Protocol", "Intranet Private", "Input Process", "Internal Power"], a: 0 },
-      { q: "HTML ka use kiske liye hota hai?", o: ["Database", "Web Page Design", "Operating System", "Networking"], a: 1 }
-    ],
-    current: [
-      { q: "ISRO ka mukhyalaya (headquarters) kahan sthit hai?", o: ["Bengaluru", "New Delhi", "Mumbai", "Hyderabad"], a: 0 },
-      { q: "NITI Aayog ke adhyaksh kaun hote hain?", o: ["Rashtrapati", "Pradhan Mantri", "Finance Minister", "Lok Sabha Speaker"], a: 1 }
-    ],
-    ssc: [
-      { q: "[SSC CGL] Fundamental Rights kis bhag me aate hain?", o: ["Part I", "Part II", "Part III", "Part IV"], a: 2 },
-      { q: "[SSC] Harappa sabhyata ki khoj kisne ki thi?", o: ["Daya Ram Sahni", "RD Banerjee", "John Marshall", "Alexander Cunningham"], a: 0 }
-    ],
-    si: [
-      { q: "[Police SI] CrPC ka pura naam kya hai?", o: ["Criminal Procedure Code", "Crime Prevention Code", "Central Police Code", "Crime Penalty Code"], a: 0 },
-      { q: "[Police SI] IPC me kul kitne sections hote hain?", o: ["480", "511", "550", "420"], a: 1 }
-    ]
-  };
-
-  let currentUser = null;
-  let currentQuestions = [];
-  let qIndex = 0;
-  let userScore = 0;
-  let timerInterval;
-  let timeLeft = 10;
-
-  // FIREBASE USER REGISTRATION / FETCH
-  async function registerOrLogin() {
-    const rawName = document.getElementById("username-input").value.trim();
-    if (!rawName) return alert("Username daalna zaroori hai!");
-    const username = rawName.toLowerCase();
-
-    try {
-      const docRef = db.collection("players").doc(username);
-      const doc = await docRef.get();
-
-      if (doc.exists) {
-        currentUser = doc.data();
-      } else {
-        currentUser = { username: username, played: 0, won: 0, lost: 0 };
-        await docRef.set(currentUser);
-      }
-      updateDashboard();
-      switchScreen("screen-dashboard");
-    } catch (e) {
-      alert("Error connecting database: " + e.message);
-    }
-  }
-
-  function updateDashboard() {
-    document.getElementById("prof-name").innerText = "PLAYER: " + currentUser.username.toUpperCase();
-    document.getElementById("prof-played").innerText = currentUser.played;
-    document.getElementById("prof-won").innerText = currentUser.won;
-    document.getElementById("prof-lost").innerText = currentUser.lost;
-  }
-
-  function switchScreen(id) {
-    ["screen-auth", "screen-dashboard", "screen-quiz", "screen-result"].forEach(s => {
-      document.getElementById(s).classList.add("hidden");
-    });
-    document.getElementById(id).classList.remove("hidden");
-  }
-
-  function startPractice(category) {
-    currentQuestions = questionsBank[category] || questionsBank.all;
-    qIndex = 0;
-    userScore = 0;
-    document.getElementById("quiz-cat-title").innerText = category.toUpperCase() + " Test";
-    switchScreen("screen-quiz");
-    loadQuestion();
-  }
-
-  function loadQuestion() {
-    if (qIndex >= currentQuestions.length) {
-      finishGame();
-      return;
-    }
-    document.getElementById("round-counter").innerText = `Question ${qIndex + 1}/${currentQuestions.length}`;
-    const curr = currentQuestions[qIndex];
-    document.getElementById("q-text").innerText = curr.q;
-    
-    const optContainer = document.getElementById("opt-container");
-    optContainer.innerHTML = "";
-
-    curr.o.forEach((opt, idx) => {
-      const btn = document.createElement("button");
-      btn.className = "opt-btn";
-      btn.innerText = opt;
-      btn.onclick = () => selectAnswer(idx, btn);
-      optContainer.appendChild(btn);
-    });
-
-    timeLeft = 10;
-    document.getElementById("timer-box").innerText = timeLeft;
-    clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
-      timeLeft--;
-      document.getElementById("timer-box").innerText = timeLeft;
-      if (timeLeft <= 0) {
-        clearInterval(timerInterval);
-        selectAnswer(-1, null);
-      }
-    }, 1000);
-  }
-
-  function selectAnswer(selectedIdx, btn) {
-    clearInterval(timerInterval);
-    const curr = currentQuestions[qIndex];
-    const buttons = document.querySelectorAll(".opt-btn");
-    buttons.forEach(b => b.disabled = true);
-
-    if (selectedIdx === curr.a) {
-      if (btn) btn.classList.add("correct");
-      userScore += 10;
-    } else {
-      if (btn) btn.classList.add("wrong");
-      if (buttons[curr.a]) buttons[curr.a].classList.add("correct");
-    }
-
-    setTimeout(() => {
-      qIndex++;
-      loadQuestion();
-    }, 1200);
-  }
-
-  async function finishGame() {
-    currentUser.played += 1;
-    const halfMarks = (currentQuestions.length * 10) / 2;
-    const won = userScore >= halfMarks;
-    if (won) currentUser.won += 1;
-    else currentUser.lost += 1;
-
-    // Save directly to Firebase Firestore
-    try {
-      await db.collection("players").doc(currentUser.username).update({
-        played: currentUser.played,
-        won: currentUser.won,
-        lost: currentUser.lost
+    // 1. GOOGLE LOGIN HANDLER
+    function loginWithGoogle() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider).catch(err => {
+        alert("Google Login Error: " + err.message);
       });
-    } catch (err) {
-      console.log("Cloud update error:", err);
     }
 
-    document.getElementById("res-status").innerText = won ? "🏆 QUALIFIED / VICTORY!" : "❌ TEST NOT CLEARED";
-    document.getElementById("res-status").style.color = won ? "var(--neon-green)" : "var(--neon-red)";
-    document.getElementById("res-score").innerText = `Score: ${userScore} / ${currentQuestions.length * 10}`;
-    switchScreen("screen-result");
-  }
+    function logout() {
+      auth.signOut();
+    }
 
-  function returnDashboard() {
-    updateDashboard();
-    switchScreen("screen-dashboard");
-  }
+    // AUTH STATE LISTENER
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        document.getElementById("screen-auth").classList.add("hidden");
+        document.getElementById("main-content").classList.remove("hidden");
+        document.getElementById("nav-profile-pill").classList.remove("hidden");
+        document.getElementById("logout-btn").classList.remove("hidden");
 
-  function startBattleRoom(mode) {
-    const code = document.getElementById("room-input").value.trim();
-    if (!code) return alert("Pehle koi Room Code likhein!");
-    alert(`Room ${code} me connect ho rahe hain... Test Round shuru ho raha hai!`);
-    startPractice('all');
-  }
-</script>
+        document.getElementById("header-name").innerText = user.displayName ? user.displayName.split(" ")[0] : "Student";
+        document.getElementById("header-avatar").src = user.photoURL || "https://ui-avatars.com/api/?name=" + user.email;
+
+        // Fetch or create user record in Firestore
+        const userRef = db.collection("candidates").doc(user.uid);
+        const doc = await userRef.get();
+
+        if (doc.exists) {
+          currentUser = doc.data();
+        } else {
+          currentUser = {
+            uid: user.uid,
+            displayName: user.displayName || "Candidate",
+            email: user.email,
+            photoURL: user.photoURL || "",
+            totalTests: 0,
+            cleared: 0,
+            failed: 0
+          };
+          await userRef.set(currentUser);
+        }
+        showDashboard();
+      } else {
+        currentUser = null;
+        document.getElementById("screen-auth").classList.remove("hidden");
+        document.getElementById("main-content").classList.add("hidden");
+        document.getElementById("nav-profile-pill").classList.add("hidden");
+        document.getElementById("logout-btn").classList.add("hidden");
+      }
+    });
+
+    // NAVIGATION
+    function showDashboard() {
+      hideAllScreens();
+      document.getElementById("screen-dashboard").classList.remove("hidden");
+    }
+
+    function openProfileView() {
+      hideAllScreens();
+      document.getElementById("screen-profile").classList.remove("hidden");
+      document.getElementById("prof-display-name").innerText = currentUser.displayName;
+      document.getElementById("prof-email").innerText = currentUser.email;
+      document.getElementById("prof-avatar-lg").src = currentUser.photoURL || document.getElementById("header-avatar").src;
+      document.getElementById("prof-total").innerText = currentUser.totalTests;
+      document.getElementById("prof-won").innerText = currentUser.cleared;
+      document.getElementById("prof-lost").innerText = currentUser.failed;
+    }
+
+    function hideAllScreens() {
+      ["screen-dashboard", "screen-profile", "screen-cbt", "screen-result"].forEach(s => {
+        document.getElementById(s).classList.add("hidden");
+      });
+    }
+
+    // REAL COMPETITION EXAM DATA GENERATOR (Authentic syllabus questions)
+    function getExamQuestions(type) {
+      const qBank = {
+        gk: [
+          { q: "Bharat ke sanvidhan me mool kartavya (Fundamental Duties) kis desh se liye gaye hain?", o: ["USA", "Soviet Union (Russia)", "UK", "France"], a: 1 },
+          { q: "Duniya ka sabse bada delta kaun sa hai?", o: ["Nile Delta", "Sundarbans Delta", "Amazon Delta", "Mississippi Delta"], a: 1 },
+          { q: "Harappa sabhyata ka sthal 'Lothal' kis rajya me hai?", o: ["Rajasthan", "Haryana", "Gujarat", "Punjab"], a: 2 },
+          { q: "Arthashastra ke lekhak Chanakya kiske pradhanmantri the?", o: ["Chandragupta Maurya", "Ashoka", "Bindusara", "Samudragupta"], a: 0 },
+          { q: "Bharat me GST kab lagu kiya gaya tha?", o: ["1 July 2017", "1 April 2016", "1 January 2018", "15 August 2017"], a: 0 }
+        ],
+        math: [
+          { q: "Ek varg (square) ka kshetraphal 144 cm² hai. Iska parimap (perimeter) kya hoga?", o: ["48 cm", "24 cm", "36 cm", "52 cm"], a: 0 },
+          { q: "Yadi kisi vastu ko ₹450 me bechne par 10% ki haani hoti hai, to kray-mulya (CP) kya tha?", o: ["₹500", "₹480", "₹520", "₹490"], a: 0 },
+          { q: "A aur B ek kaam ko 10 aur 15 din me karte hain. Dono milkar kitne din me karenge?", o: ["5 din", "6 din", "7.5 din", "8 din"], a: 1 },
+          { q: "Pehle 20 visham sankhyao (Odd Numbers) ka ausat (average) kya hoga?", o: ["20", "19", "21", "10"], a: 0 }
+        ],
+        computer: [
+          { q: "IP Address (IPv4) kitne bits ka hota hai?", o: ["16 bits", "32 bits", "64 bits", "128 bits"], a: 1 },
+          { q: "MS Excel me sheet save karne ki shortcut key kya hai?", o: ["Ctrl + S", "Ctrl + P", "Ctrl + E", "Alt + S"], a: 0 },
+          { q: "Kaunsa memory volatile (asthai) hota hai jo power band hote hi erase ho jata hai?", o: ["ROM", "Hard Disk", "RAM", "Pen Drive"], a: 2 },
+          { q: "OSI Model me kul kitni layers hoti hain?", o: ["5", "6", "7", "8"], a: 2 }
+        ],
+        current: [
+          { q: "Bharat ke 50ve Mukhya Nyayadhish (CJI) ke roop me kisne seva di?", o: ["Justice DY Chandrachud", "Justice UU Lalit", "Justice NV Ramana", "Justice Sanjiv Khanna"], a: 0 },
+          { q: "Chandrayaan-3 mission ke lander ka kya naam tha?", o: ["Pragyan", "Vikram", "Dhruv", "Aditya"], a: 1 },
+          { q: "G20 Shikhar Sammelan 2023 kahan aayojit hua tha?", o: ["New Delhi", "Bali", "Rome", "Tokyo"], a: 0 }
+        ],
+        ssc_cgl: [
+          { q: "[SSC CGL] Comptroller and Auditor General (CAG) ki niyukti Sanvidhan ke kis anuchhed ke tehat hoti hai?", o: ["Article 148", "Article 280", "Article 324", "Article 110"], a: 0 },
+          { q: "[SSC CGL] Yadi 2x + 3y = 12 aur xy = 6, to 8x³ + 27y³ ka maan kya hoga?", o: ["720", "864", "432", "0"], a: 2 },
+          { q: "[SSC CGL] Kaunsa Harappan nagar teen bhago me vibhajit tha?", o: ["Kalibangan", "Dholavira", "Surkotada", "Banawali"], a: 1 },
+          { q: "[SSC CGL] 'The God of Small Things' pustak ke lekhak kaun hain?", o: ["Arundhati Roy", "Jhumpa Lahiri", "Salman Rushdie", "Kiran Desai"], a: 0 }
+        ],
+        police_si: [
+          { q: "[Police SI] CrPC ke tehat FIR kis section me darz ki jaati hai?", o: ["Section 154", "Section 161", "Section 173", "Section 100"], a: 0 },
+          { q: "[Police SI] Bhartiya Dand Sanhita (IPC) kab lagoo hui thi?", o: ["1860", "1 January 1862", "1857", "1872"], a: 1 },
+          { q: "[Police SI] Bina warrant ke police kis apradh me giraftar kar sakti hai?", o: ["Cognizable Offense (Sangheya)", "Non-cognizable", "Civil case", "Bailable offense"], a: 0 },
+          { q: "[Police SI] Samvidhan ki aatma kis anuchhed ko kaha gaya hai?", o: ["Article 32", "Article 21", "Article 19", "Article 14"], a: 0 }
+        ]
+      };
+
+      let base = qBank[type] || qBank.gk;
+      // Questions ko repeat karke test size fulfill karna
+      let list = [];
+      while(list.length < 20) {
+        list = list.concat(base);
+      }
+      return list.slice(0, (type === 'ssc_cgl' ? 25 : 20));
+    }
+
+    // START REAL CBT EXAM
+    function initiateExam(examType) {
+      currentTest = getExamQuestions(examType);
+      userAnswers = {};
+      currentIndex = 0;
+
+      // Timer allocation: 
+      // SSC CGL: 20 Mins (1200 sec)
+      // Subject test (20 Qs): 30 Mins (1800 sec - 1.5 min per question)
+      timerTotalSeconds = (examType === 'ssc_cgl' ? 20 : (examType === 'police_si' ? 20 : 30)) * 60;
+
+      document.getElementById("exam-title").innerText = examType.toUpperCase().replace("_", " ") + " OFFICIAL CBT TEST";
+      hideAllScreens();
+      document.getElementById("screen-cbt").classList.remove("hidden");
+
+      renderQuestion();
+      startTimer();
+    }
+
+    function renderQuestion() {
+      const qData = currentTest[currentIndex];
+      document.getElementById("exam-q-counter").innerText = `Question ${currentIndex + 1} of ${currentTest.length}`;
+      document.getElementById("cbt-question-text").innerText = (currentIndex + 1) + ". " + qData.q;
+
+      const optBox = document.getElementById("cbt-options-box");
+      optBox.innerHTML = "";
+
+      qData.o.forEach((opt, idx) => {
+        const div = document.createElement("button");
+        div.className = "cbt-opt";
+        if (userAnswers[currentIndex] === idx) div.classList.add("selected");
+        div.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
+        div.onclick = () => {
+          userAnswers[currentIndex] = idx;
+          renderQuestion();
+        };
+        optBox.appendChild(div);
+      });
+
+      document.getElementById("btn-prev").disabled = currentIndex === 0;
+      document.getElementById("btn-next").style.display = currentIndex === currentTest.length - 1 ? "none" : "inline-block";
+    }
+
+    function nextQuestion() {
+      if (currentIndex < currentTest.length - 1) {
+        currentIndex++;
+        renderQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion();
+      }
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        timerTotalSeconds--;
+        let mins = Math.floor(timerTotalSeconds / 60);
+        let secs = timerTotalSeconds % 60;
+        document.getElementById("timer-display").innerHTML = `<i class="fa-regular fa-clock"></i> ${mins}:${secs < 10 ? '0' : ''}${secs}`;
+
+        if (timerTotalSeconds <= 0) {
+          clearInterval(timerInterval);
+          alert("Time Out! Aapka exam automatically submit kiya ja raha hai.");
+          submitExam();
+        }
+      }, 1000);
+    }
+
+    async function submitExam() {
+      clearInterval(timerInterval);
+
+      let correct = 0;
+      currentTest.forEach((item, idx) => {
+        if (userAnswers[idx] === item.a) correct++;
+      });
+
+      let total = currentTest.length;
+      let percentage = Math.round((correct / total) * 100);
+      let passed = percentage >= 50;
+
+      // Update in Firebase Cloud Database
+      currentUser.totalTests += 1;
+      if (passed) currentUser.cleared += 1;
+      else currentUser.failed += 1;
+
+      try {
+        await db.collection("candidates").doc(currentUser.uid).update({
+          totalTests: currentUser.totalTests,
+          cleared: currentUser.cleared,
+          failed: currentUser.failed
+        });
+      } catch (e) {
+        console.error("Firestore sync error:", e);
+      }
+
+      // Display Results
+      document.getElementById("res-heading").innerText = passed ? "🎉 Congratulations! Exam Qualified" : "❌ Better Luck Next Time";
+      document.getElementById("res-sub").innerText = `Aapne ${total} me se ${correct} sahi uttar diye.`;
+      document.getElementById("res-score").innerText = `${correct} / ${total}`;
+      document.getElementById("res-acc").innerText = percentage + "%";
+      document.getElementById("res-status").innerText = passed ? "QUALIFIED" : "FAILED";
+      document.getElementById("res-status").style.color = passed ? "var(--green)" : "var(--red)";
+
+      hideAllScreens();
+      document.getElementById("screen-result").classList.remove("hidden");
+    }
+
+    function start1v1Battle() {
+      const code = document.getElementById("room-code").value.trim();
+      if (!code) return alert("Pehle Battle Room Code dalein!");
+      alert(`Connecting to Room ${code}... Opponent match hone par live battle shuru ho jayegi.`);
+      initiateExam('gk');
+    }
+  </script>
 </body>
 </html>
