@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brain Battle - Quiz Game</title>
+  <style>
+    * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: #0f172a; color: #fff; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 15px; }
+    .card { background: #1e293b; padding: 25px; border-radius: 16px; width: 100%; max-width: 420px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: center; }
+    .stats { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 20px; color: #38bdf8; }
+    .question { font-size: 1.2rem; min-height: 60px; margin-bottom: 20px; }
+    .options { display: grid; gap: 12px; }
+    button.opt { background: #334155; border: 2px solid #475569; color: #fff; padding: 12px; border-radius: 10px; font-size: 1rem; cursor: pointer; transition: 0.2s; }
+    button.opt:hover { background: #475569; }
+    .btn-next { display: none; margin-top: 20px; width: 100%; padding: 12px; background: #22c55e; border: none; border-radius: 10px; color: #fff; font-weight: bold; font-size: 1rem; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="stats">
+    <span id="score-box">Score: 0</span>
+    <span id="timer-box">Time: 10s</span>
+  </div>
+  <div class="question" id="q-text">Sawaal load ho raha hai...</div>
+  <div class="options" id="opt-box"></div>
+  <button class="btn-next" id="next-btn" onclick="nextQuestion()">Agla Sawaal</button>
+</div>
+
+<script>
+  const questions = [
+    { q: "Duniya ka sabse uncha parvat kaunsa hai?", options: ["K2", "Mount Everest", "Kangchenjunga", "Makalu"], ans: 1 },
+    { q: "Computer ka brain kise kaha jata hai?", options: ["RAM", "Hard Disk", "CPU", "Monitor"], ans: 2 },
+    { q: "Cricket World Cup har kitne saal mein hota hai?", options: ["2 saal", "3 saal", "4 saal", "5 saal"], ans: 2 },
+    { q: "Bharat ka Rashtriya Pashu kaunsa hai?", options: ["Sher", "Haathi", "Baagh (Tiger)", "Ghoda"], ans: 2 }
+  ];
+
+  let current = 0;
+  let score = 0;
+  let timer;
+  let timeLeft = 10;
+
+  function loadQuestion() {
+    clearInterval(timer);
+    timeLeft = 10;
+    document.getElementById("timer-box").innerText = "Time: " + timeLeft + "s";
+    document.getElementById("next-btn").style.display = "none";
+    
+    let q = questions[current];
+    document.getElementById("q-text").innerText = (current + 1) + ". " + q.q;
+    
+    let optContainer = document.getElementById("opt-box");
+    optContainer.innerHTML = "";
+    
+    q.options.forEach((opt, idx) => {
+      let btn = document.createElement("button");
+      btn.className = "opt";
+      btn.innerText = opt;
+      btn.onclick = () => checkAnswer(idx, btn);
+      optContainer.appendChild(btn);
+    });
+
+    timer = setInterval(() => {
+      timeLeft--;
+      document.getElementById("timer-box").innerText = "Time: " + timeLeft + "s";
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        disableButtons();
+        document.getElementById("next-btn").style.display = "block";
+      }
+    }, 1000);
+  }
+
+  function checkAnswer(selected, btn) {
+    clearInterval(timer);
+    disableButtons();
+    let correct = questions[current].ans;
+    if (selected === correct) {
+      btn.style.background = "#22c55e";
+      score += 10;
+      document.getElementById("score-box").innerText = "Score: " + score;
+    } else {
+      btn.style.background = "#ef4444";
+      document.querySelectorAll(".opt")[correct].style.background = "#22c55e";
+    }
+    document.getElementById("next-btn").style.display = "block";
+  }
+
+  function disableButtons() {
+    document.querySelectorAll(".opt").forEach(b => b.disabled = true);
+  }
+
+  function nextQuestion() {
+    current++;
+    if (current < questions.length) {
+      loadQuestion();
+    } else {
+      document.querySelector(".card").innerHTML = `<h2>Game Over! 🎉</h2><p style="font-size: 1.3rem;">Aapka Total Score: <b>${score}</b></p><button class="btn-next" style="display:block;" onclick="location.reload()">Dobara Khelein</button>`;
+    }
+  }
+
+  loadQuestion();
+</script>
+</body>
+</html>
