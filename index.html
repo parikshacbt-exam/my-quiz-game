@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PARIKSHA CBT - Complete Competition & Subject Testing Portal</title>
+  <title>PARIKSHA CBT - Real Competition & Dual Current Affairs Portal</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -79,12 +79,12 @@
     }
     .exam-meta { font-size: 0.85rem; color: var(--text-muted); margin-top: 10px; display: flex; gap: 15px; }
 
-    /* Crash Course Cards */
+    /* Course Grid */
     .course-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; margin-top: 15px; }
     .course-card { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 18px; cursor: pointer; transition: 0.2s; }
     .course-card:hover { border-color: var(--gold); }
 
-    /* Live Badge */
+    /* Live Pulse Badge */
     .live-pulse {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 3px 10px; border-radius: 15px; font-size: 0.72rem; font-weight: 900;
@@ -121,7 +121,7 @@
     .status-pill.fail { background: rgba(255, 51, 102, 0.15); color: var(--red); }
     .status-pill.skipped { background: rgba(255, 183, 3, 0.15); color: var(--gold); }
 
-    /* Modals & Controls */
+    /* Modal */
     .modal-overlay { position: fixed; inset: 0; background: rgba(4, 7, 16, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
     .modal-card { background: #0f162a; border: 1.5px solid rgba(0, 242, 254, 0.3); border-radius: 22px; width: 100%; max-width: 480px; padding: 28px; position: relative; }
     .diff-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 18px 0; }
@@ -174,13 +174,35 @@
           <span style="color:var(--text-muted); font-size:0.88rem; font-weight:600;">Your Total Examination Points:</span>
           <div class="hero-stats-badge"><i class="fa-solid fa-trophy" style="color:var(--gold);"></i> <span id="dash-score-points">0</span> PTS</div>
           <div class="live-pulse" style="margin-top:8px;">
-            <div class="live-dot"></div> Real-Time Auto Updated Daily Current Questions Active
+            <div class="live-dot"></div> Daily Updated Current Affairs Modules Active
           </div>
         </div>
         <button class="btn-submit" onclick="openProfileView()">View Candidate Profile</button>
       </div>
 
-      <!-- 1. FULL COMPETITION EXAMS -->
+      <!-- 1. DUAL CURRENT AFFAIRS 2026 (INDIA VS RAJASTHAN) -->
+      <div class="section-title">
+        <i class="fa-solid fa-newspaper" style="color:var(--green);"></i> Daily Current Affairs 2026 (National & State Segregated)
+      </div>
+      <div class="exam-grid">
+        <div class="exam-card" onclick="openExamSetup('india_current', 'India Daily Current Affairs 2026', 20, 20)" style="border-color:rgba(0,242,254,0.4);">
+          <span class="exam-badge" style="background:rgba(0,242,254,0.2); color:var(--primary);"><div class="live-dot" style="display:inline-block;"></div> National 2026</span>
+          <div class="exam-icon" style="color:#00f2fe;"><i class="fa-solid fa-flag"></i></div>
+          <h3>🇮🇳 India Current Affairs 2026</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">National Summits, Union Appointments, ISRO Missions, Sports & Central Schemes</p>
+          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 20 Mins (20 Qs)</span></div>
+        </div>
+
+        <div class="exam-card" onclick="openExamSetup('raj_current', 'Rajasthan Daily Current Affairs 2026', 20, 20)" style="border-color:rgba(255,183,3,0.4);">
+          <span class="exam-badge" style="background:rgba(255,183,3,0.2); color:var(--gold);"><div class="live-dot" style="display:inline-block; background:var(--gold);"></div> State Special</span>
+          <div class="exam-icon" style="color:#ffb703;"><i class="fa-solid fa-feather-pointed"></i></div>
+          <h3>🐪 Rajasthan Current Affairs 2026</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Rajasthan Yojna, Naye Jile Updates, State Awards, GI Tags & Budget Highlights</p>
+          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 20 Mins (20 Qs)</span></div>
+        </div>
+      </div>
+
+      <!-- 2. FULL COMPETITION EXAMS -->
       <div class="section-title">
         <i class="fa-solid fa-file-signature" style="color:var(--gold);"></i> Full Competition Examination Papers (Official Pattern)
       </div>
@@ -189,7 +211,7 @@
           <span class="exam-badge">Tier-1 Pattern</span>
           <div class="exam-icon" style="color:#00f2fe;"><i class="fa-solid fa-building-columns"></i></div>
           <h3>SSC CGL Mock Test</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">GK, Reasoning, English & Maths Mix</p>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">GK, Reasoning, English & Maths Mix (Tier-1 Level)</p>
           <div class="exam-meta">
             <span><i class="fa-regular fa-circle-question"></i> 25 Questions</span>
             <span><i class="fa-regular fa-clock"></i> 20 Minutes</span>
@@ -200,7 +222,7 @@
           <span class="exam-badge">SI Paper-1</span>
           <div class="exam-icon" style="color:#ffb703;"><i class="fa-solid fa-shield-cat"></i></div>
           <h3>Police SI Sub-Inspector Exam</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Moolvidhi, Sanvidhan, CrPC, IPC & Hindi</p>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Moolvidhi, Sanvidhan, CrPC, IPC & Samanya Hindi</p>
           <div class="exam-meta">
             <span><i class="fa-regular fa-circle-question"></i> 20 Questions</span>
             <span><i class="fa-regular fa-clock"></i> 20 Minutes</span>
@@ -211,7 +233,7 @@
           <span class="exam-badge">Civil Services</span>
           <div class="exam-icon" style="color:#a855f7;"><i class="fa-solid fa-landmark"></i></div>
           <h3>UPSC & State PCS Prelims</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Polity Articles, Indian Economy & World Affairs</p>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Polity Articles, Indian Economy & Ecology</p>
           <div class="exam-meta">
             <span><i class="fa-regular fa-circle-question"></i> 20 Questions</span>
             <span><i class="fa-regular fa-clock"></i> 25 Minutes</span>
@@ -222,7 +244,7 @@
           <span class="exam-badge">Railway NTPC</span>
           <div class="exam-icon" style="color:#00f59b;"><i class="fa-solid fa-train"></i></div>
           <h3>Railway RRB NTPC CBT-1</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">General Science, Railways History & Math</p>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">General Science, Railways History & Numerical Math</p>
           <div class="exam-meta">
             <span><i class="fa-regular fa-circle-question"></i> 20 Questions</span>
             <span><i class="fa-regular fa-clock"></i> 20 Minutes</span>
@@ -230,7 +252,7 @@
         </div>
       </div>
 
-      <!-- 2. STATE & NATIONAL SPECIAL GK (UPDATED MAPS) -->
+      <!-- 3. STATE & NATIONAL SPECIAL GK -->
       <div class="section-title">
         <i class="fa-solid fa-map-location-dot" style="color:var(--primary);"></i> National & State Special GK (Updated Maps)
       </div>
@@ -239,7 +261,7 @@
           <span class="exam-badge">Updated Map</span>
           <div class="exam-icon" style="color:#ff9933;"><i class="fa-solid fa-monument"></i></div>
           <h3>India GK (National)</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Updated States, UTs, Border Lines & Sansad</p>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Updated States, UTs, Border Lines, Sansad & Polity</p>
           <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
         </div>
 
@@ -252,7 +274,7 @@
         </div>
       </div>
 
-      <!-- 3. LANGUAGES & CORE SUBJECTS (SEPARATE TESTS) -->
+      <!-- 4. LANGUAGES & CORE SUBJECTS -->
       <div class="section-title">
         <i class="fa-solid fa-book-open-reader" style="color:var(--green);"></i> Subject-Wise Competition Tests (20 Qs / 30 Min)
       </div>
@@ -277,7 +299,7 @@
           <span class="exam-badge">Dynamic Math</span>
           <div class="exam-icon" style="color:#ff3366;"><i class="fa-solid fa-calculator"></i></div>
           <h3>Quantitative Aptitude (Math)</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Arithmetic, Formulas & Numerical Problems</p>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Arithmetic, Formulas & Numerical Competition Problems</p>
           <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
         </div>
 
@@ -295,14 +317,6 @@
           <h3>Computer Proficiency</h3>
           <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Hardware, Networking, OS & Cyber Security</p>
           <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
-        </div>
-
-        <div class="exam-card" onclick="openExamSetup('current_daily', 'Daily Live Current Affairs 2026', 20, 20)">
-          <span class="exam-badge" style="background:rgba(0,245,155,0.2); color:var(--green);"><div class="live-dot" style="display:inline-block;"></div> Daily Updated</span>
-          <div class="exam-icon" style="color:#00f59b;"><i class="fa-solid fa-newspaper"></i></div>
-          <h3>Daily Current Affairs 2026</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Today's Appointments, Sports Cups & National Events</p>
-          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 20 Mins (20 Qs)</span></div>
         </div>
       </div>
     </div>
@@ -377,7 +391,7 @@
       </div>
     </div>
 
-    <!-- SCORECARD & COMPLETE REVIEW WINDOW -->
+    <!-- SCORECARD & COMPLETE REVIEW SHEET -->
     <div id="screen-result" class="cbt-container hidden" style="text-align:center;">
       <i class="fa-solid fa-award" style="font-size:4rem; color:var(--gold); margin-bottom:12px;"></i>
       <h2 id="res-heading">Official Scorecard</h2>
@@ -392,7 +406,7 @@
 
       <button class="btn-submit" onclick="showDashboard()">Return to Dashboard</button>
 
-      <!-- Complete Review Sheet -->
+      <!-- Review Section -->
       <div style="margin-top:35px; text-align:left;">
         <h3 style="color:var(--primary); margin-bottom:15px; border-bottom:1px solid #23355d; padding-bottom:8px;">
           <i class="fa-solid fa-list-check"></i> Complete Question Paper & Detailed Answer Key
@@ -421,7 +435,7 @@
 
   </div>
 
-  <!-- AUTH / LOGIN SCREEN WITH PIN-PROTECTED SECRET ADMIN -->
+  <!-- AUTH / LOGIN SCREEN -->
   <div id="screen-auth" style="max-width:440px; margin:40px auto; padding:0 15px;">
     <div style="background:var(--surface); border:1.5px solid rgba(0,242,254,0.3); border-radius:24px; padding:32px 24px; text-align:center;">
       <h2 style="font-size:1.6rem; font-weight:800; color:#fff;">Student CBT Portal</h2>
@@ -534,9 +548,73 @@
       return list;
     }
 
-    // ALL COMPETITION & INDIVIDUAL SUBJECT QUESTION REPOSITORY
+    // COMPLETE QUESTION BANK (INCLUDING INDIA & RAJASTHAN CURRENT AFFAIRS 2026)
     const masterQuestionBank = {
-      // 1. RAJASTHAN GK (50 Districts & History)
+      // 1. INDIA DAILY CURRENT AFFAIRS 2026
+      india_current: [
+        {
+          q_hi: "[भारत समसामयिकी 2026] 18वें ब्रिक्स (BRICS) शिखर सम्मेलन 2026 का आयोजन भारत के किस शहर में किया गया?",
+          q_en: "[India Current Affairs 2026] The 18th BRICS Summit 2026 was hosted in which Indian city?",
+          o_hi: ["नई दिल्ली (New Delhi)", "मुंबई", "बेंगलुरु", "अहमदाबाद"],
+          o_en: ["New Delhi", "Mumbai", "Bengaluru", "Ahmedabad"],
+          a: 0
+        },
+        {
+          q_hi: "[भारत समसामयिकी 2026] भारत के चीफ ऑफ डिफेंस स्टाफ (CDS) के रूप में किसे नियुक्त किया गया?",
+          q_en: "[India Current Affairs 2026] Who was appointed as the Chief of Defence Staff (CDS) of India?",
+          o_hi: ["लेफ्टिनेंट जनरल एन. एस. राजा सुब्रमणि", "जनरल उपेंद्र द्विवेदी", "एडमिरल दिनेश त्रिपाठी", "एयर मार्शल एपी सिंह"],
+          o_en: ["Lt General N. S. Raja Subramani", "General Upendra Dwivedi", "Admiral Dinesh Tripathi", "Air Marshal AP Singh"],
+          a: 0
+        },
+        {
+          q_hi: "[भारत समसामयिकी 2026] भारतीय रिज़र्व बैंक (RBI) द्वारा हाल ही में लॉन्च किए गए फ्रॉड मैनेजमेंट प्लेटफॉर्म का नाम क्या है?",
+          q_en: "[India Current Affairs 2026] What is the name of the new digital fraud management initiative launched by RBI?",
+          o_hi: ["म्यूलेहंटर (MuleHunter AI)", "साइबर कवच", "डिजिटल प्रहरी", "फाइनेंस शील्ड"],
+          o_en: ["MuleHunter AI", "Cyber Kavach", "Digital Prahari", "Finance Shield"],
+          a: 0
+        },
+        {
+          q_hi: "[भारत समसामयिकी 2026] भारत की 16वीं जनगणना के ब्रांड एम्बेसडर के रूप में किसे नामित किया गया?",
+          q_en: "[India Current Affairs 2026] Who was named the Brand Ambassador for India's upcoming Census?",
+          o_hi: ["सुदर्शन पटनायक (Sudarshan Pattnaik)", "नीरज चोपड़ा", "सचिन तेंदुलकर", "अमिताभ बच्चन"],
+          o_en: ["Sudarshan Pattnaik", "Neeraj Chopra", "Sachin Tendulkar", "Amitabh Bachchan"],
+          a: 0
+        }
+      ],
+
+      // 2. RAJASTHAN DAILY CURRENT AFFAIRS 2026
+      raj_current: [
+        {
+          q_hi: "[राजस्थान समसामयिकी 2026] राजस्थान के किस प्रसिद्ध उत्पाद को हाल ही में केंद्र सरकार द्वारा GI टैग (Geographical Indication) प्रदान किया गया?",
+          q_en: "[Rajasthan Current Affairs 2026] Which indigenous product of Rajasthan was recently granted the GI Tag?",
+          o_hi: ["नागरी अश्वगंधा (Nagori Ashwagandha)", "बीकानेरी भुजिया", "सांगानेरी प्रिंट", "मथानिया लाल मिर्च"],
+          o_en: ["Nagori Ashwagandha", "Bikaneri Bhujia", "Sanganeri Print", "Mathania Red Chilli"],
+          a: 0
+        },
+        {
+          q_hi: "[राजस्थान समसामयिकी 2026] राजस्थान सरकार द्वारा युवाओं को ₹1 लाख तक ब्याज मुक्त ऋण देने हेतु कौन सी योजना प्रारंभ की गई?",
+          q_en: "[Rajasthan Current Affairs 2026] Which interest-free loan scheme up to ₹1 Lakh was launched for Rajasthan youth?",
+          o_hi: ["मुख्यमंत्री युवा स्वरोजगार योजना", "युवा संबल योजना", "राजीव गांधी युवा विकास", "कौशल उत्थान मिशन"],
+          o_en: ["Mukhyamantri Yuva Swarojgar Yojana", "Yuva Sambal Yojana", "Rajiv Gandhi Yuva Vikas", "Kaushal Utthan Mission"],
+          a: 0
+        },
+        {
+          q_hi: "[राजस्थान समसामयिकी 2026] 12वां अंतरराष्ट्रीय बर्ड फेस्टिवल 2026 राजस्थान के किस रामसर स्थल (मेनार) में आयोजित हुआ?",
+          q_en: "[Rajasthan Current Affairs 2026] The 12th International Bird Festival 2026 was organized at Menar in which district?",
+          o_hi: ["उदयपुर (Udaipur)", "भरतपुर", "कोटा", "जयपुर"],
+          o_en: ["Udaipur", "Bharatpur", "Kota", "Jaipur"],
+          a: 0
+        },
+        {
+          q_hi: "[राजस्थान समसामयिकी 2026] भारतीय सेना की 78वीं सेना दिवस परेड पहली बार दिल्ली से बाहर राजस्थान के किस शहर में आयोजित की गई?",
+          q_en: "[Rajasthan Current Affairs 2026] The 78th Army Day Parade was hosted outside Delhi in which Rajasthan city?",
+          o_hi: ["जयपुर (Jaipur - Jagatpura)", "जोधपुर", "बीकानेर", "जैसलमेर"],
+          o_en: ["Jaipur (Jagatpura)", "Jodhpur", "Bikaner", "Jaisalmer"],
+          a: 0
+        }
+      ],
+
+      // 3. RAJASTHAN GK (50 Districts & History)
       raj_gk: [
         {
           q_hi: "नवीनतम पुनर्गठन के अनुसार राजस्थान में कुल जिलों की संख्या कितनी है?",
@@ -560,29 +638,15 @@
           a: 0
         },
         {
-          q_hi: "नया जिला 'फलोदी' किस मूल जिले से पृथक करके बनाया गया है?",
-          q_en: "From which parent district was the new district 'Phalodi' created?",
-          o_hi: ["जोधपुर", "बीकानेर", "नागौर", "जैसलमेर"],
-          o_en: ["Jodhpur", "Bikaner", "Nagaur", "Jaisalmer"],
-          a: 0
-        },
-        {
           q_hi: "वर्तमान में राजस्थान में प्रशासनिक संभागों (Divisions) की कुल संख्या कितनी है?",
           q_en: "What is the total number of administrative divisions in Rajasthan at present?",
           o_hi: ["10 संभाग", "7 संभाग", "8 संभाग", "12 संभाग"],
           o_en: ["10 Divisions", "7 Divisions", "8 Divisions", "12 Divisions"],
           a: 0
-        },
-        {
-          q_hi: "थार का मरुस्थल राजस्थान के कुल भूभाग का लगभग कितना प्रतिशत क्षेत्र आच्छादित करता है?",
-          q_en: "Thar Desert covers approximately what percentage of the total geographical area of Rajasthan?",
-          o_hi: ["61.11%", "50.00%", "40.50%", "72.00%"],
-          o_en: ["61.11%", "50.00%", "40.50%", "72.00%"],
-          a: 0
         }
       ],
 
-      // 2. INDIA GK (National Maps, Polity, Geography)
+      // 4. INDIA GK (National Maps & Polity)
       india_gk: [
         {
           q_hi: "वर्तमान में भारत में कुल कितने राज्य और केंद्र शासित प्रदेश (UTs) विद्यमान हैं?",
@@ -592,8 +656,8 @@
           a: 0
         },
         {
-          q_hi: "भारत के नवीन संसद भवन का मुख्य वास्तुशिल्पीय आकार (Shape) कैसा है?",
-          q_en: "What is the architectural geometry of the newly constructed Parliament Building of India?",
+          q_hi: "भारत के नवीन संसद भवन का मुख्य वास्तुशिल्पीय आकार कैसा है?",
+          q_en: "What is the architectural geometry of India's new Parliament Building?",
           o_hi: ["त्रिकोणीय (Triangular)", "वृत्ताकार (Circular)", "आयताकार (Rectangular)", "पंचभुजाकार"],
           o_en: ["Triangular", "Circular", "Rectangular", "Pentagonal"],
           a: 0
@@ -604,24 +668,10 @@
           o_hi: ["गुजरात", "आंध्र प्रदेश", "तमिलनाडु", "महाराष्ट्र"],
           o_en: ["Gujarat", "Andhra Pradesh", "Tamil Nadu", "Maharashtra"],
           a: 0
-        },
-        {
-          q_hi: "लद्दाख केंद्र शासित प्रदेश में कुल कितने जिले शामिल हैं?",
-          q_en: "How many administrative districts are situated in the Union Territory of Ladakh?",
-          o_hi: ["2 (लेह और कारगिल)", "4", "1", "6"],
-          o_en: ["2 (Leh and Kargil)", "4", "1", "6"],
-          a: 0
-        },
-        {
-          q_hi: "विश्व का सबसे ऊँचा रेलवे आर्च ब्रिज किस नदी पर निर्मित किया गया है?",
-          q_en: "On which river has the world's highest railway arch bridge been constructed?",
-          o_hi: ["चिनाब नदी", "झेलम", "सिंधु", "रावी"],
-          o_en: ["Chenab River", "Jhelum", "Indus", "Ravi"],
-          a: 0
         }
       ],
 
-      // 3. SAMANYA HINDI (Grammar & Competitions)
+      // 5. SAMANYA HINDI
       hindi: [
         {
           q_hi: "'परोपकार' शब्द में व्याकरण की दृष्टि से कौन सी संधि है?",
@@ -636,24 +686,10 @@
           o_hi: ["अव्ययीभाव समास", "तत्पुरुष समास", "द्वंद्व समास", "कर्मधारय समास"],
           o_en: ["Avyayibhav Samas", "Tatpurush Samas", "Dvandva Samas", "Karmadharaya Samas"],
           a: 0
-        },
-        {
-          q_hi: "'आँखों का तारा होना' मुहावरे का शुद्ध अर्थ क्या है?",
-          q_en: "What is the authentic meaning of the Hindi idiom 'Aankhon ka tara hona'?",
-          o_hi: ["अत्यधिक प्रिय होना", "अंधा हो जाना", "धोखा देना", "आँखों में दर्द होना"],
-          o_en: ["To be extremely loved / dear", "To become blind", "To deceive someone", "To suffer eye pain"],
-          a: 0
-        },
-        {
-          q_hi: "वर्तनी की दृष्टि से निम्नलिखित में से शुद्ध शब्द का चयन कीजिए:",
-          q_en: "Select the word with correct Hindi orthographic spelling:",
-          o_hi: ["उज्ज्वल", "उज्वल", "उज्जवल", "उज्वल्य"],
-          o_en: ["उज्ज्वल (Ujjwal)", "उज्वल", "उज्जवल", "उज्वल्य"],
-          a: 0
         }
       ],
 
-      // 4. GENERAL ENGLISH (Grammar & Vocab)
+      // 6. GENERAL ENGLISH
       english: [
         {
           q_hi: "Choose the correct SYNONYM of the word 'METICULOUS':",
@@ -668,56 +704,28 @@
           o_hi: ["Opaque", "Lucid", "Clear", "Bright"],
           o_en: ["Opaque", "Lucid", "Clear", "Bright"],
           a: 0
-        },
-        {
-          q_hi: "Identify the meaning of the idiom: 'Break the ice'",
-          q_en: "Identify the meaning of the idiom: 'Break the ice'",
-          o_hi: ["To initiate conversation in awkward silence", "To freeze solid water", "To display anger", "To wage war"],
-          o_en: ["To initiate conversation in awkward silence", "To freeze solid water", "To display anger", "To wage war"],
-          a: 0
-        },
-        {
-          q_hi: "Fill in the blank: 'Neither of the participants _____ present yesterday.'",
-          q_en: "Fill in the blank: 'Neither of the participants _____ present yesterday.'",
-          o_hi: ["was", "were", "are", "have been"],
-          o_en: ["was", "were", "are", "have been"],
-          a: 0
         }
       ],
 
-      // 5. REASONING (तर्कशक्ति)
+      // 7. REASONING
       reasoning: [
         {
-          q_hi: "यदि किसी कूट भाषा में 'ROSE' को 'ILHV' लिखा जाता है, तो उसी कूट भाषा में 'LEAF' को क्या लिखा जाएगा?",
-          q_en: "In a certain code language, if 'ROSE' is written as 'ILHV', how will 'LEAF' be written?",
+          q_hi: "यदि किसी कूट भाषा में 'ROSE' को 'ILHV' लिखा जाता है, तो 'LEAF' को क्या लिखा जाएगा?",
+          q_en: "If 'ROSE' is coded as 'ILHV', how is 'LEAF' coded?",
           o_hi: ["OVZU", "OVRU", "OVSV", "NWST"],
           o_en: ["OVZU", "OVRU", "OVSV", "NWST"],
           a: 0
         },
         {
           q_hi: "श्रृंखला में लुप्त पद ज्ञात करें: 4, 9, 19, 39, 79, ?",
-          q_en: "Find the missing term in the sequence: 4, 9, 19, 39, 79, ?",
+          q_en: "Find missing term: 4, 9, 19, 39, 79, ?",
           o_hi: ["159", "149", "169", "158"],
           o_en: ["159", "149", "169", "158"],
-          a: 0
-        },
-        {
-          q_hi: "एक व्यक्ति दक्षिण की ओर 5 किमी चलता है, फिर दाहिने मुड़कर 3 किमी चलता है, फिर बाएं मुड़कर 5 किमी चलता है। अब वह अपने प्रारंभिक स्थान से किस दिशा में है?",
-          q_en: "A man walks 5 km South, turns right and walks 3 km, then turns left and walks 5 km. In which direction is he from his starting point?",
-          o_hi: ["दक्षिण-पश्चिम (South-West)", "दक्षिण (South)", "पश्चिम (West)", "उत्तर-पूर्व (North-East)"],
-          o_en: ["South-West", "South", "West", "North-East"],
-          a: 0
-        },
-        {
-          q_hi: "रक्त संबंध: 'A, B का भाई है। C, B की माता है। D, C का पिता है।' A का D से क्या संबंध है?",
-          q_en: "Blood Relation: 'A is brother of B. C is mother of B. D is father of C.' How is A related to D?",
-          o_hi: ["नाती / पोता (Grandson)", "पुत्र (Son)", "दादा (Grandfather)", "भाई (Brother)"],
-          o_en: ["Grandson", "Son", "Grandfather", "Brother"],
           a: 0
         }
       ],
 
-      // 6. COMPUTER PROFICIENCY
+      // 8. COMPUTER
       computer: [
         {
           q_hi: "IPv4 नेटवर्क एड्रेस कुल कितने बिट्स (Bits) का होता है?",
@@ -725,30 +733,16 @@
           o_hi: ["32 बिट्स", "16 बिट्स", "64 बिट्स", "128 बिट्स"],
           o_en: ["32 Bits", "16 Bits", "64 Bits", "128 Bits"],
           a: 0
-        },
-        {
-          q_hi: "कंप्यूटर प्रणाली का केंद्रीय मस्तिष्क किसे कहा जाता है?",
-          q_en: "Which electronic component is recognized as the Brain of a computer?",
-          o_hi: ["केंद्रीय प्रसंस्करण इकाई (CPU)", "रैंडम एक्सेस मेमोरी (RAM)", "मदरबोर्ड", "हार्ड डिस्क"],
-          o_en: ["Central Processing Unit (CPU)", "Random Access Memory (RAM)", "Motherboard", "Hard Disk Drive"],
-          a: 0
         }
       ],
 
-      // 7. FULL EXAMS
+      // 9. FULL EXAM PATTERNS
       ssc_cgl: [
         {
           q_hi: "[SSC CGL] भारतीय संविधान का कौन सा अनुच्छेद 'विधि के समक्ष समता' (Equality before Law) की गारंटी देता है?",
-          q_en: "[SSC CGL] Which Article of the Indian Constitution guarantees 'Equality before Law'?",
+          q_en: "[SSC CGL] Which Article of the Constitution guarantees 'Equality before Law'?",
           o_hi: ["अनुच्छेद 14", "अनुच्छेद 19", "अनुच्छेद 21", "अनुच्छेद 32"],
           o_en: ["Article 14", "Article 19", "Article 21", "Article 32"],
-          a: 0
-        },
-        {
-          q_hi: "[SSC CGL] भारत के नियंत्रक एवं महालेखापरीक्षक (CAG) की नियुक्ति किस अनुच्छेद के तहत की जाती है?",
-          q_en: "[SSC CGL] Under which Constitutional Article is the CAG of India appointed?",
-          o_hi: ["अनुच्छेद 148", "अनुच्छेद 280", "अनुच्छेद 324", "अनुच्छेद 110"],
-          o_en: ["Article 148", "Article 280", "Article 324", "Article 110"],
           a: 0
         }
       ],
@@ -756,16 +750,9 @@
       police_si: [
         {
           q_hi: "[Police SI] दंड प्रक्रिया संहिता (CrPC) के तहत प्रथम सूचना रिपोर्ट (FIR) किस धारा में दर्ज की जाती है?",
-          q_en: "[Police SI] Under which statutory section of CrPC is a First Information Report (FIR) registered?",
+          q_en: "[Police SI] Under which section of CrPC is an FIR registered?",
           o_hi: ["धारा 154", "धारा 161", "धारा 173", "धारा 100"],
           o_en: ["Section 154", "Section 161", "Section 173", "Section 100"],
-          a: 0
-        },
-        {
-          q_hi: "[Police SI] भारतीय दंड संहिता (IPC) की धारा 300 निम्नलिखित में से किस अपराध को परिभाषित करती है?",
-          q_en: "[Police SI] Section 300 of the Indian Penal Code defines which offense?",
-          o_hi: ["हत्या (Murder)", "आपराधिक मानव वध", "दहेज हत्या", "गंभीर उपहति"],
-          o_en: ["Murder", "Culpable Homicide", "Dowry Death", "Grievous Hurt"],
           a: 0
         }
       ],
@@ -773,9 +760,9 @@
       upsc_pre: [
         {
           q_hi: "[UPSC GS-1] 'मोंट्रेक्स रिकॉर्ड' (Montreux Record) अंतरराष्ट्रीय स्तर पर किसके संरक्षण से संबंधित रजिस्टर है?",
-          q_en: "[UPSC GS-1] The 'Montreux Record' is a register associated internationally with:",
-          o_hi: ["रामसर सम्मेलन के तहत संकटग्रस्त आर्द्रभूमियां (Ramsar Sites)", "लुप्तप्राय पादप प्रजातियां", "जैव विविधता", "ओजोन"],
-          o_en: ["Ramsar Wetland Sites facing changes", "Endangered Flora", "Biodiversity", "Ozone"],
+          q_en: "[UPSC GS-1] The 'Montreux Record' is a register associated with:",
+          o_hi: ["रामसर सम्मेलन के तहत संकटग्रस्त आर्द्रभूमियां", "लुप्तप्राय प्रजातियां", "जैव विविधता", "ओजोन"],
+          o_en: ["Ramsar Wetland Sites", "Endangered Species", "Biodiversity", "Ozone"],
           a: 0
         }
       ],
@@ -783,19 +770,9 @@
       rrb_ntpc: [
         {
           q_hi: "[RRB NTPC] भारत में पहली रेलगाड़ी 1853 में बोरीबंदर (मुंबई) से कहाँ तक चलाई गई थी?",
-          q_en: "[RRB NTPC] In 1853, India's first passenger train operated between Bori Bunder (Mumbai) and:",
+          q_en: "[RRB NTPC] In 1853, India's first passenger train operated to:",
           o_hi: ["ठाणे (Thane)", "कल्याण", "पुणे", "सूरत"],
           o_en: ["Thane", "Kalyan", "Pune", "Surat"],
-          a: 0
-        }
-      ],
-
-      current_daily: [
-        {
-          q_hi: "[दैनिक समसामयिकी 2026] भारत द्वारा आयोजित वैश्विक नवाचार शिखर सम्मेलन का मुख्य थीम क्या रखा गया?",
-          q_en: "[Current Affairs 2026] What is the core agenda of the Global Innovation Summit hosted by India?",
-          o_hi: ["सतत विकास एवं आर्टिफिशियल इंटेलिजेंस (Sustainable AI)", "ग्लोबल ट्रेड 4.0", "डिजिटल करेंसी", "अंतरिक्ष अनुसंधान"],
-          o_en: ["Sustainable AI & Green Growth", "Global Trade 4.0", "Digital Currency", "Space Research"],
           a: 0
         }
       ]
@@ -829,8 +806,9 @@
         const p1 = masterQuestionBank.ssc_cgl.map(q => randomizeItem(q));
         const p2 = masterQuestionBank.english.map(q => randomizeItem(q));
         const p3 = masterQuestionBank.reasoning.map(q => randomizeItem(q));
-        const p4 = generateDynamicMath(6, diff);
-        let res = shuffle([...p1, ...p2, ...p3, ...p4]);
+        const p4 = masterQuestionBank.india_current.map(q => randomizeItem(q));
+        const p5 = generateDynamicMath(6, diff);
+        let res = shuffle([...p1, ...p2, ...p3, ...p4, ...p5]);
         while(res.length < count) res = res.concat(res);
         return res.slice(0, count);
       }
@@ -839,7 +817,7 @@
         const p1 = masterQuestionBank.police_si.map(q => randomizeItem(q));
         const p2 = masterQuestionBank.hindi.map(q => randomizeItem(q));
         const p3 = masterQuestionBank.raj_gk.map(q => randomizeItem(q));
-        const p4 = masterQuestionBank.reasoning.map(q => randomizeItem(q));
+        const p4 = masterQuestionBank.raj_current.map(q => randomizeItem(q));
         let res = shuffle([...p1, ...p2, ...p3, ...p4]);
         while(res.length < count) res = res.concat(res);
         return res.slice(0, count);
@@ -921,12 +899,13 @@
         document.getElementById("timer-display").innerHTML = `<i class="fa-regular fa-clock"></i> ${m}:${s < 10 ? '0' : ''}${s}`;
         if (timerTotalSeconds <= 0) {
           clearInterval(timerInterval);
-          alert("Time Out! Exam submitted.");
+          alert("Time Out! Exam automatically submitted.");
           submitExam();
         }
       }, 1000);
     }
 
+    // FINAL SUBMISSION (WORKS EVEN AFTER 2 QUESTIONS)
     async function submitExam() {
       clearInterval(timerInterval);
       let correct = 0;
@@ -1086,7 +1065,6 @@
       auth.signInWithPopup(p).catch(() => auth.signInWithRedirect(p));
     }
 
-    // SECRET PIN PROMPT FOR TESTING IDS
     function promptSecretAdmin() {
       const pin = prompt("Admin Secret Security PIN darz karein:");
       if (pin === "7890") {
