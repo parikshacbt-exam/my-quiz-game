@@ -3,104 +3,165 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Brain Battle - Quiz Game</title>
+  <title>Cyber Trivia: 1v1 Battle Arena</title>
   <style>
-    * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-    body { background: #0f172a; color: #fff; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 15px; }
-    .card { background: #1e293b; padding: 25px; border-radius: 16px; width: 100%; max-width: 420px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: center; }
-    .stats { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 20px; color: #38bdf8; }
-    .question { font-size: 1.2rem; min-height: 60px; margin-bottom: 20px; }
-    .options { display: grid; gap: 12px; }
-    button.opt { background: #334155; border: 2px solid #475569; color: #fff; padding: 12px; border-radius: 10px; font-size: 1rem; cursor: pointer; transition: 0.2s; }
-    button.opt:hover { background: #475569; }
-    .btn-next { display: none; margin-top: 20px; width: 100%; padding: 12px; background: #22c55e; border: none; border-radius: 10px; color: #fff; font-weight: bold; font-size: 1rem; cursor: pointer; }
+    :root {
+      --bg: #070913;
+      --card: #121829;
+      --neon-cyan: #00f2fe;
+      --neon-purple: #9d4edd;
+      --neon-green: #00f59b;
+      --neon-red: #ff0055;
+    }
+    * { box-sizing: border-box; font-family: 'Poppins', system-ui, sans-serif; margin: 0; padding: 0; }
+    body { background: radial-gradient(circle at top, #1b1035, var(--bg)); color: #fff; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 15px; }
+    .arena { background: var(--card); border: 2px solid rgba(157, 78, 221, 0.4); box-shadow: 0 0 30px rgba(157, 78, 221, 0.25); border-radius: 20px; width: 100%; max-width: 480px; padding: 24px; text-align: center; }
+    
+    /* Battle Status Bars */
+    .battle-hud { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; margin-bottom: 20px; }
+    .player-profile { font-size: 0.9rem; font-weight: bold; }
+    .vs-badge { font-weight: 900; color: #ffeb3b; font-size: 1.1rem; text-shadow: 0 0 10px rgba(255,235,59,0.5); }
+    .bar { height: 8px; border-radius: 4px; background: #262c45; margin-top: 5px; overflow: hidden; }
+    .bar-fill-user { height: 100%; width: 0%; background: var(--neon-cyan); transition: width 0.4s ease; }
+    .bar-fill-bot { height: 100%; width: 0%; background: var(--neon-purple); transition: width 0.4s ease; }
+
+    /* Timer Dial */
+    .timer-ring { font-size: 1.8rem; font-weight: bold; color: var(--neon-cyan); margin: 15px 0; text-shadow: 0 0 12px var(--neon-cyan); }
+    
+    /* Question Box */
+    .question-box { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,255,255,0.08); padding: 20px; border-radius: 12px; font-size: 1.15rem; min-height: 80px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-weight: 500; }
+    
+    /* Options */
+    .options-grid { display: grid; gap: 12px; }
+    .opt-btn { background: #1a2238; border: 1.5px solid #2e3856; color: #e2e8f0; padding: 14px; border-radius: 12px; font-size: 1rem; cursor: pointer; transition: 0.2s; position: relative; overflow: hidden; text-align: left; font-weight: 600; }
+    .opt-btn:hover:not(:disabled) { border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 242, 254, 0.3); transform: translateY(-2px); }
+    
+    .correct { background: rgba(0, 245, 155, 0.15) !important; border-color: var(--neon-green) !important; color: var(--neon-green) !important; box-shadow: 0 0 20px rgba(0,245,155,0.4) !important; }
+    .wrong { background: rgba(255, 0, 85, 0.15) !important; border-color: var(--neon-red) !important; color: var(--neon-red) !important; box-shadow: 0 0 20px rgba(255,0,85,0.4) !important; }
+
+    /* Streak Alert */
+    .streak { font-size: 0.85rem; color: #ffeb3b; min-height: 20px; font-weight: bold; }
+    .restart-btn { display: none; margin-top: 20px; width: 100%; padding: 14px; background: linear-gradient(90deg, #00f2fe, #9d4edd); border: none; border-radius: 12px; color: #fff; font-weight: bold; cursor: pointer; }
   </style>
 </head>
 <body>
 
-<div class="card">
-  <div class="stats">
-    <span id="score-box">Score: 0</span>
-    <span id="timer-box">Time: 10s</span>
+<div class="arena">
+  <div class="battle-hud">
+    <div class="player-profile" style="color: var(--neon-cyan);">
+      YOU <span id="user-score">0</span>
+      <div class="bar"><div class="bar-fill-user" id="user-bar"></div></div>
+    </div>
+    <div class="vs-badge">VS</div>
+    <div class="player-profile" style="color: var(--neon-purple);">
+      BOT CYRA <span id="bot-score">0</span>
+      <div class="bar"><div class="bar-fill-bot" id="bot-bar"></div></div>
+    </div>
   </div>
-  <div class="question" id="q-text">Sawaal load ho raha hai...</div>
-  <div class="options" id="opt-box"></div>
-  <button class="btn-next" id="next-btn" onclick="nextQuestion()">Agla Sawaal</button>
+
+  <div class="streak" id="streak-banner">⚡ READY FOR BATTLE?</div>
+  <div class="timer-ring" id="timer">10</div>
+  <div class="question-box" id="question">Game shuru ho raha hai...</div>
+  <div class="options-grid" id="options"></div>
+  <button class="restart-btn" id="restart" onclick="location.reload()">Rematch Khelein</button>
 </div>
 
 <script>
-  const questions = [
-    { q: "Duniya ka sabse uncha parvat kaunsa hai?", options: ["K2", "Mount Everest", "Kangchenjunga", "Makalu"], ans: 1 },
-    { q: "Computer ka brain kise kaha jata hai?", options: ["RAM", "Hard Disk", "CPU", "Monitor"], ans: 2 },
-    { q: "Cricket World Cup har kitne saal mein hota hai?", options: ["2 saal", "3 saal", "4 saal", "5 saal"], ans: 2 },
-    { q: "Bharat ka Rashtriya Pashu kaunsa hai?", options: ["Sher", "Haathi", "Baagh (Tiger)", "Ghoda"], ans: 2 }
+  const questionPool = [
+    { q: "Konsa grah (planet) 'Red Planet' ke naam se jaana jata hai?", o: ["Shukra (Venus)", "Mangal (Mars)", "Brihaspati (Jupiter)", "Budh (Mercury)"], a: 1 },
+    { q: "Internet par pehli baar search engine konsa bana tha?", o: ["Google", "Yahoo", "Archie", "Bing"], a: 2 },
+    { q: "Human body mein sabse hard substance konsa hota hai?", o: ["Haddi (Bone)", "Tooth Enamel", "Nakhun", "Skull"], a: 1 },
+    { q: "IPL ki trophy sabse pehle kis team ne jeeti thi?", o: ["CSK", "MI", "Rajasthan Royals", "KKR"], a: 2 },
+    { q: "GTA 5 game kis company ne develop kiya hai?", o: ["EA Sports", "Rockstar Games", "Ubisoft", "Activision"], a: 1 }
   ];
 
-  let current = 0;
-  let score = 0;
-  let timer;
-  let timeLeft = 10;
+  let currentIdx = 0;
+  let userScore = 0;
+  let botScore = 0;
+  let streak = 0;
+  let timerInterval;
+  let time = 10;
 
-  function loadQuestion() {
-    clearInterval(timer);
-    timeLeft = 10;
-    document.getElementById("timer-box").innerText = "Time: " + timeLeft + "s";
-    document.getElementById("next-btn").style.display = "none";
-    
-    let q = questions[current];
-    document.getElementById("q-text").innerText = (current + 1) + ". " + q.q;
-    
-    let optContainer = document.getElementById("opt-box");
-    optContainer.innerHTML = "";
-    
-    q.options.forEach((opt, idx) => {
-      let btn = document.createElement("button");
-      btn.className = "opt";
-      btn.innerText = opt;
-      btn.onclick = () => checkAnswer(idx, btn);
-      optContainer.appendChild(btn);
-    });
-
-    timer = setInterval(() => {
-      timeLeft--;
-      document.getElementById("timer-box").innerText = "Time: " + timeLeft + "s";
-      if (timeLeft <= 0) {
-        clearInterval(timer);
-        disableButtons();
-        document.getElementById("next-btn").style.display = "block";
+  function runTimer() {
+    time = 10;
+    document.getElementById("timer").innerText = time;
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      time--;
+      document.getElementById("timer").innerText = time;
+      if (time <= 0) {
+        clearInterval(timerInterval);
+        resolveRound(-1);
       }
     }, 1000);
   }
 
-  function checkAnswer(selected, btn) {
-    clearInterval(timer);
-    disableButtons();
-    let correct = questions[current].ans;
-    if (selected === correct) {
-      btn.style.background = "#22c55e";
-      score += 10;
-      document.getElementById("score-box").innerText = "Score: " + score;
-    } else {
-      btn.style.background = "#ef4444";
-      document.querySelectorAll(".opt")[correct].style.background = "#22c55e";
+  function loadRound() {
+    if (currentIdx >= questionPool.length) {
+      endBattle();
+      return;
     }
-    document.getElementById("next-btn").style.display = "block";
+    runTimer();
+    const curr = questionPool[currentIdx];
+    document.getElementById("question").innerText = curr.q;
+    const optBox = document.getElementById("options");
+    optBox.innerHTML = "";
+
+    curr.o.forEach((optText, index) => {
+      const btn = document.createElement("button");
+      btn.className = "opt-btn";
+      btn.innerText = (index + 1) + ". " + optText;
+      btn.onclick = () => resolveRound(index);
+      optBox.appendChild(btn);
+    });
   }
 
-  function disableButtons() {
-    document.querySelectorAll(".opt").forEach(b => b.disabled = true);
-  }
+  function resolveRound(userChoice) {
+    clearInterval(timerInterval);
+    const curr = questionPool[currentIdx];
+    const buttons = document.querySelectorAll(".opt-btn");
+    buttons.forEach(b => b.disabled = true);
 
-  function nextQuestion() {
-    current++;
-    if (current < questions.length) {
-      loadQuestion();
+    // Bot AI Decision (80% chance right, realistic delay)
+    const botCorrect = Math.random() < 0.75;
+    if (botCorrect) botScore += 100;
+    
+    // User Decision
+    if (userChoice === curr.a) {
+      buttons[userChoice].classList.add("correct");
+      streak++;
+      userScore += 100 + (streak * 20);
+      document.getElementById("streak-banner").innerText = `🔥 ${streak}X COMBO STREAK!`;
     } else {
-      document.querySelector(".card").innerHTML = `<h2>Game Over! 🎉</h2><p style="font-size: 1.3rem;">Aapka Total Score: <b>${score}</b></p><button class="btn-next" style="display:block;" onclick="location.reload()">Dobara Khelein</button>`;
+      if (userChoice !== -1) buttons[userChoice].classList.add("wrong");
+      buttons[curr.a].classList.add("correct");
+      streak = 0;
+      document.getElementById("streak-banner").innerText = "❌ STREAK LOST";
     }
+
+    // Update HUD Bars
+    document.getElementById("user-score").innerText = userScore;
+    document.getElementById("bot-score").innerText = botScore;
+    const maxScore = questionPool.length * 150;
+    document.getElementById("user-bar").style.width = Math.min(100, (userScore / maxScore) * 100) + "%";
+    document.getElementById("bot-bar").style.width = Math.min(100, (botScore / maxScore) * 100) + "%";
+
+    setTimeout(() => {
+      currentIdx++;
+      loadRound();
+    }, 1500);
   }
 
-  loadQuestion();
+  function endBattle() {
+    clearInterval(timerInterval);
+    document.getElementById("timer").style.display = "none";
+    let statusText = userScore > botScore ? "🏆 VICTORY! Aap Jeet Gaye!" : (userScore === botScore ? "🤝 MATCH DRAW!" : "💀 DEFEAT! Bot Jeet Gaya!");
+    document.getElementById("question").innerHTML = `<h2>${statusText}</h2><p style="margin-top:10px;">Final Score: ${userScore} vs ${botScore}</p>`;
+    document.getElementById("options").innerHTML = "";
+    document.getElementById("restart").style.display = "block";
+  }
+
+  loadRound();
 </script>
 </body>
 </html>
