@@ -31,10 +31,30 @@
     /* Layout Containers */
     .container { max-width: 920px; width: 100%; margin: 25px auto; padding: 0 15px; }
 
-    /* Google Auth Screen */
-    .auth-card { background: var(--surface); border-radius: 20px; padding: 40px 25px; text-align: center; max-width: 440px; margin: 60px auto; border: 1px solid rgba(157, 78, 221, 0.3); box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
-    .google-btn { background: #fff; color: #333; border: none; padding: 14px 24px; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 12px; margin-top: 25px; transition: 0.2s; box-shadow: 0 4px 15px rgba(255,255,255,0.15); }
-    .google-btn:hover { background: #f1f5f9; transform: translateY(-2px); }
+    /* Auth Card & Tabs */
+    .auth-card { background: var(--surface); border-radius: 20px; padding: 30px 25px; text-align: center; max-width: 440px; margin: 30px auto; border: 1px solid rgba(157, 78, 221, 0.3); box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+    .auth-tabs { display: flex; background: #090e1c; border-radius: 12px; padding: 5px; margin: 20px 0; border: 1px solid #23304e; }
+    .auth-tab-btn { flex: 1; padding: 10px; border: none; background: transparent; color: var(--text-muted); font-weight: 700; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+    .auth-tab-btn.active { background: linear-gradient(90deg, var(--primary), #00b4d8); color: #000; }
+    
+    .form-input { width: 100%; padding: 12px 14px; background: #070a13; border: 1.5px solid #23304e; color: #fff; border-radius: 10px; font-size: 0.95rem; margin-bottom: 12px; outline: none; }
+    .form-input:focus { border-color: var(--primary); }
+    .btn-submit-auth { width: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); color: #fff; border: none; padding: 13px; border-radius: 10px; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 5px; }
+    
+    .divider { display: flex; align-items: center; margin: 20px 0; color: var(--text-muted); font-size: 0.8rem; }
+    .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #23304e; }
+    .divider span { padding: 0 10px; }
+
+    .google-btn { width: 100%; background: #fff; color: #333; border: none; padding: 12px 20px; border-radius: 10px; font-size: 0.95rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 12px; transition: 0.2s; }
+    .google-btn:hover { background: #f1f5f9; }
+
+    /* Secret Guest Area */
+    .secret-guest-box { margin-top: 25px; padding-top: 15px; border-top: 1px dashed #23304e; }
+    .btn-secret-toggle { background: transparent; border: none; color: #64748b; font-size: 0.8rem; cursor: pointer; font-weight: 600; }
+    .btn-secret-toggle:hover { color: var(--primary); }
+    .guest-grid { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 12px; }
+    .btn-guest { background: #131c30; border: 1px solid #23304e; color: #38bdf8; padding: 10px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; text-align: left; }
+    .btn-guest:hover { border-color: var(--primary); background: #192540; }
 
     /* Dashboard Grid */
     .section-title { font-size: 1.25rem; font-weight: 700; color: #fff; margin: 25px 0 15px; display: flex; align-items: center; gap: 10px; }
@@ -45,7 +65,7 @@
     .exam-badge { position: absolute; top: 15px; right: 15px; background: rgba(0, 242, 254, 0.15); color: var(--primary); font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: bold; }
     .exam-meta { font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; display: flex; gap: 15px; }
 
-    /* Profile Modal / View */
+    /* Profile View */
     .profile-card { background: var(--surface); border: 1px solid #23304e; border-radius: 18px; padding: 25px; text-align: center; margin-bottom: 25px; }
     .user-avatar-lg { width: 85px; height: 85px; border-radius: 50%; border: 3px solid var(--primary); margin-bottom: 12px; }
     .stat-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 20px; }
@@ -71,7 +91,7 @@
     .btn-battle { background: var(--accent); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
   </style>
 
-  <!-- Firebase v9 SDK Scripts -->
+  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
@@ -90,15 +110,59 @@
     </div>
   </header>
 
-  <!-- 1. LOGIN SCREEN -->
+  <!-- 1. AUTHENTICATION (LOGIN / CREATE ACCOUNT) -->
   <div id="screen-auth" class="auth-card">
-    <i class="fa-solid fa-shield-halved" style="font-size: 3.2rem; color: var(--primary); margin-bottom: 15px;"></i>
-    <h2>Student CBT Examination Portal</h2>
-    <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 8px;">SSC, SI Police, Speed Tests & 1v1 Battle me hissa lene ke liye login karein</p>
+    <i class="fa-solid fa-shield-halved" style="font-size: 3rem; color: var(--primary); margin-bottom: 8px;"></i>
+    <h2>Student CBT Portal</h2>
+    <p style="color: var(--text-muted); font-size: 0.85rem;">Login karein ya naya candidate account banayein</p>
+
+    <!-- Login / Register Switcher Tabs -->
+    <div class="auth-tabs">
+      <button class="auth-tab-btn active" id="tab-btn-login" onclick="switchAuthMode('login')">Existing Login</button>
+      <button class="auth-tab-btn" id="tab-btn-signup" onclick="switchAuthMode('signup')">Create New Account</button>
+    </div>
+
+    <!-- Login Form -->
+    <div id="form-login-box">
+      <input type="email" id="login-email" class="form-input" placeholder="Apna Email daalein">
+      <input type="password" id="login-pass" class="form-input" placeholder="Password daalein">
+      <button class="btn-submit-auth" onclick="handleEmailLogin()">Account Login Karein</button>
+    </div>
+
+    <!-- Create Account Form -->
+    <div id="form-signup-box" class="hidden">
+      <input type="text" id="signup-name" class="form-input" placeholder="Aapka Poora Naam (Candidate Name)">
+      <input type="email" id="signup-email" class="form-input" placeholder="Apna Email ID daalein">
+      <input type="password" id="signup-pass" class="form-input" placeholder="Naya Password (kam se kam 6 anko ka)">
+      <button class="btn-submit-auth" onclick="handleEmailSignup()">Create New Account</button>
+    </div>
+
+    <div class="divider"><span>OR CONTINUE WITH</span></div>
+
+    <!-- Google 1-Click Login -->
     <button class="google-btn" onclick="loginWithGoogle()">
-      <img width="20" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
-      Continue with Gmail
+      <img width="18" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+      Continue with Google / Gmail
     </button>
+
+    <!-- SECRET ADMIN / DEVELOPER GUEST TESTING -->
+    <div class="secret-guest-box">
+      <button class="btn-secret-toggle" onclick="promptSecretAdmin()">🔒 Admin Secret Testing Login (PIN Protected)</button>
+      <div id="guest-access-panel" class="hidden">
+        <div class="guest-grid">
+          <button class="btn-guest" onclick="loginAsGuest('guest_01', 'Sunil Kumar (VIP Tester)', 'sunil.admin@test.com')">
+            ⭐ <b>Guest 1:</b> Sunil Kumar (All-Access)
+          </button>
+          <button class="btn-guest" onclick="loginAsGuest('guest_02', 'Rahul Sharma (SSC Tester)', 'rahul.ssc@test.com')">
+            ⭐ <b>Guest 2:</b> Rahul Sharma (SSC Pattern)
+          </button>
+          <button class="btn-guest" onclick="loginAsGuest('guest_03', 'Priya Singh (SI Tester)', 'priya.si@test.com')">
+            ⭐ <b>Guest 3:</b> Priya Singh (Police SI Pattern)
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- MAIN DASHBOARD CONTENT -->
@@ -266,7 +330,7 @@
     let timerTotalSeconds = 0;
     let timerInterval = null;
 
-    // SAFE ROUTER (404 Error se bachane ke liye Hash Routing)
+    // HASH ROUTER
     function updateUrlPath(pageName) {
       window.location.hash = pageName;
     }
@@ -277,7 +341,6 @@
       });
     }
 
-    // Jab Login screen dikhe
     function showLoginScreen() {
       hideAllScreens();
       document.getElementById("screen-auth").classList.remove("hidden");
@@ -287,14 +350,12 @@
       updateUrlPath("login");
     }
 
-    // Jab Dashboard screen dikhe
     function showDashboard() {
       hideAllScreens();
       document.getElementById("screen-dashboard").classList.remove("hidden");
       updateUrlPath("dashboard");
     }
 
-    // Jab Profile page khule
     function openProfileView() {
       hideAllScreens();
       document.getElementById("screen-profile").classList.remove("hidden");
@@ -307,7 +368,65 @@
       updateUrlPath("profile");
     }
 
-    // MOBILE + PC COMPATIBLE GOOGLE LOGIN
+    // AUTH TAB SWITCH (LOGIN vs CREATE ACCOUNT)
+    function switchAuthMode(mode) {
+      if (mode === 'login') {
+        document.getElementById("tab-btn-login").classList.add("active");
+        document.getElementById("tab-btn-signup").classList.remove("active");
+        document.getElementById("form-login-box").classList.remove("hidden");
+        document.getElementById("form-signup-box").classList.add("hidden");
+      } else {
+        document.getElementById("tab-btn-signup").classList.add("active");
+        document.getElementById("tab-btn-login").classList.remove("active");
+        document.getElementById("form-signup-box").classList.remove("hidden");
+        document.getElementById("form-login-box").classList.add("hidden");
+      }
+    }
+
+    // EMAIL + PASSWORD LOGIN
+    async function handleEmailLogin() {
+      const email = document.getElementById("login-email").value.trim();
+      const pass = document.getElementById("login-pass").value.trim();
+      if (!email || !pass) return alert("Email aur Password daalna zaroori hai!");
+
+      try {
+        await auth.signInWithEmailAndPassword(email, pass);
+      } catch (err) {
+        alert("Login Error: " + err.message);
+      }
+    }
+
+    // EMAIL + PASSWORD SIGN UP (CREATE NEW ACCOUNT)
+    async function handleEmailSignup() {
+      const name = document.getElementById("signup-name").value.trim();
+      const email = document.getElementById("signup-email").value.trim();
+      const pass = document.getElementById("signup-pass").value.trim();
+      if (!name || !email || !pass) return alert("Kripya saari details bharein!");
+      if (pass.length < 6) return alert("Password kam se kam 6 anko ka hona chahiye!");
+
+      try {
+        const cred = await auth.createUserWithEmailAndPassword(email, pass);
+        await cred.user.updateProfile({ displayName: name });
+        
+        // Save initial record to Firestore
+        const newUser = {
+          uid: cred.user.uid,
+          displayName: name,
+          email: email,
+          photoURL: "https://ui-avatars.com/api/?name=" + encodeURIComponent(name) + "&background=00f2fe&color=000",
+          totalTests: 0,
+          cleared: 0,
+          failed: 0
+        };
+        await db.collection("candidates").doc(cred.user.uid).set(newUser);
+        currentUser = newUser;
+        showDashboard();
+      } catch (err) {
+        alert("Account Creation Error: " + err.message);
+      }
+    }
+
+    // GOOGLE AUTH
     function loginWithGoogle() {
       const provider = new firebase.auth.GoogleAuthProvider();
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -319,22 +438,69 @@
           if (err.code === 'auth/popup-blocked') {
             auth.signInWithRedirect(provider);
           } else {
-            alert("Google Login Error: " + err.message);
+            alert("Google Sign-In Error: " + err.message);
           }
         });
       }
     }
 
-    // Redirect login handling for mobile
     auth.getRedirectResult().catch(err => {
       if (err.code) console.error("Redirect Login Error:", err);
     });
 
-    function logout() {
-      auth.signOut();
+    // SECRET ADMIN GUEST PIN UNLOCK
+    function promptSecretAdmin() {
+      const pin = prompt("Admin Secret PIN daalein (Testing ke liye):");
+      if (pin === "7890") {
+        document.getElementById("guest-access-panel").classList.remove("hidden");
+        alert("✅ VIP Guest Access Unlocked! Ab aap koi bhi testing ID chun sakte hain.");
+      } else if (pin !== null) {
+        alert("❌ Galat PIN! Guest login ka access sirf authorized tester ke paas hai.");
+      }
     }
 
-    // AUTH STATE OBSERVER
+    // GUEST VIP SESSION
+    async function loginAsGuest(guestId, name, email) {
+      currentUser = {
+        uid: guestId,
+        displayName: name,
+        email: email,
+        photoURL: "https://ui-avatars.com/api/?name=" + encodeURIComponent(name) + "&background=00f2fe&color=000",
+        totalTests: 0,
+        cleared: 0,
+        failed: 0
+      };
+
+      try {
+        const userRef = db.collection("candidates").doc(guestId);
+        const doc = await userRef.get();
+        if (doc.exists) {
+          currentUser = doc.data();
+        } else {
+          await userRef.set(currentUser);
+        }
+      } catch (err) {
+        console.warn("Guest local storage mode:", err);
+      }
+
+      document.getElementById("screen-auth").classList.add("hidden");
+      document.getElementById("main-content").classList.remove("hidden");
+      document.getElementById("nav-profile-pill").classList.remove("hidden");
+      document.getElementById("logout-btn").classList.remove("hidden");
+
+      document.getElementById("header-name").innerText = currentUser.displayName.split(" ")[0];
+      document.getElementById("header-avatar").src = currentUser.photoURL;
+
+      showDashboard();
+    }
+
+    function logout() {
+      currentUser = null;
+      auth.signOut();
+      showLoginScreen();
+    }
+
+    // AUTH OBSERVER
     auth.onAuthStateChanged(async (user) => {
       if (user) {
         document.getElementById("screen-auth").classList.add("hidden");
@@ -342,8 +508,9 @@
         document.getElementById("nav-profile-pill").classList.remove("hidden");
         document.getElementById("logout-btn").classList.remove("hidden");
 
-        document.getElementById("header-name").innerText = user.displayName ? user.displayName.split(" ")[0] : "Candidate";
-        document.getElementById("header-avatar").src = user.photoURL || "https://ui-avatars.com/api/?name=" + (user.displayName || "User");
+        const name = user.displayName || "Candidate";
+        document.getElementById("header-name").innerText = name.split(" ")[0];
+        document.getElementById("header-avatar").src = user.photoURL || "https://ui-avatars.com/api/?name=" + encodeURIComponent(name);
 
         const userRef = db.collection("candidates").doc(user.uid);
         const doc = await userRef.get();
@@ -353,7 +520,7 @@
         } else {
           currentUser = {
             uid: user.uid,
-            displayName: user.displayName || "Candidate",
+            displayName: name,
             email: user.email,
             photoURL: user.photoURL || "",
             totalTests: 0,
@@ -363,13 +530,12 @@
           await userRef.set(currentUser);
         }
         showDashboard();
-      } else {
-        currentUser = null;
+      } else if (!currentUser) {
         showLoginScreen();
       }
     });
 
-    // REAL COMPETITION EXAM DATA GENERATOR
+    // QUESTION BANK
     function getExamQuestions(type) {
       const qBank = {
         gk: [
@@ -419,13 +585,11 @@
       return list.slice(0, targetCount);
     }
 
-    // START CBT TEST
     function initiateExam(examType) {
       currentTest = getExamQuestions(examType);
       userAnswers = {};
       currentIndex = 0;
 
-      // Timer: SSC/SI 20 Mins, Subject Tests 30 Mins
       timerTotalSeconds = (examType === 'ssc_cgl' || examType === 'police_si') ? (20 * 60) : (30 * 60);
 
       document.getElementById("exam-title").innerText = examType.toUpperCase().replace("_", " ") + " CBT TEST";
@@ -537,7 +701,6 @@
       initiateExam('gk');
     }
 
-    // BROWSER HASH NAVIGATION LISTENER
     window.addEventListener('hashchange', () => {
       const hash = window.location.hash.replace('#', '');
       if (hash === 'dashboard' && currentUser) showDashboard();
