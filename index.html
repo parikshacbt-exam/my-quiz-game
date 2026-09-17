@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PARIKSHA CBT - Comprehensive Exam & Candidate Portal</title>
+  <title>PARIKSHA CBT - Real Competition & Candidate Portal (41 Districts Updated)</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -108,12 +108,11 @@
     .status-pill.fail { background: rgba(255, 51, 102, 0.15); color: var(--red); }
     .status-pill.skipped { background: rgba(255, 183, 3, 0.15); color: var(--gold); }
 
-    /* Profile Specific Styles */
+    /* Profile Specific */
     .profile-avatar-wrap { position: relative; width: 100px; height: 100px; margin: 0 auto 15px; }
     .profile-avatar-wrap img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; }
     .avatar-edit-label { position: absolute; bottom: 0; right: 0; background: var(--primary); color: #000; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
-    /* History Table */
     .history-card { background: rgba(13, 20, 38, 0.9); border: 1px solid #23355d; border-radius: 14px; padding: 14px 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
     .history-title { font-weight: bold; font-size: 1rem; color: #fff; }
     .history-meta { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
@@ -157,10 +156,10 @@
     <div class="crash-course-bar">
       <div>
         <h4 style="color:var(--gold); display:flex; align-items:center; gap:8px;">
-          <i class="fa-solid fa-bolt"></i> Exam Crash Course & Quick Revision Notes
+          <i class="fa-solid fa-bolt"></i> Exam Crash Course & Latest Revision Notes (41 Districts Updated)
         </h4>
         <p style="font-size:0.85rem; color:#cbd5e1; margin-top:3px;">
-          Sanvidhan Articles, Rajasthan Geography, Formula Shortcuts & Quick GK Notes
+          Rajasthan 41 Zile & 7 Sambhag, Sanvidhan Articles, BNS/CrPC Law & Quick GK Notes
         </p>
       </div>
       <button class="btn-submit" style="padding:8px 18px; font-size:0.85rem;" onclick="openCrashCourseView()">
@@ -179,27 +178,27 @@
       </div>
 
       <!-- Current Affairs Section -->
-      <div class="section-title"><i class="fa-solid fa-newspaper" style="color:var(--green);"></i> Daily Current Affairs 2026 (Segregated)</div>
+      <div class="section-title"><i class="fa-solid fa-newspaper" style="color:var(--green);"></i> Daily Current Affairs (Segregated)</div>
       <div class="exam-grid">
-        <div class="exam-card" onclick="openExamSetup('india_current', 'India Daily Current Affairs 2026', 20, 20)">
-          <span class="exam-badge">National 2026</span>
+        <div class="exam-card" onclick="openExamSetup('india_current', 'India Daily Current Affairs', 20, 20)">
+          <span class="exam-badge">National Focus</span>
           <div class="exam-icon" style="color:#00f2fe;"><i class="fa-solid fa-flag"></i></div>
-          <h3>🇮🇳 India Current Affairs 2026</h3>
+          <h3>🇮🇳 India Current Affairs</h3>
           <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">National Summits, Union Appointments, ISRO Missions & Central Schemes</p>
           <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 20 Mins (20 Qs)</span></div>
         </div>
 
-        <div class="exam-card" onclick="openExamSetup('raj_current', 'Rajasthan Daily Current Affairs 2026', 20, 20)">
+        <div class="exam-card" onclick="openExamSetup('raj_current', 'Rajasthan Daily Current Affairs', 20, 20)">
           <span class="exam-badge">State Special</span>
           <div class="exam-icon" style="color:#ffb703;"><i class="fa-solid fa-feather-pointed"></i></div>
-          <h3>🐪 Rajasthan Current Affairs 2026</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">State Schemes, 50 Districts Updates, State Awards & GI Tags</p>
+          <h3>🐪 Rajasthan Current Affairs</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">41 Zile Reorganization, State Schemes, State Awards & GI Tags</p>
           <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 20 Mins (20 Qs)</span></div>
         </div>
       </div>
 
       <!-- Full Competition Papers -->
-      <div class="section-title"><i class="fa-solid fa-file-signature" style="color:var(--gold);"></i> Full Competition Examination Papers</div>
+      <div class="section-title"><i class="fa-solid fa-file-signature" style="color:var(--gold);"></i> Full Competition Examination Papers (Latest Syllabus)</div>
       <div class="exam-grid">
         <div class="exam-card" onclick="openExamSetup('ssc_cgl', 'SSC CGL Tier-1 CBT Mock', 25, 20)">
           <span class="exam-badge">Tier-1 Pattern</span>
@@ -213,7 +212,7 @@
           <span class="exam-badge">SI Paper-1</span>
           <div class="exam-icon" style="color:#ffb703;"><i class="fa-solid fa-shield-cat"></i></div>
           <h3>Police SI Sub-Inspector Exam</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Moolvidhi, Sanvidhan, CrPC, IPC & Samanya Hindi</p>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Moolvidhi, Sanvidhan, Police Law, Rajasthan GK & Hindi</p>
           <div class="exam-meta"><span><i class="fa-regular fa-circle-question"></i> 20 Questions</span><span><i class="fa-regular fa-clock"></i> 20 Mins</span></div>
         </div>
 
@@ -237,10 +236,11 @@
       <!-- Core Subjects -->
       <div class="section-title"><i class="fa-solid fa-book-open-reader" style="color:var(--green);"></i> Subject-Wise Competition Tests</div>
       <div class="exam-grid">
-        <div class="exam-card" onclick="openExamSetup('raj_gk', 'Rajasthan GK (50 Naye Zile)', 20, 30)">
+        <div class="exam-card" onclick="openExamSetup('raj_gk', 'Rajasthan GK (41 Zile & 7 Sambhag)', 20, 30)">
+          <span class="exam-badge">41 Zile (Valid)</span>
           <div class="exam-icon" style="color:#ffb703;"><i class="fa-solid fa-shield-halved"></i></div>
-          <h3>Rajasthan GK (Special)</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">50 Zile, Sambhag & Itihas</p>
+          <h3>Rajasthan GK (Vartaman)</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">41 Districts, 7 Sambhag, Itihas & Kala-Sanskriti</p>
           <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
         </div>
 
@@ -292,14 +292,12 @@
           <input type="file" id="avatar-file-input" accept="image/*" style="display:none;" onchange="handleAvatarUpload(event)">
         </div>
 
-        <!-- Edit Profile Name -->
         <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-bottom:6px;">
           <h2 id="prof-display-name">Candidate Name</h2>
           <button onclick="editDisplayName()" class="btn-sm" style="background:#263558; color:#fff;"><i class="fa-solid fa-pen"></i> Edit</button>
         </div>
         <p id="prof-email" style="color:var(--text-muted); font-size:0.9rem;"></p>
 
-        <!-- Profile Language Chooser -->
         <div style="margin-top:16px; display:inline-flex; align-items:center; gap:10px; background:#070d1e; padding:6px 14px; border-radius:20px; border:1px solid #23355d;">
           <span style="font-size:0.85rem; color:#cbd5e1;">Medium / भाषा:</span>
           <button onclick="setUserLanguageFromProfile('hi')" class="btn-sm" id="btn-prof-hi">हिंदी</button>
@@ -316,7 +314,6 @@
         <button class="btn-nav" style="margin-top:24px;" onclick="showDashboard()">Back to Dashboard</button>
       </div>
 
-      <!-- User Exam History Section -->
       <div style="background:var(--surface); border:1.5px solid rgba(0,242,254,0.25); border-radius:20px; padding:25px;">
         <h3 style="color:var(--primary); margin-bottom:16px; display:flex; align-items:center; gap:8px;">
           <i class="fa-solid fa-clock-rotate-left"></i> Your Past Exam History & Question Review
@@ -380,30 +377,31 @@
       </div>
       <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:14px;">
         <div style="background:#0f172a; padding:18px; border-radius:14px; border:1px solid #23355d;">
-          <h4 style="color:var(--primary); margin-bottom:8px;">📜 Moolvidhi & IPC Important Sections</h4>
+          <h4 style="color:var(--green); margin-bottom:8px;">🐪 राजस्थान प्रशासनिक स्थिति (41 जिले & 7 संभाग)</h4>
+          <p style="font-size:0.85rem; color:#cbd5e1; line-height:1.6;">
+            • <b>वर्तमान जिले:</b> राजस्थान में अब कुल <b>41 जिले</b> और <b>7 संभाग</b> हैं।<br>
+            • <b>रद्द जिले (9):</b> दूदू, केकड़ी, शाहपुरा, नीम का थाना, गंगापुर सिटी, जयपुर ग्रामीण, जोधपुर ग्रामीण, अनूपगढ़, सांचौर।<br>
+            • <b>रद्द संभाग (3):</b> सीकर, पाली, बांसवाड़ा।<br>
+            • <b>मान्य 8 नए जिले:</b> बालोतरा, ब्यावर, डीग, डीडवाना-कुचामन, कोटपूतली-बहरोड़, खैरथल-तिजारा, फलौदी, सलूम्बर।<br>
+            • <b>क्षेत्रफल:</b> सबसे बड़ा जिला जैसलमेर एवं सबसे छोटा जिला धौलपुर है।
+          </p>
+        </div>
+        <div style="background:#0f172a; padding:18px; border-radius:14px; border:1px solid #23355d;">
+          <h4 style="color:var(--primary); margin-bottom:8px;">📜 Moolvidhi & Police Law Sections</h4>
           <p style="font-size:0.85rem; color:#cbd5e1; line-height:1.6;">
             • Section 154 CrPC: FIR Registration.<br>
             • Section 41 CrPC: Arrest without warrant.<br>
-            • Section 300 / 302 IPC: Murder definition & punishment.<br>
-            • Section 378 IPC: Theft definition.
+            • Section 300 / 302 IPC (BNS Murder): Hatya ka dand.<br>
+            • Section 378 IPC (Theft): Chori ki paribhasha.
           </p>
         </div>
         <div style="background:#0f172a; padding:18px; border-radius:14px; border:1px solid #23355d;">
           <h4 style="color:var(--gold); margin-bottom:8px;">🏛️ Indian Constitution Key Articles</h4>
           <p style="font-size:0.85rem; color:#cbd5e1; line-height:1.6;">
             • Article 14: Equality before Law.<br>
-            • Article 21: Protection of Life and Liberty.<br>
-            • Article 32: Constitutional Remedies (Heart & Soul).<br>
+            • Article 21: Protection of Life and Personal Liberty.<br>
+            • Article 32: Right to Constitutional Remedies.<br>
             • Article 324: Election Commission of India.
-          </p>
-        </div>
-        <div style="background:#0f172a; padding:18px; border-radius:14px; border:1px solid #23355d;">
-          <h4 style="color:var(--green); margin-bottom:8px;">🐪 Rajasthan 50 Districts Facts</h4>
-          <p style="font-size:0.85rem; color:#cbd5e1; line-height:1.6;">
-            • 50 Districts & 10 Administrative Divisions.<br>
-            • Smallest District: Dudu (by area).<br>
-            • Anupgarh: Created from Sri Ganganagar & Bikaner.<br>
-            • Phalodi: Created from Jodhpur.
           </p>
         </div>
       </div>
@@ -473,7 +471,7 @@
     </div>
   </div>
 
-  <!-- POPUP MODAL FOR PRIVACY POLICY, TERMS, ABOUT & CONTACT (GOOGLE ADSENSE READY) -->
+  <!-- POPUP MODAL FOR PRIVACY POLICY, TERMS, ABOUT & CONTACT -->
   <div id="policy-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <button onclick="closePolicyModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -491,7 +489,7 @@
       <a onclick="openPolicyModal('about')">About Us</a>
       <a onclick="openPolicyModal('contact')">Contact Us</a>
     </div>
-    <p style="font-size:0.8rem; color:#64748b;">© 2026 PARIKSHA CBT. Designed for Government Competition Aspirants.</p>
+    <p style="font-size:0.8rem; color:#64748b;">© PARIKSHA CBT. Designed for Government Competition Aspirants.</p>
   </footer>
 
   <script>
@@ -542,56 +540,97 @@
       return list;
     }
 
-    // COMPLETE QUESTION BANK
+    // UPDATED REAL COMPETITION QUESTION BANK (100% REAL SYLLABUS & 41 DISTRICTS DATA)
     const masterQuestionBank = {
+      raj_gk: [
+        {
+          q_hi: "वर्तमान प्रशासनिक पुनर्गठन के अनुसार राजस्थान में कुल कितने जिले और संभाग हैं?",
+          q_en: "According to the current administrative reorganization, how many districts and divisions are there in Rajasthan?",
+          o_hi: ["41 जिले और 7 संभाग", "50 जिले और 10 संभाग", "33 जिले और 7 संभाग", "45 जिले और 8 संभाग"],
+          o_en: ["41 Districts & 7 Divisions", "50 Districts & 10 Divisions", "33 Districts & 7 Divisions", "45 Districts & 8 Divisions"],
+          a: 0
+        },
+        {
+          q_hi: "राजस्थान कैबिनेट द्वारा समीक्षा के बाद किन संभागों को निरस्त (रद्द) किया गया था?",
+          q_en: "Which administrative divisions were dissolved after the cabinet review in Rajasthan?",
+          o_hi: ["सीकर, पाली और बांसवाड़ा", "जयपुर, जोधपुर और बीकानेर", "अजमेर, कोटा और भरतपुर", "उदयपुर और बांसवाड़ा"],
+          o_en: ["Sikar, Pali & Banswara", "Jaipur, Jodhpur & Bikaner", "Ajmer, Kota & Bharatpur", "Udaipur & Banswara"],
+          a: 0
+        },
+        {
+          q_hi: "वर्तमान में राजस्थान का क्षेत्रफल की दृष्टि से सबसे छोटा जिला कौन सा है?",
+          q_en: "At present, which is the smallest district of Rajasthan in terms of land area?",
+          o_hi: ["धौलपुर (Dholpur)", "दूदू", "सलूम्बर", "दौसा"],
+          o_en: ["Dholpur", "Dudu", "Salumber", "Dausa"],
+          a: 0
+        },
+        {
+          q_hi: "निम्नलिखित में से कौन सा नया जिला वर्तमान में राजस्थान में बरकरार (मान्य) रखा गया है?",
+          q_en: "Which of the following new districts has been retained in Rajasthan?",
+          o_hi: ["बालोतरा (Balotra)", "दूदू (Dudu)", "केकड़ी (Kekri)", "अनूपगढ़ (Anupgarh)"],
+          o_en: ["Balotra", "Dudu", "Kekri", "Anupgarh"],
+          a: 0
+        }
+      ],
+
+      police_si: [
+        {
+          q_hi: "[Police SI] किसी संज्ञेय अपराध (Cognizable Offense) की प्रथम सूचना रिपोर्ट (FIR) किस प्रक्रिया धारा के अंतर्गत दर्ज होती है?",
+          q_en: "[Police SI] Under which procedural section is an FIR for a cognizable offense registered?",
+          o_hi: ["धारा 154 CrPC (BNSS 173)", "धारा 161 CrPC", "धारा 100 CrPC", "धारा 41 CrPC"],
+          o_en: ["Section 154 CrPC (BNSS 173)", "Section 161 CrPC", "Section 100 CrPC", "Section 41 CrPC"],
+          a: 0
+        },
+        {
+          q_hi: "[Police SI] पुलिस अधिकारी बिना वारंट के किसी संदिग्ध व्यक्ति को किस परिस्थिति में सीधे गिरफ्तार कर सकता है?",
+          q_en: "[Police SI] Under what condition can a police officer arrest a suspect without a warrant?",
+          o_hi: ["संज्ञेय अपराध घटित होने या संदेह पर", "केवल दीवानी मामलों में", "असंज्ञेय अपराध में बिना मजिस्ट्रेट आदेश", "जमानती मामलों में"],
+          o_en: ["In cognizable offense or credible suspicion", "Only in civil disputes", "Non-cognizable without magistrate order", "Bailable cases"],
+          a: 0
+        },
+        {
+          q_hi: "[Police SI] राजस्थान पुलिस का आधिकारिक ध्येय वाक्य (Motto) क्या है?",
+          q_en: "[Police SI] What is the official motto of Rajasthan Police?",
+          o_hi: ["आमजन में विश्वास, अपराधियों में डर", "सेवा, सुरक्षा, शांति", "सत्यमेव जयते", "वीरता और कर्तव्य"],
+          o_en: ["Trust in Public, Fear in Criminals", "Service, Security, Peace", "Satyameva Jayate", "Valor & Duty"],
+          a: 0
+        }
+      ],
+
+      raj_current: [
+        {
+          q_hi: "[राजस्थान समसामयिकी] राजस्थान कैबिनेट द्वारा 9 जिलों को निरस्त करने के बाद राज्य में कार्यरत जिलों की कुल वैध संख्या कितनी है?",
+          q_en: "[Rajasthan Current Affairs] Following the dissolution of 9 districts, what is the official count of active districts in Rajasthan?",
+          o_hi: ["41 जिले", "50 जिले", "33 जिले", "48 जिले"],
+          o_en: ["41 Districts", "50 Districts", "33 Districts", "48 Districts"],
+          a: 0
+        },
+        {
+          q_hi: "[राजस्थान समसामयिकी] हाल ही में राजस्थान के किस स्वदेशी उत्पाद को भारत सरकार द्वारा भौगोलिक संकेतक (GI Tag) मिला?",
+          q_en: "[Rajasthan Current Affairs] Which indigenous product from Rajasthan was recently conferred the GI Tag?",
+          o_hi: ["नागोरी अश्वगंधा (Nagori Ashwagandha)", "बीकानेरी भुजिया", "सांगानेरी प्रिंट", "मथानिया लाल मिर्च"],
+          o_en: ["Nagori Ashwagandha", "Bikaneri Bhujia", "Sanganeri Print", "Mathania Red Chilli"],
+          a: 0
+        }
+      ],
+
       india_current: [
         {
-          q_hi: "[भारत समसामयिकी 2026] 18वें ब्रिक्स (BRICS) शिखर सम्मेलन 2026 का आयोजन भारत के किस शहर में किया गया?",
-          q_en: "[India Current Affairs 2026] The 18th BRICS Summit 2026 was hosted in which Indian city?",
+          q_hi: "[भारत समसामयिकी] 18वें ब्रिक्स (BRICS) शिखर सम्मेलन का आयोजन भारत के किस प्रमुख शहर में किया गया?",
+          q_en: "[India Current Affairs] The 18th BRICS Summit was hosted in which Indian city?",
           o_hi: ["नई दिल्ली (New Delhi)", "मुंबई", "बेंगलुरु", "अहमदाबाद"],
           o_en: ["New Delhi", "Mumbai", "Bengaluru", "Ahmedabad"],
           a: 0
         },
         {
-          q_hi: "[भारत समसामयिकी 2026] भारतीय रिज़र्व बैंक (RBI) द्वारा हाल ही में लॉन्च किए गए फ्रॉड मैनेजमेंट प्लेटफॉर्म का नाम क्या है?",
-          q_en: "[India Current Affairs 2026] What is the name of the new digital fraud management initiative launched by RBI?",
-          o_hi: ["म्यूलेहंटर (MuleHunter AI)", "साइबर कवच", "डिजिटल प्रहरी", "फाइनेंस शील्ड"],
-          o_en: ["MuleHunter AI", "Cyber Kavach", "Digital Prahari", "Finance Shield"],
+          q_hi: "[भारत समसामयिकी] भारतीय रिज़र्व बैंक (RBI) द्वारा हाल ही में लॉन्च किए गए वित्तीय धोखाधड़ी रोकथाम सिस्टम का नाम क्या है?",
+          q_en: "[India Current Affairs] What is the name of RBI's new financial fraud prevention platform?",
+          o_hi: ["म्यूलेहंटर (MuleHunter AI)", "साइबर सुरक्षा 2.0", "प्रहरी शील्ड", "डिजिटल रक्षा"],
+          o_en: ["MuleHunter AI", "Cyber Suraksha 2.0", "Prahari Shield", "Digital Raksha"],
           a: 0
         }
       ],
-      raj_current: [
-        {
-          q_hi: "[राजस्थान समसामयिकी 2026] राजस्थान के किस उत्पाद को हाल ही में केंद्र सरकार द्वारा GI टैग (Geographical Indication) प्रदान किया गया?",
-          q_en: "[Rajasthan Current Affairs 2026] Which indigenous product of Rajasthan was recently granted the GI Tag?",
-          o_hi: ["नागोरी अश्वगंधा (Nagori Ashwagandha)", "बीकानेरी भुजिया", "सांगानेरी प्रिंट", "मथानिया लाल मिर्च"],
-          o_en: ["Nagori Ashwagandha", "Bikaneri Bhujia", "Sanganeri Print", "Mathania Red Chilli"],
-          a: 0
-        },
-        {
-          q_hi: "[राजस्थान समसामयिकी 2026] 12वां अंतरराष्ट्रीय बर्ड फेस्टिवल 2026 राजस्थान के किस रामसर स्थल (मेनार) में आयोजित हुआ?",
-          q_en: "[Rajasthan Current Affairs 2026] The 12th International Bird Festival 2026 was organized at Menar in which district?",
-          o_hi: ["उदयपुर (Udaipur)", "भरतपुर", "कोटा", "जयपुर"],
-          o_en: ["Udaipur", "Bharatpur", "Kota", "Jaipur"],
-          a: 0
-        }
-      ],
-      raj_gk: [
-        {
-          q_hi: "नवीनतम पुनर्गठन के अनुसार राजस्थान में कुल जिलों की संख्या कितनी है?",
-          q_en: "According to the latest reorganization, what is the total number of districts in Rajasthan?",
-          o_hi: ["50 जिले", "33 जिले", "45 जिले", "52 जिले"],
-          o_en: ["50 Districts", "33 Districts", "45 Districts", "52 Districts"],
-          a: 0
-        },
-        {
-          q_hi: "क्षेत्रफल की दृष्टि से राजस्थान का सबसे छोटा जिला वर्तमान में कौन सा है?",
-          q_en: "In terms of geographical land area, which is currently the smallest district in Rajasthan?",
-          o_hi: ["दूदू (Dudu)", "धौलपुर", "सलूम्बर", "सांचौर"],
-          o_en: ["Dudu", "Dholpur", "Salumber", "Sanchore"],
-          a: 0
-        }
-      ],
+
       india_gk: [
         {
           q_hi: "वर्तमान में भारत में कुल कितने राज्य और केंद्र शासित प्रदेश (UTs) विद्यमान हैं?",
@@ -599,8 +638,16 @@
           o_hi: ["28 राज्य और 8 UTs", "29 राज्य और 7 UTs", "28 राज्य और 9 UTs", "29 राज्य और 8 UTs"],
           o_en: ["28 States & 8 UTs", "29 States & 7 UTs", "28 States & 9 UTs", "29 States & 8 UTs"],
           a: 0
+        },
+        {
+          q_hi: "भारत के नए संसद भवन के मुख्य लोकसभा कक्ष की थीम किस राष्ट्रीय प्रतीक पर आधारित है?",
+          q_en: "The Lok Sabha chamber in India's new Parliament Building is themed on which national symbol?",
+          o_hi: ["मयूर (Peacock)", "कमल (Lotus)", "बाघ (Tiger)", "बरगद (Banyan)"],
+          o_en: ["Peacock", "Lotus", "Tiger", "Banyan"],
+          a: 0
         }
       ],
+
       hindi: [
         {
           q_hi: "'परोपकार' शब्द में व्याकरण की दृष्टि से कौन सी संधि है?",
@@ -608,8 +655,16 @@
           o_hi: ["गुण संधि", "वृद्धि संधि", "दीर्घ संधि", "यण संधि"],
           o_en: ["Guna Sandhi", "Vriddhi Sandhi", "Dirgha Sandhi", "Yan Sandhi"],
           a: 0
+        },
+        {
+          q_hi: "'यथाशक्ति' शब्द में कौन सा समास पाया जाता है?",
+          q_en: "Which compound (Samas) is present in the word 'Yathashakti'?",
+          o_hi: ["अव्ययीभाव समास", "तत्पुरुष समास", "द्वंद्व समास", "कर्मधारय"],
+          o_en: ["Avyayibhav Samas", "Tatpurush Samas", "Dvandva Samas", "Karmadharaya"],
+          a: 0
         }
       ],
+
       english: [
         {
           q_hi: "Choose the correct SYNONYM of the word 'METICULOUS':",
@@ -617,8 +672,16 @@
           o_hi: ["Careful and Thorough", "Careless", "Rapid", "Lazy"],
           o_en: ["Careful and Thorough", "Careless", "Rapid", "Lazy"],
           a: 0
+        },
+        {
+          q_hi: "Choose the correct ANTONYM of the word 'TRANSPARENT':",
+          q_en: "Choose the correct ANTONYM of the word 'TRANSPARENT':",
+          o_hi: ["Opaque", "Lucid", "Clear", "Bright"],
+          o_en: ["Opaque", "Lucid", "Clear", "Bright"],
+          a: 0
         }
       ],
+
       reasoning: [
         {
           q_hi: "यदि 'ROSE' को 'ILHV' लिखा जाता है, तो 'LEAF' को क्या लिखा जाएगा?",
@@ -628,6 +691,7 @@
           a: 0
         }
       ],
+
       ssc_cgl: [
         {
           q_hi: "[SSC CGL] भारतीय संविधान का कौन सा अनुच्छेद 'विधि के समक्ष समता' (Equality before Law) की गारंटी देता है?",
@@ -637,24 +701,17 @@
           a: 0
         }
       ],
-      police_si: [
-        {
-          q_hi: "[Police SI] दंड प्रक्रिया संहिता (CrPC) के तहत प्रथम सूचना रिपोर्ट (FIR) किस धारा में दर्ज की जाती है?",
-          q_en: "[Police SI] Under which section of CrPC is an FIR registered?",
-          o_hi: ["धारा 154", "धारा 161", "धारा 173", "धारा 100"],
-          o_en: ["Section 154", "Section 161", "Section 173", "Section 100"],
-          a: 0
-        }
-      ],
+
       upsc_pre: [
         {
           q_hi: "[UPSC GS-1] 'मोंट्रेक्स रिकॉर्ड' (Montreux Record) अंतरराष्ट्रीय स्तर पर किससे संबंधित है?",
           q_en: "[UPSC GS-1] The 'Montreux Record' is a register associated with:",
-          o_hi: ["रामसर संकटग्रस्त आर्द्रभूमियां", "लुप्तप्राय प्रजातियां", "जैव विविधता", "ओजोन"],
-          o_en: ["Ramsar Wetland Sites", "Endangered Species", "Biodiversity", "Ozone"],
+          o_hi: ["रामसर संकटग्रस्त आर्द्रभूमियां", "लुप्तप्राय प्रजातियां", "जैव विविधता", "ओजोन परत"],
+          o_en: ["Ramsar Wetland Sites", "Endangered Species", "Biodiversity", "Ozone Layer"],
           a: 0
         }
       ],
+
       rrb_ntpc: [
         {
           q_hi: "[RRB NTPC] भारत में पहली रेलगाड़ी 1853 में बोरीबंदर (मुंबई) से कहाँ तक चलाई गई थी?",
@@ -793,7 +850,6 @@
       }, 1000);
     }
 
-    // FINAL SUBMISSION & STORING FULL TEST HISTORY
     async function submitExam() {
       clearInterval(timerInterval);
       let correct = 0;
@@ -815,7 +871,6 @@
       if (passed) currentUser.cleared = (currentUser.cleared || 0) + 1;
       else currentUser.failed = (currentUser.failed || 0) + 1;
 
-      // Create Test Record
       const testRecord = {
         examName: selectedExamName,
         date: new Date().toLocaleDateString('en-GB'),
@@ -841,7 +896,7 @@
           testHistory: currentUser.testHistory
         });
       } catch (e) {
-        console.error("Firestore update:", e);
+        console.error("Firestore error:", e);
       }
 
       document.getElementById("res-heading").innerText = passed ? "🎉 EXAM QUALIFIED!" : "❌ RESULT: NOT QUALIFIED";
@@ -902,7 +957,7 @@
       });
     }
 
-    // PROFILE MANAGEMENT (EDIT NAME, AVATAR & LANGUAGE)
+    // PROFILE MANAGEMENT
     async function editDisplayName() {
       const newName = prompt("Naya Display Name darz karein:", currentUser.displayName);
       if (newName && newName.trim().length > 0) {
@@ -1036,7 +1091,7 @@
       renderHistoryList();
     }
 
-    // FOOTER POLICY MODALS (GOOGLE ADSENSE READY)
+    // POLICY MODALS
     function openPolicyModal(type) {
       const modal = document.getElementById("policy-modal");
       const title = document.getElementById("policy-modal-title");
@@ -1045,32 +1100,27 @@
       if (type === 'privacy') {
         title.innerText = "Privacy Policy";
         content.innerHTML = `
-          <p><b>Last Updated:</b> September 2026</p><br>
-          <p>At <b>PARIKSHA CBT</b>, we prioritize the privacy of our candidates and students. This Privacy Policy outlines the information we collect and how we utilize it:</p><br>
+          <p>At <b>PARIKSHA CBT</b>, we prioritize the privacy of our candidates and students:</p><br>
           <p><b>1. Information Collection:</b> We collect candidate names, email addresses, profile avatars, and test performance data strictly for login verification, test history tracking, and leaderboards.</p><br>
-          <p><b>2. Data Protection:</b> Your email and personal scores are secured using Google Cloud Firestore encryption and will never be sold, rented, or shared with third-party advertisers.</p><br>
+          <p><b>2. Data Protection:</b> Your email and personal scores are secured using Google Cloud Firestore encryption and will never be sold or shared.</p><br>
           <p><b>3. Cookies & Advertising:</b> We may partner with third-party advertising partners like Google AdSense to serve non-intrusive educational advertisements.</p>
         `;
       } else if (type === 'terms') {
         title.innerText = "Terms & Conditions";
         content.innerHTML = `
-          <p><b>1. Fair Usage:</b> This mock test engine is intended for educational preparation and self-assessment for government competitive examinations.</p><br>
-          <p><b>2. Prohibited Activities:</b> Any attempt to alter questions, inject malicious scripts, or scrape test databases is strictly forbidden.</p><br>
-          <p><b>3. Accuracy of Content:</b> While questions are modeled after real competitive syllabi, users should verify official government gazettes for legal notifications.</p>
+          <p><b>1. Fair Usage:</b> This mock test engine is intended for educational preparation and self-assessment for competitive examinations.</p><br>
+          <p><b>2. Prohibited Activities:</b> Any attempt to alter questions, inject malicious scripts, or scrape test databases is strictly forbidden.</p>
         `;
       } else if (type === 'about') {
         title.innerText = "About Us";
         content.innerHTML = `
-          <p><b>PARIKSHA CBT</b> is an open mock examination initiative designed to empower aspirants preparing for competitive examinations (SSC, Railway NTPC, Police SI, UPSC, Rajasthan Services).</p><br>
-          <p>Our platform simulates actual computer-based test (CBT) interfaces with timed tests, detailed solution keys, and comprehensive accuracy analytics free of cost.</p>
+          <p><b>PARIKSHA CBT</b> is an open mock examination initiative designed to empower aspirants preparing for competitive examinations (SSC, Railway NTPC, Police SI, UPSC, Rajasthan 41-Districts Reorganized Services).</p>
         `;
       } else if (type === 'contact') {
         title.innerText = "Contact Us";
         content.innerHTML = `
-          <p>If you have any feedback, question corrections, or administrative inquiries, please reach out to our team:</p><br>
           <p>📧 <b>Official Support Email:</b> support@parikshacbt.edu.in</p><br>
-          <p>🌐 <b>Developer Desk:</b> PARIKSHA CBT Technical Team, Rajasthan, India</p><br>
-          <p>⏰ <b>Response Time:</b> Within 24-48 business hours.</p>
+          <p>🌐 <b>Developer Desk:</b> PARIKSHA CBT Technical Team, Rajasthan, India</p>
         `;
       }
       modal.classList.remove("hidden");
