@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PARIKSHA CBT - Real Competition Papers & Live Daily Updates</title>
+  <title>PARIKSHA CBT - Complete Competition & Subject Testing Portal</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -24,7 +24,7 @@
     }
     .hidden { display: none !important; }
 
-    /* Top Navigation */
+    /* Header */
     header { 
       background: rgba(10, 16, 32, 0.9); backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(0, 242, 254, 0.2); 
@@ -46,7 +46,7 @@
 
     .container { max-width: 1060px; width: 100%; margin: 22px auto; padding: 0 16px; }
 
-    /* Crash Course Floating Bar */
+    /* Crash Course Bar */
     .crash-course-bar {
       background: linear-gradient(90deg, rgba(157, 78, 221, 0.3), rgba(0, 242, 254, 0.25));
       border: 1.5px solid rgba(0, 242, 254, 0.3); border-radius: 16px; padding: 16px 20px; margin-bottom: 22px;
@@ -80,11 +80,11 @@
     .exam-meta { font-size: 0.85rem; color: var(--text-muted); margin-top: 10px; display: flex; gap: 15px; }
 
     /* Crash Course Cards */
-    .course-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 15px; }
+    .course-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; margin-top: 15px; }
     .course-card { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 18px; cursor: pointer; transition: 0.2s; }
     .course-card:hover { border-color: var(--gold); }
 
-    /* Live Update Pulse Badge */
+    /* Live Badge */
     .live-pulse {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 3px 10px; border-radius: 15px; font-size: 0.72rem; font-weight: 900;
@@ -93,7 +93,7 @@
     .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: blink 1.2s infinite; }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
 
-    /* Buttons & Controls */
+    /* Buttons */
     .btn-submit { background: linear-gradient(90deg, #00f59b, #00b4d8); color: #000; font-weight: 800; border: none; padding: 11px 24px; border-radius: 10px; cursor: pointer; }
     .btn-nav { background: #263558; border: none; color: #fff; padding: 11px 22px; border-radius: 10px; cursor: pointer; font-weight: 700; }
 
@@ -121,16 +121,14 @@
     .status-pill.fail { background: rgba(255, 51, 102, 0.15); color: var(--red); }
     .status-pill.skipped { background: rgba(255, 183, 3, 0.15); color: var(--gold); }
 
-    /* Modals & Choice Buttons */
+    /* Modals & Controls */
     .modal-overlay { position: fixed; inset: 0; background: rgba(4, 7, 16, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
-    .modal-card { background: #0f162a; border: 1.5px solid rgba(0, 242, 254, 0.3); border-radius: 22px; width: 100%; max-width: 500px; padding: 28px; position: relative; }
-    .choice-btn { width: 100%; padding: 15px; background: #141e34; border: 1.5px solid #23355d; color: #fff; border-radius: 12px; margin-bottom: 12px; cursor: pointer; text-align: left; font-weight: 700; display: flex; align-items: center; justify-content: space-between; }
-    .choice-btn:hover { border-color: var(--primary); background: #1a2a4e; }
+    .modal-card { background: #0f162a; border: 1.5px solid rgba(0, 242, 254, 0.3); border-radius: 22px; width: 100%; max-width: 480px; padding: 28px; position: relative; }
     .diff-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 18px 0; }
     .diff-btn { padding: 14px 8px; border-radius: 12px; border: 1.5px solid #23355d; background: #141e34; color: #fff; font-weight: 800; cursor: pointer; text-align: center; }
   </style>
 
-  <!-- Firebase Core SDK -->
+  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
@@ -141,7 +139,7 @@
   <header>
     <div class="logo" onclick="showDashboard()"><i class="fa-solid fa-graduation-cap"></i> <span id="txt-logo-title">PARIKSHA CBT</span></div>
     <div class="nav-actions">
-      <button class="lang-btn-nav" onclick="openLanguageChooserModal()" id="btn-active-lang">🌐 हिंदी</button>
+      <button class="lang-btn-nav" onclick="toggleLanguage()" id="btn-active-lang">🌐 हिंदी</button>
       <div id="nav-profile-pill" class="profile-pill hidden" onclick="openProfileView()">
         <img id="header-avatar" src="" alt="avatar">
         <span id="header-name" style="font-size:0.9rem; font-weight:700;">Candidate</span>
@@ -150,17 +148,17 @@
     </div>
   </header>
 
-  <!-- DASHBOARD CONTAINER -->
+  <!-- DASHBOARD MAIN -->
   <div class="container hidden" id="main-content">
 
-    <!-- 1. CRASH COURSE & QUICK REVISION MODAL / DRAWER -->
+    <!-- CRASH COURSE BAR -->
     <div class="crash-course-bar">
       <div>
         <h4 style="color:var(--gold); display:flex; align-items:center; gap:8px;">
-          <i class="fa-solid fa-bolt"></i> Exam Crash Course & Revision Notes
+          <i class="fa-solid fa-bolt"></i> Exam Crash Course & Quick Revision Notes
         </h4>
         <p style="font-size:0.85rem; color:#cbd5e1; margin-top:3px;">
-          Exam dene se pehle 5 minute me Important Sanvidhan Dharayein, Formula Tricks & GK padhein
+          Exam dene se pehle Sanvidhan Dharayein, Rajasthan Geography, Formula Tricks & GK padhein
         </p>
       </div>
       <button class="btn-submit" style="padding:8px 18px; font-size:0.85rem;" onclick="openCrashCourseView()">
@@ -168,9 +166,9 @@
       </button>
     </div>
 
-    <!-- 2. DASHBOARD MAIN VIEW -->
+    <!-- DASHBOARD VIEW -->
     <div id="screen-dashboard">
-      <!-- Dynamic Performance Banner -->
+      <!-- Performance Banner -->
       <div class="hero-banner">
         <div>
           <span style="color:var(--text-muted); font-size:0.88rem; font-weight:600;">Your Total Examination Points:</span>
@@ -182,16 +180,16 @@
         <button class="btn-submit" onclick="openProfileView()">View Candidate Profile</button>
       </div>
 
-      <!-- Real Official Competition Exam Papers -->
+      <!-- 1. FULL COMPETITION EXAMS -->
       <div class="section-title">
         <i class="fa-solid fa-file-signature" style="color:var(--gold);"></i> Full Competition Examination Papers (Official Pattern)
       </div>
       <div class="exam-grid">
         <div class="exam-card" onclick="openExamSetup('ssc_cgl', 'SSC CGL Tier-1 CBT Mock', 25, 20)">
-          <span class="exam-badge">Tier-1 SSC Pattern</span>
+          <span class="exam-badge">Tier-1 Pattern</span>
           <div class="exam-icon" style="color:#00f2fe;"><i class="fa-solid fa-building-columns"></i></div>
           <h3>SSC CGL Mock Test</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">GK, Reasoning, English & Maths (Authentic Exam Mix)</p>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">GK, Reasoning, English & Maths Mix</p>
           <div class="exam-meta">
             <span><i class="fa-regular fa-circle-question"></i> 25 Questions</span>
             <span><i class="fa-regular fa-clock"></i> 20 Minutes</span>
@@ -202,7 +200,7 @@
           <span class="exam-badge">SI Paper-1</span>
           <div class="exam-icon" style="color:#ffb703;"><i class="fa-solid fa-shield-cat"></i></div>
           <h3>Police SI Sub-Inspector Exam</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Moolvidhi, Sanvidhan, CrPC, IPC & Samanya Hindi</p>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Moolvidhi, Sanvidhan, CrPC, IPC & Hindi</p>
           <div class="exam-meta">
             <span><i class="fa-regular fa-circle-question"></i> 20 Questions</span>
             <span><i class="fa-regular fa-clock"></i> 20 Minutes</span>
@@ -210,10 +208,10 @@
         </div>
 
         <div class="exam-card" onclick="openExamSetup('upsc_pre', 'UPSC / State PCS Prelims GS-1', 20, 25)">
-          <span class="exam-badge">Civil Services GS</span>
+          <span class="exam-badge">Civil Services</span>
           <div class="exam-icon" style="color:#a855f7;"><i class="fa-solid fa-landmark"></i></div>
           <h3>UPSC & State PCS Prelims</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Polity Articles, Indian Economy, Ecology & World Affairs</p>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Polity Articles, Indian Economy & World Affairs</p>
           <div class="exam-meta">
             <span><i class="fa-regular fa-circle-question"></i> 20 Questions</span>
             <span><i class="fa-regular fa-clock"></i> 25 Minutes</span>
@@ -224,7 +222,7 @@
           <span class="exam-badge">Railway NTPC</span>
           <div class="exam-icon" style="color:#00f59b;"><i class="fa-solid fa-train"></i></div>
           <h3>Railway RRB NTPC CBT-1</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">General Science, Indian Railways History, Reasoning & Math</p>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">General Science, Railways History & Math</p>
           <div class="exam-meta">
             <span><i class="fa-regular fa-circle-question"></i> 20 Questions</span>
             <span><i class="fa-regular fa-clock"></i> 20 Minutes</span>
@@ -232,30 +230,84 @@
         </div>
       </div>
 
-      <!-- Real-Time Daily Live Current Affairs Special -->
+      <!-- 2. STATE & NATIONAL SPECIAL GK (UPDATED MAPS) -->
       <div class="section-title">
-        <i class="fa-solid fa-satellite-dish" style="color:var(--green);"></i> Real-Time Daily Current Affairs (Auto-Updated Daily)
+        <i class="fa-solid fa-map-location-dot" style="color:var(--primary);"></i> National & State Special GK (Updated Maps)
       </div>
       <div class="exam-grid">
-        <div class="exam-card" onclick="openExamSetup('current_daily', 'Daily Live Current Affairs 2026', 20, 20)" style="border-color:rgba(0,245,155,0.4);">
-          <span class="exam-badge" style="background:rgba(0,245,155,0.2); color:var(--green);"><div class="live-dot" style="display:inline-block;"></div> Daily Updated</span>
-          <div class="exam-icon" style="color:#00f59b;"><i class="fa-solid fa-newspaper"></i></div>
-          <h3>Daily Live Current Affairs</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Today's Appointments, Sports Cups, National Summits & Global News</p>
-          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 20 Mins (20 Qs)</span></div>
+        <div class="exam-card" onclick="openExamSetup('india_gk', 'India GK (Updated Map & Polity)', 20, 30)">
+          <span class="exam-badge">Updated Map</span>
+          <div class="exam-icon" style="color:#ff9933;"><i class="fa-solid fa-monument"></i></div>
+          <h3>India GK (National)</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Updated States, UTs, Border Lines & Sansad</p>
+          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
+        </div>
+
+        <div class="exam-card" onclick="openExamSetup('raj_gk', 'Rajasthan GK (50 Naye Zile & Itihas)', 20, 30)">
+          <span class="exam-badge">50 Naye Zile</span>
+          <div class="exam-icon" style="color:#ffb703;"><i class="fa-solid fa-shield-halved"></i></div>
+          <h3>Rajasthan GK (Special)</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Naye Jile, Sambhag, Itihas & Kala-Sanskriti</p>
+          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
+        </div>
+      </div>
+
+      <!-- 3. LANGUAGES & CORE SUBJECTS (SEPARATE TESTS) -->
+      <div class="section-title">
+        <i class="fa-solid fa-book-open-reader" style="color:var(--green);"></i> Subject-Wise Competition Tests (20 Qs / 30 Min)
+      </div>
+      <div class="exam-grid">
+        <div class="exam-card" onclick="openExamSetup('hindi', 'Samanya Hindi (Grammar & Competition)', 20, 30)">
+          <span class="exam-badge">Grammar</span>
+          <div class="exam-icon" style="color:#ff4d4d;"><i class="fa-solid fa-language"></i></div>
+          <h3>Samanya Hindi (सामान्य हिंदी)</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">संधि, समास, मुहावरे, पर्यायवाची, शुद्ध वर्तनी</p>
+          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
+        </div>
+
+        <div class="exam-card" onclick="openExamSetup('english', 'General English Grammar & Vocab', 20, 30)">
+          <span class="exam-badge">English</span>
+          <div class="exam-icon" style="color:#00f2fe;"><i class="fa-solid fa-spell-check"></i></div>
+          <h3>English Language & Grammar</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Synonyms, Antonyms, Idioms, Error Spotting</p>
+          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
+        </div>
+
+        <div class="exam-card" onclick="openExamSetup('math', 'Quantitative Aptitude (Maths)', 20, 30)">
+          <span class="exam-badge">Dynamic Math</span>
+          <div class="exam-icon" style="color:#ff3366;"><i class="fa-solid fa-calculator"></i></div>
+          <h3>Quantitative Aptitude (Math)</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Arithmetic, Formulas & Numerical Problems</p>
+          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
         </div>
 
         <div class="exam-card" onclick="openExamSetup('reasoning', 'General Mental Ability & Reasoning', 20, 20)">
-          <span class="exam-badge">Logical Ability</span>
+          <span class="exam-badge">Reasoning</span>
           <div class="exam-icon" style="color:#e879f9;"><i class="fa-solid fa-puzzle-piece"></i></div>
           <h3>Reasoning (तर्कशक्ति)</h3>
           <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Coding-Decoding, Blood Relation, Series & Direction</p>
           <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 20 Mins (20 Qs)</span></div>
         </div>
+
+        <div class="exam-card" onclick="openExamSetup('computer', 'Computer Proficiency Test', 20, 30)">
+          <span class="exam-badge">Computer</span>
+          <div class="exam-icon" style="color:#38bdf8;"><i class="fa-solid fa-laptop-code"></i></div>
+          <h3>Computer Proficiency</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Hardware, Networking, OS & Cyber Security</p>
+          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
+        </div>
+
+        <div class="exam-card" onclick="openExamSetup('current_daily', 'Daily Live Current Affairs 2026', 20, 20)">
+          <span class="exam-badge" style="background:rgba(0,245,155,0.2); color:var(--green);"><div class="live-dot" style="display:inline-block;"></div> Daily Updated</span>
+          <div class="exam-icon" style="color:#00f59b;"><i class="fa-solid fa-newspaper"></i></div>
+          <h3>Daily Current Affairs 2026</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Today's Appointments, Sports Cups & National Events</p>
+          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 20 Mins (20 Qs)</span></div>
+        </div>
       </div>
     </div>
 
-    <!-- 3. CRASH COURSE VIEW -->
+    <!-- CRASH COURSE VIEW -->
     <div id="screen-crash-course" class="hidden">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
         <h2><i class="fa-solid fa-book-bookmark" style="color:var(--gold);"></i> Exam Crash Course & Quick Revision Notes</h2>
@@ -264,12 +316,12 @@
 
       <div class="course-grid">
         <div class="course-card">
-          <h3 style="color:var(--primary); margin-bottom:8px;">📜 Moolvidhi & IPC Important Sections</h3>
+          <h3 style="color:var(--primary); margin-bottom:8px;">📜 Moolvidhi & Police Law Sections</h3>
           <ul style="font-size:0.88rem; line-height:1.7; color:#cbd5e1; padding-left:18px;">
-            <li><b>Section 154 (CrPC):</b> FIR darz karna (Sangheya apradh me).</li>
+            <li><b>Section 154 (CrPC):</b> FIR darz karna (Sangheya apradh).</li>
             <li><b>Section 41 (CrPC):</b> Police bina warrant giraftar kar sakti hai.</li>
-            <li><b>Section 302 (IPC):</b> Hatya (Murder) ke liye dand.</li>
-            <li><b>Section 378 / 379 (IPC):</b> Chori (Theft) ki paribhasha aur dand.</li>
+            <li><b>Section 300 / 302 (IPC):</b> Hatya (Murder) ki paribhasha aur dand.</li>
+            <li><b>Section 378 / 379 (IPC):</b> Chori (Theft) ka dand.</li>
           </ul>
         </div>
 
@@ -279,23 +331,33 @@
             <li><b>Article 14 to 18:</b> Samanta ka Adhikar (Right to Equality).</li>
             <li><b>Article 21:</b> Pran aur Daikhik Swatantrata (Life & Liberty).</li>
             <li><b>Article 32:</b> Sanvidhanik Upchar (Sanvidhan ka Hriday - Ambedkar).</li>
-            <li><b>Article 324:</b> Election Commission of India (Chunav Aayog).</li>
+            <li><b>Article 324:</b> Election Commission of India.</li>
           </ul>
         </div>
 
         <div class="course-card">
-          <h3 style="color:var(--green); margin-bottom:8px;">🔢 Quantitative Math Speed Tricks</h3>
+          <h3 style="color:var(--green); margin-bottom:8px;">🐪 Rajasthan 50 Naye Zile Facts</h3>
+          <ul style="font-size:0.88rem; line-height:1.7; color:#cbd5e1; padding-left:18px;">
+            <li><b>Kul Zile:</b> Ab 50 zile aur 10 sambhag hain.</li>
+            <li><b>Anupgarh:</b> Sri Ganganagar aur Bikaner se alag hokar bana.</li>
+            <li><b>Dudu:</b> Kshetraphal me sabse chhota jila ban gaya.</li>
+            <li><b>Phalodi:</b> Jodhpur se alag hokar naya jila bana.</li>
+          </ul>
+        </div>
+
+        <div class="course-card">
+          <h3 style="color:#ff3366; margin-bottom:8px;">🔢 Quantitative Math Speed Tricks</h3>
           <ul style="font-size:0.88rem; line-height:1.7; color:#cbd5e1; padding-left:18px;">
             <li><b>Profit%:</b> [(SP - CP) / CP] × 100</li>
             <li><b>Work & Time:</b> Dono milkar karenge = (A × B) / (A + B) Din.</li>
             <li><b>Simple Interest (SI):</b> (P × R × T) / 100</li>
-            <li><b>Pythagorean Triplets:</b> (3,4,5), (5,12,13), (7,24,25), (8,15,17).</li>
+            <li><b>Pythagorean Triplets:</b> (3,4,5), (5,12,13), (7,24,25).</li>
           </ul>
         </div>
       </div>
     </div>
 
-    <!-- 4. CBT REAL EXAM WINDOW -->
+    <!-- CBT REAL EXAM WINDOW -->
     <div id="screen-cbt" class="cbt-container hidden">
       <div class="cbt-header">
         <div>
@@ -315,7 +377,7 @@
       </div>
     </div>
 
-    <!-- 5. SCORECARD & DETAILED REVIEW -->
+    <!-- SCORECARD & COMPLETE REVIEW WINDOW -->
     <div id="screen-result" class="cbt-container hidden" style="text-align:center;">
       <i class="fa-solid fa-award" style="font-size:4rem; color:var(--gold); margin-bottom:12px;"></i>
       <h2 id="res-heading">Official Scorecard</h2>
@@ -330,7 +392,7 @@
 
       <button class="btn-submit" onclick="showDashboard()">Return to Dashboard</button>
 
-      <!-- Review Section -->
+      <!-- Complete Review Sheet -->
       <div style="margin-top:35px; text-align:left;">
         <h3 style="color:var(--primary); margin-bottom:15px; border-bottom:1px solid #23355d; padding-bottom:8px;">
           <i class="fa-solid fa-list-check"></i> Complete Question Paper & Detailed Answer Key
@@ -341,7 +403,7 @@
       <button class="btn-submit" style="margin-top:25px;" onclick="showDashboard()">Return to Dashboard</button>
     </div>
 
-    <!-- 6. CANDIDATE PROFILE -->
+    <!-- PROFILE VIEW -->
     <div id="screen-profile" class="hidden">
       <div style="background:var(--surface); border:1.5px solid rgba(0,242,254,0.25); border-radius:20px; padding:30px; text-align:center;">
         <img id="prof-avatar-lg" style="width:85px; height:85px; border-radius:50%; border:3px solid var(--primary); margin-bottom:12px;" src="" alt="avatar">
@@ -359,11 +421,11 @@
 
   </div>
 
-  <!-- AUTH SCREEN -->
+  <!-- AUTH / LOGIN SCREEN WITH PIN-PROTECTED SECRET ADMIN -->
   <div id="screen-auth" style="max-width:440px; margin:40px auto; padding:0 15px;">
     <div style="background:var(--surface); border:1.5px solid rgba(0,242,254,0.3); border-radius:24px; padding:32px 24px; text-align:center;">
       <h2 style="font-size:1.6rem; font-weight:800; color:#fff;">Student CBT Portal</h2>
-      <p style="color:var(--text-muted); font-size:0.85rem; margin-top:5px;">Login to access updated competition exams</p>
+      <p style="color:var(--text-muted); font-size:0.85rem; margin-top:5px;">Login to access official mock tests & subjects</p>
       
       <div style="display:flex; background:#070a13; border-radius:10px; padding:4px; margin:20px 0; border:1px solid #1e293b;">
         <button id="tab-login" style="flex:1; padding:10px; border:none; background:var(--primary); color:#000; font-weight:bold; border-radius:8px; cursor:pointer;" onclick="setAuthTab('login')">Existing Login</button>
@@ -388,23 +450,38 @@
         <img width="18" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> Continue with Google
       </button>
 
-      <button onclick="loginAsGuest('guest_01', 'Sunil Kumar (VIP Tester)', 'sunil.admin@test.com')" style="background:transparent; border:none; color:#38bdf8; font-size:0.82rem; margin-top:18px; cursor:pointer; font-weight:bold;">
-        🔒 Quick 1-Click Guest Testing Login
-      </button>
+      <!-- PIN PROTECTED SECRET ADMIN TESTING PANEL -->
+      <div style="margin-top:22px; padding-top:14px; border-top:1px dashed #23355d;">
+        <button onclick="promptSecretAdmin()" style="background:transparent; border:none; color:#64748b; font-size:0.8rem; cursor:pointer; font-weight:bold;">
+          🔒 Admin Secret Testing Login (PIN Protected)
+        </button>
+        <div id="guest-access-panel" class="hidden" style="margin-top:12px; display:grid; gap:8px;">
+          <button onclick="loginAsGuest('guest_01', 'Sunil Kumar (VIP Admin)', 'sunil.admin@test.com', 450)" style="background:#131c30; border:1px solid #23355d; color:#00f2fe; padding:10px; border-radius:8px; font-weight:bold; text-align:left; cursor:pointer;">
+            ⭐ <b>Admin ID 1:</b> Sunil Kumar (All Features Access)
+          </button>
+          <button onclick="loginAsGuest('guest_02', 'Rahul Sharma (SSC Tester)', 'rahul.ssc@test.com', 280)" style="background:#131c30; border:1px solid #23355d; color:#38bdf8; padding:10px; border-radius:8px; font-weight:bold; text-align:left; cursor:pointer;">
+            ⭐ <b>Admin ID 2:</b> Rahul Sharma (SSC & Math Tester)
+          </button>
+          <button onclick="loginAsGuest('guest_03', 'Priya Singh (SI Tester)', 'priya.si@test.com', 320)" style="background:#131c30; border:1px solid #23355d; color:#a855f7; padding:10px; border-radius:8px; font-weight:bold; text-align:left; cursor:pointer;">
+            ⭐ <b>Admin ID 3:</b> Priya Singh (Police SI & Hindi Tester)
+          </button>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <!-- EXAM SETUP MODAL (MODE & DIFFICULTY) -->
+  <!-- EXAM SETUP MODAL -->
   <div id="exam-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <button onclick="closeExamSetup()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
       <h3 style="color:var(--primary); margin-bottom:6px;" id="modal-exam-name">Exam Name</h3>
-      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:18px;">Select examination difficulty & pattern:</p>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:18px;">Select examination difficulty:</p>
 
       <div class="diff-grid">
-        <button class="diff-btn easy" onclick="finalizeAndStart('easy')"><i class="fa-solid fa-seedling"></i><br>Easy</button>
-        <button class="diff-btn medium" onclick="finalizeAndStart('medium')"><i class="fa-solid fa-fire"></i><br>Medium</button>
-        <button class="diff-btn hard" onclick="finalizeAndStart('hard')"><i class="fa-solid fa-skull"></i><br>Hard</button>
+        <button class="diff-btn" style="color:var(--green); border-color:var(--green);" onclick="finalizeAndStart('easy')"><i class="fa-solid fa-seedling"></i><br>Easy</button>
+        <button class="diff-btn" style="color:var(--gold); border-color:var(--gold);" onclick="finalizeAndStart('medium')"><i class="fa-solid fa-fire"></i><br>Medium</button>
+        <button class="diff-btn" style="color:var(--red); border-color:var(--red);" onclick="finalizeAndStart('hard')"><i class="fa-solid fa-skull"></i><br>Hard</button>
       </div>
     </div>
   </div>
@@ -435,175 +512,290 @@
     let selectedExamType = '';
     let selectedExamName = '';
     let selectedQCount = 20;
-    let selectedTimeMinutes = 20;
+    let selectedTimeMinutes = 30;
     let userLang = localStorage.getItem('user_cbt_lang') || 'hi';
 
-    // DYNAMIC DAILY REAL-TIME QUESTIONS REPOSITORY
-    let dailyRealtimeQuestions = [];
+    // DYNAMIC MATH GENERATOR
+    function generateDynamicMath(count, diff) {
+      const list = [];
+      for (let i = 0; i < count; i++) {
+        let cp = (Math.floor(Math.random() * 20) + 10) * (diff === 'hard' ? 120 : 50);
+        let pct = (Math.floor(Math.random() * 6) + 2) * 5;
+        let sp = cp + (cp * pct / 100);
 
-    // AUTOMATIC LIVE FETCH FOR REAL-TIME DAILY CURRENT AFFAIRS
-    async function fetchLiveDailyCurrentAffairs() {
-      try {
-        // Free live educational news & quiz API fallback to generate fresh current questions
-        const response = await fetch("https://opentdb.com/api.php?amount=10&category=9&type=multiple");
-        const data = await response.json();
-        if (data && data.results && data.results.length > 0) {
-          dailyRealtimeQuestions = data.results.map(item => {
-            const allOpts = [...item.incorrect_answers, item.correct_answer];
-            // Shuffle
-            for (let i = allOpts.length - 1; i > 0; i--) {
-              const j = Math.floor(Math.random() * (i + 1));
-              [allOpts[i], allOpts[j]] = [allOpts[j], allOpts[i]];
-            }
-            return {
-              q_hi: `[दैनिक समसामयिकी] ${item.question}`,
-              q_en: `[Live Daily Affairs] ${item.question}`,
-              o_hi: allOpts,
-              o_en: allOpts,
-              a: allOpts.indexOf(item.correct_answer)
-            };
-          });
-        }
-      } catch (err) {
-        console.log("Daily dynamic live fetch active with backup feed:", err);
+        list.push({
+          q_hi: `यदि किसी वस्तु का क्रय-मूल्य ₹${cp} है और इसे ${pct}% लाभ पर बेचा जाए, तो उसका विक्रय-मूल्य क्या होगा?`,
+          q_en: `If the cost price of an item is ₹${cp} and it is sold at a profit of ${pct}%, what is the selling price?`,
+          o_hi: [`₹${sp}`, `₹${sp + 40}`, `₹${sp - 50}`, `₹${sp + 100}`],
+          o_en: [`₹${sp}`, `₹${sp + 40}`, `₹${sp - 50}`, `₹${sp + 100}`],
+          a: 0
+        });
       }
+      return list;
     }
-    fetchLiveDailyCurrentAffairs();
 
-    // AUTHENTIC COMPETITION QUESTION PAPERS
-    const masterOfficialExams = {
-      // 1. SSC CGL TIER-1 (Actual Mix of GK, Reasoning, Maths & English)
-      ssc_cgl: [
+    // ALL COMPETITION & INDIVIDUAL SUBJECT QUESTION REPOSITORY
+    const masterQuestionBank = {
+      // 1. RAJASTHAN GK (50 Districts & History)
+      raj_gk: [
         {
-          q_hi: "[SSC CGL - GK] भारतीय संविधान का कौन सा अनुच्छेद 'विधि के समक्ष समता' (Equality before Law) की गारंटी देता है?",
-          q_en: "[SSC CGL - GK] Which Article of the Indian Constitution guarantees 'Equality before Law'?",
-          o_hi: ["अनुच्छेद 14 (Article 14)", "अनुच्छेद 19", "अनुच्छेद 21", "अनुच्छेद 32"],
-          o_en: ["Article 14", "Article 19", "Article 21", "Article 32"],
+          q_hi: "नवीनतम पुनर्गठन के अनुसार राजस्थान में कुल जिलों की संख्या कितनी है?",
+          q_en: "According to the latest reorganization, what is the total number of districts in Rajasthan?",
+          o_hi: ["50 जिले", "33 जिले", "45 जिले", "52 जिले"],
+          o_en: ["50 Districts", "33 Districts", "45 Districts", "52 Districts"],
           a: 0
         },
         {
-          q_hi: "[SSC CGL - Reasoning] उस विकल्प का चयन करें जो तीसरे पद से उसी प्रकार संबंधित है: 'ASTRONOMY : STARS :: GEOLOGY : ?'",
-          q_en: "[SSC CGL - Reasoning] Select the related term: 'ASTRONOMY : STARS :: GEOLOGY : ?'",
-          o_hi: ["EARTH (पृथ्वी/चट्टानें)", "OCEAN (महासागर)", "PLANTS (पादप)", "SKY (आकाश)"],
-          o_en: ["EARTH & ROCKS", "OCEAN", "PLANTS", "SKY"],
+          q_hi: "नया जिला 'अनूपगढ़' किन जिलों के क्षेत्रों को मिलाकर गठित किया गया है?",
+          q_en: "The newly formed district 'Anupgarh' has been carved out from which parent districts?",
+          o_hi: ["श्रीगंगानगर एवं बीकानेर", "बीकानेर एवं जोधपुर", "बाड़मेर एवं जैसलमेर", "नागौर एवं चूरू"],
+          o_en: ["Sri Ganganagar & Bikaner", "Bikaner & Jodhpur", "Barmer & Jaisalmer", "Nagaur & Churu"],
           a: 0
         },
         {
-          q_hi: "[SSC CGL - Maths] यदि tan θ = 4/3 है, तो (sin θ + cos θ) का मान क्या होगा?",
-          q_en: "[SSC CGL - Maths] If tan θ = 4/3, what is the value of (sin θ + cos θ)?",
-          o_hi: ["7/5", "5/7", "1/5", "4/5"],
-          o_en: ["7/5", "5/7", "1/5", "4/5"],
+          q_hi: "क्षेत्रफल की दृष्टि से राजस्थान का सबसे छोटा जिला वर्तमान में कौन सा है?",
+          q_en: "In terms of geographical land area, which is currently the smallest district in Rajasthan?",
+          o_hi: ["दूदू (Dudu)", "धौलपुर", "सलूम्बर", "सांचौर"],
+          o_en: ["Dudu", "Dholpur", "Salumber", "Sanchore"],
           a: 0
         },
         {
-          q_hi: "[SSC CGL - English] Select the most appropriate ANTONYM of the given word: 'ABUNDANT'",
-          q_en: "[SSC CGL - English] Select the most appropriate ANTONYM of the word: 'ABUNDANT'",
-          o_hi: ["Scarce (अल्प/दुर्लभ)", "Plentiful", "Ample", "Bountiful"],
-          o_en: ["Scarce", "Plentiful", "Ample", "Bountiful"],
+          q_hi: "नया जिला 'फलोदी' किस मूल जिले से पृथक करके बनाया गया है?",
+          q_en: "From which parent district was the new district 'Phalodi' created?",
+          o_hi: ["जोधपुर", "बीकानेर", "नागौर", "जैसलमेर"],
+          o_en: ["Jodhpur", "Bikaner", "Nagaur", "Jaisalmer"],
+          a: 0
+        },
+        {
+          q_hi: "वर्तमान में राजस्थान में प्रशासनिक संभागों (Divisions) की कुल संख्या कितनी है?",
+          q_en: "What is the total number of administrative divisions in Rajasthan at present?",
+          o_hi: ["10 संभाग", "7 संभाग", "8 संभाग", "12 संभाग"],
+          o_en: ["10 Divisions", "7 Divisions", "8 Divisions", "12 Divisions"],
+          a: 0
+        },
+        {
+          q_hi: "थार का मरुस्थल राजस्थान के कुल भूभाग का लगभग कितना प्रतिशत क्षेत्र आच्छादित करता है?",
+          q_en: "Thar Desert covers approximately what percentage of the total geographical area of Rajasthan?",
+          o_hi: ["61.11%", "50.00%", "40.50%", "72.00%"],
+          o_en: ["61.11%", "50.00%", "40.50%", "72.00%"],
           a: 0
         }
       ],
 
-      // 2. POLICE SUB-INSPECTOR (Moolvidhi, Sanvidhan & Hindi)
-      police_si: [
+      // 2. INDIA GK (National Maps, Polity, Geography)
+      india_gk: [
         {
-          q_hi: "[Police SI - Moolvidhi] भारतीय दंड संहिता (IPC) की धारा 300 निम्नलिखित में से किस अपराध को परिभाषित करती है?",
-          q_en: "[Police SI - Penal Law] Section 300 of the Indian Penal Code defines which offense?",
-          o_hi: ["हत्या (Murder)", "आपराधिक मानव वध", "दहेज हत्या", "गंभीर उपहति"],
-          o_en: ["Murder", "Culpable Homicide", "Dowry Death", "Grievous Hurt"],
+          q_hi: "वर्तमान में भारत में कुल कितने राज्य और केंद्र शासित प्रदेश (UTs) विद्यमान हैं?",
+          q_en: "Presently, how many States and Union Territories (UTs) are there in India?",
+          o_hi: ["28 राज्य और 8 UTs", "29 राज्य और 7 UTs", "28 राज्य और 9 UTs", "29 राज्य और 8 UTs"],
+          o_en: ["28 States & 8 UTs", "29 States & 7 UTs", "28 States & 9 UTs", "29 States & 8 UTs"],
           a: 0
         },
         {
-          q_hi: "[Police SI - CrPC] दंड प्रक्रिया संहिता की किस धारा के अंतर्गत पुलिस किसी संज्ञेय अपराध की FIR दर्ज करने के लिए बाध्य है?",
-          q_en: "[Police SI - CrPC] Under which section of CrPC is police legally bound to lodge an FIR in a cognizable offense?",
+          q_hi: "भारत के नवीन संसद भवन का मुख्य वास्तुशिल्पीय आकार (Shape) कैसा है?",
+          q_en: "What is the architectural geometry of the newly constructed Parliament Building of India?",
+          o_hi: ["त्रिकोणीय (Triangular)", "वृत्ताकार (Circular)", "आयताकार (Rectangular)", "पंचभुजाकार"],
+          o_en: ["Triangular", "Circular", "Rectangular", "Pentagonal"],
+          a: 0
+        },
+        {
+          q_hi: "भारत की मुख्य भूमि में सर्वाधिक लंबी समुद्री तटरेखा किस राज्य की है?",
+          q_en: "Which Indian state has the longest mainland coastal shoreline?",
+          o_hi: ["गुजरात", "आंध्र प्रदेश", "तमिलनाडु", "महाराष्ट्र"],
+          o_en: ["Gujarat", "Andhra Pradesh", "Tamil Nadu", "Maharashtra"],
+          a: 0
+        },
+        {
+          q_hi: "लद्दाख केंद्र शासित प्रदेश में कुल कितने जिले शामिल हैं?",
+          q_en: "How many administrative districts are situated in the Union Territory of Ladakh?",
+          o_hi: ["2 (लेह और कारगिल)", "4", "1", "6"],
+          o_en: ["2 (Leh and Kargil)", "4", "1", "6"],
+          a: 0
+        },
+        {
+          q_hi: "विश्व का सबसे ऊँचा रेलवे आर्च ब्रिज किस नदी पर निर्मित किया गया है?",
+          q_en: "On which river has the world's highest railway arch bridge been constructed?",
+          o_hi: ["चिनाब नदी", "झेलम", "सिंधु", "रावी"],
+          o_en: ["Chenab River", "Jhelum", "Indus", "Ravi"],
+          a: 0
+        }
+      ],
+
+      // 3. SAMANYA HINDI (Grammar & Competitions)
+      hindi: [
+        {
+          q_hi: "'परोपकार' शब्द में व्याकरण की दृष्टि से कौन सी संधि है?",
+          q_en: "Which grammatical Sandhi is present in the Hindi word 'Paropkar'?",
+          o_hi: ["गुण संधि", "वृद्धि संधि", "दीर्घ संधि", "यण संधि"],
+          o_en: ["Guna Sandhi", "Vriddhi Sandhi", "Dirgha Sandhi", "Yan Sandhi"],
+          a: 0
+        },
+        {
+          q_hi: "'यथाशक्ति' शब्द में कौन सा समास पाया जाता है?",
+          q_en: "Which compound (Samas) is present in the word 'Yathashakti'?",
+          o_hi: ["अव्ययीभाव समास", "तत्पुरुष समास", "द्वंद्व समास", "कर्मधारय समास"],
+          o_en: ["Avyayibhav Samas", "Tatpurush Samas", "Dvandva Samas", "Karmadharaya Samas"],
+          a: 0
+        },
+        {
+          q_hi: "'आँखों का तारा होना' मुहावरे का शुद्ध अर्थ क्या है?",
+          q_en: "What is the authentic meaning of the Hindi idiom 'Aankhon ka tara hona'?",
+          o_hi: ["अत्यधिक प्रिय होना", "अंधा हो जाना", "धोखा देना", "आँखों में दर्द होना"],
+          o_en: ["To be extremely loved / dear", "To become blind", "To deceive someone", "To suffer eye pain"],
+          a: 0
+        },
+        {
+          q_hi: "वर्तनी की दृष्टि से निम्नलिखित में से शुद्ध शब्द का चयन कीजिए:",
+          q_en: "Select the word with correct Hindi orthographic spelling:",
+          o_hi: ["उज्ज्वल", "उज्वल", "उज्जवल", "उज्वल्य"],
+          o_en: ["उज्ज्वल (Ujjwal)", "उज्वल", "उज्जवल", "उज्वल्य"],
+          a: 0
+        }
+      ],
+
+      // 4. GENERAL ENGLISH (Grammar & Vocab)
+      english: [
+        {
+          q_hi: "Choose the correct SYNONYM of the word 'METICULOUS':",
+          q_en: "Choose the correct SYNONYM of the word 'METICULOUS':",
+          o_hi: ["Careful and Thorough", "Careless", "Rapid", "Lazy"],
+          o_en: ["Careful and Thorough", "Careless", "Rapid", "Lazy"],
+          a: 0
+        },
+        {
+          q_hi: "Choose the correct ANTONYM of the word 'TRANSPARENT':",
+          q_en: "Choose the correct ANTONYM of the word 'TRANSPARENT':",
+          o_hi: ["Opaque", "Lucid", "Clear", "Bright"],
+          o_en: ["Opaque", "Lucid", "Clear", "Bright"],
+          a: 0
+        },
+        {
+          q_hi: "Identify the meaning of the idiom: 'Break the ice'",
+          q_en: "Identify the meaning of the idiom: 'Break the ice'",
+          o_hi: ["To initiate conversation in awkward silence", "To freeze solid water", "To display anger", "To wage war"],
+          o_en: ["To initiate conversation in awkward silence", "To freeze solid water", "To display anger", "To wage war"],
+          a: 0
+        },
+        {
+          q_hi: "Fill in the blank: 'Neither of the participants _____ present yesterday.'",
+          q_en: "Fill in the blank: 'Neither of the participants _____ present yesterday.'",
+          o_hi: ["was", "were", "are", "have been"],
+          o_en: ["was", "were", "are", "have been"],
+          a: 0
+        }
+      ],
+
+      // 5. REASONING (तर्कशक्ति)
+      reasoning: [
+        {
+          q_hi: "यदि किसी कूट भाषा में 'ROSE' को 'ILHV' लिखा जाता है, तो उसी कूट भाषा में 'LEAF' को क्या लिखा जाएगा?",
+          q_en: "In a certain code language, if 'ROSE' is written as 'ILHV', how will 'LEAF' be written?",
+          o_hi: ["OVZU", "OVRU", "OVSV", "NWST"],
+          o_en: ["OVZU", "OVRU", "OVSV", "NWST"],
+          a: 0
+        },
+        {
+          q_hi: "श्रृंखला में लुप्त पद ज्ञात करें: 4, 9, 19, 39, 79, ?",
+          q_en: "Find the missing term in the sequence: 4, 9, 19, 39, 79, ?",
+          o_hi: ["159", "149", "169", "158"],
+          o_en: ["159", "149", "169", "158"],
+          a: 0
+        },
+        {
+          q_hi: "एक व्यक्ति दक्षिण की ओर 5 किमी चलता है, फिर दाहिने मुड़कर 3 किमी चलता है, फिर बाएं मुड़कर 5 किमी चलता है। अब वह अपने प्रारंभिक स्थान से किस दिशा में है?",
+          q_en: "A man walks 5 km South, turns right and walks 3 km, then turns left and walks 5 km. In which direction is he from his starting point?",
+          o_hi: ["दक्षिण-पश्चिम (South-West)", "दक्षिण (South)", "पश्चिम (West)", "उत्तर-पूर्व (North-East)"],
+          o_en: ["South-West", "South", "West", "North-East"],
+          a: 0
+        },
+        {
+          q_hi: "रक्त संबंध: 'A, B का भाई है। C, B की माता है। D, C का पिता है।' A का D से क्या संबंध है?",
+          q_en: "Blood Relation: 'A is brother of B. C is mother of B. D is father of C.' How is A related to D?",
+          o_hi: ["नाती / पोता (Grandson)", "पुत्र (Son)", "दादा (Grandfather)", "भाई (Brother)"],
+          o_en: ["Grandson", "Son", "Grandfather", "Brother"],
+          a: 0
+        }
+      ],
+
+      // 6. COMPUTER PROFICIENCY
+      computer: [
+        {
+          q_hi: "IPv4 नेटवर्क एड्रेस कुल कितने बिट्स (Bits) का होता है?",
+          q_en: "How many bits constitute an IPv4 internet protocol address?",
+          o_hi: ["32 बिट्स", "16 बिट्स", "64 बिट्स", "128 बिट्स"],
+          o_en: ["32 Bits", "16 Bits", "64 Bits", "128 Bits"],
+          a: 0
+        },
+        {
+          q_hi: "कंप्यूटर प्रणाली का केंद्रीय मस्तिष्क किसे कहा जाता है?",
+          q_en: "Which electronic component is recognized as the Brain of a computer?",
+          o_hi: ["केंद्रीय प्रसंस्करण इकाई (CPU)", "रैंडम एक्सेस मेमोरी (RAM)", "मदरबोर्ड", "हार्ड डिस्क"],
+          o_en: ["Central Processing Unit (CPU)", "Random Access Memory (RAM)", "Motherboard", "Hard Disk Drive"],
+          a: 0
+        }
+      ],
+
+      // 7. FULL EXAMS
+      ssc_cgl: [
+        {
+          q_hi: "[SSC CGL] भारतीय संविधान का कौन सा अनुच्छेद 'विधि के समक्ष समता' (Equality before Law) की गारंटी देता है?",
+          q_en: "[SSC CGL] Which Article of the Indian Constitution guarantees 'Equality before Law'?",
+          o_hi: ["अनुच्छेद 14", "अनुच्छेद 19", "अनुच्छेद 21", "अनुच्छेद 32"],
+          o_en: ["Article 14", "Article 19", "Article 21", "Article 32"],
+          a: 0
+        },
+        {
+          q_hi: "[SSC CGL] भारत के नियंत्रक एवं महालेखापरीक्षक (CAG) की नियुक्ति किस अनुच्छेद के तहत की जाती है?",
+          q_en: "[SSC CGL] Under which Constitutional Article is the CAG of India appointed?",
+          o_hi: ["अनुच्छेद 148", "अनुच्छेद 280", "अनुच्छेद 324", "अनुच्छेद 110"],
+          o_en: ["Article 148", "Article 280", "Article 324", "Article 110"],
+          a: 0
+        }
+      ],
+
+      police_si: [
+        {
+          q_hi: "[Police SI] दंड प्रक्रिया संहिता (CrPC) के तहत प्रथम सूचना रिपोर्ट (FIR) किस धारा में दर्ज की जाती है?",
+          q_en: "[Police SI] Under which statutory section of CrPC is a First Information Report (FIR) registered?",
           o_hi: ["धारा 154", "धारा 161", "धारा 173", "धारा 100"],
           o_en: ["Section 154", "Section 161", "Section 173", "Section 100"],
           a: 0
         },
         {
-          q_hi: "[Police SI - Hindi] 'प्रत्युपकार' शब्द में कौन सा उपसर्ग लगा हुआ है?",
-          q_en: "[Police SI - Hindi] Which prefix (Upasarg) is present in the word 'Pratyupkar'?",
-          o_hi: ["प्रति (Prati)", "प्र", "प्रत्यु", "पर"],
-          o_en: ["Prati", "Pra", "Pratyu", "Par"],
-          a: 0
-        },
-        {
-          q_hi: "[Police SI - Sanvidhan] उच्चतम न्यायालय (Supreme Court) को संविधान के किस अनुच्छेद के तहत रिट जारी करने की शक्ति प्राप्त है?",
-          q_en: "[Police SI - Constitution] Under which Article does the Supreme Court have the power to issue Writs?",
-          o_hi: ["अनुच्छेद 32 (Article 32)", "अनुच्छेद 226", "अनुच्छेद 136", "अनुच्छेद 143"],
-          o_en: ["Article 32", "Article 226", "Article 136", "Article 143"],
+          q_hi: "[Police SI] भारतीय दंड संहिता (IPC) की धारा 300 निम्नलिखित में से किस अपराध को परिभाषित करती है?",
+          q_en: "[Police SI] Section 300 of the Indian Penal Code defines which offense?",
+          o_hi: ["हत्या (Murder)", "आपराधिक मानव वध", "दहेज हत्या", "गंभीर उपहति"],
+          o_en: ["Murder", "Culpable Homicide", "Dowry Death", "Grievous Hurt"],
           a: 0
         }
       ],
 
-      // 3. UPSC / STATE PCS PRELIMS (Conceptual GS-1)
       upsc_pre: [
         {
           q_hi: "[UPSC GS-1] 'मोंट्रेक्स रिकॉर्ड' (Montreux Record) अंतरराष्ट्रीय स्तर पर किसके संरक्षण से संबंधित रजिस्टर है?",
           q_en: "[UPSC GS-1] The 'Montreux Record' is a register associated internationally with:",
-          o_hi: ["रामसर सम्मेलन के तहत संकटग्रस्त आर्द्रभूमियां (Ramsar Wetland Sites)", "लुप्तप्राय पादप प्रजातियां", "जैव विविधता हॉटस्पॉट", "ओजोन परत क्षरण"],
-          o_en: ["Ramsar Wetland Sites facing ecological changes", "Endangered Flora Species", "Biodiversity Hotspots", "Ozone Depletion"],
-          a: 0
-        },
-        {
-          q_hi: "[UPSC GS-1] भारतीय रिजर्व बैंक (RBI) द्वारा 'कैश रिजर्व रेशियो' (CRR) बढ़ाए जाने पर बाजार में तरलता (Liquidity) पर क्या प्रभाव पड़ता है?",
-          q_en: "[UPSC GS-1] When the RBI increases the Cash Reserve Ratio (CRR), what happens to market liquidity?",
-          o_hi: ["बाजार में तरलता घटती है (Liquidity decreases)", "तरलता बढ़ती है", "कोई प्रभाव नहीं पड़ता", "ब्याज दरें शून्य हो जाती हैं"],
-          o_en: ["Liquidity in market decreases", "Liquidity increases", "No impact", "Interest rates become zero"],
+          o_hi: ["रामसर सम्मेलन के तहत संकटग्रस्त आर्द्रभूमियां (Ramsar Sites)", "लुप्तप्राय पादप प्रजातियां", "जैव विविधता", "ओजोन"],
+          o_en: ["Ramsar Wetland Sites facing changes", "Endangered Flora", "Biodiversity", "Ozone"],
           a: 0
         }
       ],
 
-      // 4. RAILWAY RRB NTPC (Science, Railways, Math)
       rrb_ntpc: [
         {
-          q_hi: "[RRB NTPC - Science] प्रकाश संश्लेषण (Photosynthesis) की प्रक्रिया में पौधों द्वारा कौन सी गैस अवशोषित की जाती है?",
-          q_en: "[RRB NTPC - Science] Which gas is absorbed by green plants during photosynthesis?",
-          o_hi: ["कार्बन डाइऑक्साइड (CO₂)", "ऑक्सीजन (O₂)", "नाइट्रोजन (N₂)", "हाइड्रोजन"],
-          o_en: ["Carbon Dioxide (CO₂)", "Oxygen (O₂)", "Nitrogen (N₂)", "Hydrogen"],
-          a: 0
-        },
-        {
-          q_hi: "[RRB NTPC - GK] भारत में रेल बजट को सामान्य केंद्रीय बजट में किस वर्ष पुनः मिला दिया गया था?",
-          q_en: "[RRB NTPC - GK] In which year was the Railway Budget merged back into the Union Budget in India?",
-          o_hi: ["2017", "2014", "2019", "2015"],
-          o_en: ["2017", "2014", "2019", "2015"],
+          q_hi: "[RRB NTPC] भारत में पहली रेलगाड़ी 1853 में बोरीबंदर (मुंबई) से कहाँ तक चलाई गई थी?",
+          q_en: "[RRB NTPC] In 1853, India's first passenger train operated between Bori Bunder (Mumbai) and:",
+          o_hi: ["ठाणे (Thane)", "कल्याण", "पुणे", "सूरत"],
+          o_en: ["Thane", "Kalyan", "Pune", "Surat"],
           a: 0
         }
       ],
 
-      // 5. DAILY UPDATED CURRENT AFFAIRS
       current_daily: [
         {
-          q_hi: "[समसामयिकी 2026] भारत द्वारा आयोजित वैश्विक नवाचार शिखर सम्मेलन का मुख्य थीम क्या रखा गया?",
+          q_hi: "[दैनिक समसामयिकी 2026] भारत द्वारा आयोजित वैश्विक नवाचार शिखर सम्मेलन का मुख्य थीम क्या रखा गया?",
           q_en: "[Current Affairs 2026] What is the core agenda of the Global Innovation Summit hosted by India?",
           o_hi: ["सतत विकास एवं आर्टिफिशियल इंटेलिजेंस (Sustainable AI)", "ग्लोबल ट्रेड 4.0", "डिजिटल करेंसी", "अंतरिक्ष अनुसंधान"],
           o_en: ["Sustainable AI & Green Growth", "Global Trade 4.0", "Digital Currency", "Space Research"],
-          a: 0
-        },
-        {
-          q_hi: "[समसामयिकी 2026] भारतीय अंतरिक्ष अनुसंधान संगठन (ISRO) द्वारा हाल ही में प्रक्षेपित अगली पीढ़ी के उपग्रह का उद्देश्य क्या है?",
-          q_en: "[Current Affairs 2026] What is the primary purpose of ISRO's newly launched generation satellite?",
-          o_hi: ["उन्नत मौसम निगरानी एवं समुद्री आपदा चेतावनी", "चंद्रमा मानचित्रण", "सैन्य निगरानी", "गहन अंतरिक्ष अन्वेषण"],
-          o_en: ["Advanced Weather Monitoring & Disaster Warning", "Lunar Mapping", "Military Surveillance", "Deep Space Exploration"],
-          a: 0
-        }
-      ],
-
-      // 6. REASONING
-      reasoning: [
-        {
-          q_hi: "यदि किसी कूट भाषा में 'ROAD' को 'URDG' लिखा जाता है, तो उसी कूट भाषा में 'SWAN' को क्या लिखा जाएगा?",
-          q_en: "In a code language, if 'ROAD' is written as 'URDG', how will 'SWAN' be written?",
-          o_hi: ["VZDO", "VZDP", "VYCQ", "UXDO"],
-          o_en: ["VZDO", "VZDP", "VYCQ", "UXDO"],
-          a: 0
-        },
-        {
-          q_hi: "श्रृंखला में अगला पद ज्ञात करें: 2, 6, 12, 20, 30, 42, ?",
-          q_en: "Find the next term in the series: 2, 6, 12, 20, 30, 42, ?",
-          o_hi: ["56", "54", "52", "60"],
-          o_en: ["56", "54", "52", "60"],
           a: 0
         }
       ]
@@ -630,14 +822,30 @@
       };
     }
 
-    function getExamQuestions(type, count) {
-      let pool = masterOfficialExams[type] || masterOfficialExams.ssc_cgl;
-      
-      // If Daily Current is selected, combine static buffer with freshly fetched live feed
-      if (type === 'current_daily' && dailyRealtimeQuestions.length > 0) {
-        pool = [...pool, ...dailyRealtimeQuestions];
+    function getExamQuestions(type, count, diff) {
+      if (type === 'math') return generateDynamicMath(count, diff);
+
+      if (type === 'ssc_cgl') {
+        const p1 = masterQuestionBank.ssc_cgl.map(q => randomizeItem(q));
+        const p2 = masterQuestionBank.english.map(q => randomizeItem(q));
+        const p3 = masterQuestionBank.reasoning.map(q => randomizeItem(q));
+        const p4 = generateDynamicMath(6, diff);
+        let res = shuffle([...p1, ...p2, ...p3, ...p4]);
+        while(res.length < count) res = res.concat(res);
+        return res.slice(0, count);
       }
 
+      if (type === 'police_si') {
+        const p1 = masterQuestionBank.police_si.map(q => randomizeItem(q));
+        const p2 = masterQuestionBank.hindi.map(q => randomizeItem(q));
+        const p3 = masterQuestionBank.raj_gk.map(q => randomizeItem(q));
+        const p4 = masterQuestionBank.reasoning.map(q => randomizeItem(q));
+        let res = shuffle([...p1, ...p2, ...p3, ...p4]);
+        while(res.length < count) res = res.concat(res);
+        return res.slice(0, count);
+      }
+
+      let pool = masterQuestionBank[type] || masterQuestionBank.india_gk;
       let res = shuffle([...pool]).map(item => randomizeItem(item));
       while(res.length < count) {
         res = res.concat(shuffle([...pool]).map(item => randomizeItem(item)));
@@ -660,7 +868,7 @@
 
     function finalizeAndStart(diff) {
       closeExamSetup();
-      currentTest = getExamQuestions(selectedExamType, selectedQCount);
+      currentTest = getExamQuestions(selectedExamType, selectedQCount, diff);
       userAnswers = {};
       currentIndex = 0;
       timerTotalSeconds = selectedTimeMinutes * 60;
@@ -719,7 +927,6 @@
       }, 1000);
     }
 
-    // FINAL SUBMISSION WITH QUESTION REVIEW
     async function submitExam() {
       clearInterval(timerInterval);
       let correct = 0;
@@ -879,8 +1086,19 @@
       auth.signInWithPopup(p).catch(() => auth.signInWithRedirect(p));
     }
 
-    async function loginAsGuest(id, name, email) {
-      currentUser = { uid: id, displayName: name, email: email, photoURL: `https://ui-avatars.com/api/?name=${name}&background=00f2fe&color=000`, scorePoints: 350, totalTests: 12, cleared: 9, failed: 3 };
+    // SECRET PIN PROMPT FOR TESTING IDS
+    function promptSecretAdmin() {
+      const pin = prompt("Admin Secret Security PIN darz karein:");
+      if (pin === "7890") {
+        document.getElementById("guest-access-panel").classList.remove("hidden");
+        alert("✅ Admin Secret Testing IDs Unlocked!");
+      } else if (pin !== null) {
+        alert("❌ Galat Security PIN!");
+      }
+    }
+
+    async function loginAsGuest(id, name, email, pts) {
+      currentUser = { uid: id, displayName: name, email: email, photoURL: `https://ui-avatars.com/api/?name=${name}&background=00f2fe&color=000`, scorePoints: pts, totalTests: 12, cleared: 9, failed: 3 };
       try {
         const doc = await db.collection("candidates").doc(id).get();
         if (doc.exists) currentUser = doc.data();
@@ -920,7 +1138,7 @@
       location.reload();
     }
 
-    function openLanguageChooserModal() {
+    function toggleLanguage() {
       userLang = (userLang === 'hi') ? 'en' : 'hi';
       localStorage.setItem('user_cbt_lang', userLang);
       document.getElementById("btn-active-lang").innerText = userLang === 'hi' ? "🌐 हिंदी" : "🌐 English";
