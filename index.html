@@ -51,50 +51,54 @@
     /* Dashboard Grid */
     .section-title { font-size: 1.25rem; font-weight: 700; color: #fff; margin: 25px 0 15px; display: flex; align-items: center; gap: 10px; }
     .exam-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
-    .exam-card { background: var(--card); border: 1px solid #23304e; border-radius: 16px; padding: 20px; cursor: pointer; transition: 0.25s; position: relative; overflow: hidden; }
+    .exam-card { background: var(--card); border: 1.5px solid #23304e; border-radius: 16px; padding: 20px; cursor: pointer; transition: 0.25s; position: relative; overflow: hidden; }
     .exam-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 8px 25px rgba(0,242,254,0.15); }
     .exam-icon { font-size: 2.2rem; margin-bottom: 12px; }
     .exam-badge { position: absolute; top: 15px; right: 15px; background: rgba(0, 242, 254, 0.15); color: var(--primary); font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: bold; }
     .exam-meta { font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; display: flex; gap: 15px; }
 
-    /* Interactive Setup Modal (Mode & Difficulty Selection) */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
-    .modal-card { background: var(--surface); border: 1px solid #23304e; border-radius: 20px; width: 100%; max-width: 460px; padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); position: relative; }
-    .modal-close { position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer; }
-    .mode-choice-btn { width: 100%; padding: 14px; background: #131c30; border: 1.5px solid #23304e; color: #fff; border-radius: 12px; margin-bottom: 12px; cursor: pointer; text-align: left; transition: 0.2s; font-weight: 600; display: flex; align-items: center; justify-content: space-between; }
-    .mode-choice-btn:hover { border-color: var(--primary); background: #1a2744; }
-    
+    /* Modal Setup Overlay */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
+    .modal-card { background: var(--surface); border: 1.5px solid #2e3e68; border-radius: 20px; width: 100%; max-width: 460px; padding: 25px; box-shadow: 0 20px 45px rgba(0,0,0,0.7); position: relative; }
+    .modal-close { position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: #94a3b8; font-size: 1.3rem; cursor: pointer; }
+
+    /* Selection Elements */
+    .choice-btn { width: 100%; padding: 14px; background: #131c30; border: 1.5px solid #23304e; color: #fff; border-radius: 12px; margin-bottom: 12px; cursor: pointer; text-align: left; font-weight: 600; display: flex; align-items: center; justify-content: space-between; transition: 0.2s; }
+    .choice-btn:hover { border-color: var(--primary); background: #192746; }
+
     .diff-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 15px 0; }
-    .diff-btn { padding: 14px 10px; border-radius: 10px; border: 1.5px solid #23304e; background: #131c30; color: #fff; font-weight: bold; cursor: pointer; text-align: center; }
+    .diff-btn { padding: 14px 8px; border-radius: 10px; border: 1.5px solid #23304e; background: #131c30; color: #fff; font-weight: bold; cursor: pointer; text-align: center; }
     .diff-btn.easy:hover { border-color: var(--green); color: var(--green); }
     .diff-btn.medium:hover { border-color: var(--gold); color: var(--gold); }
     .diff-btn.hard:hover { border-color: var(--red); color: var(--red); }
 
-    .room-code-box { background: #070a13; border: 1px solid var(--accent); padding: 15px; border-radius: 12px; text-align: center; margin: 15px 0; }
-    .room-code-text { font-size: 1.8rem; font-weight: 900; letter-spacing: 4px; color: var(--primary); margin: 5px 0; }
+    .room-code-box { background: #070a13; border: 1.5px solid var(--accent); padding: 15px; border-radius: 12px; text-align: center; margin: 15px 0; }
+    .room-code-text { font-size: 1.8rem; font-weight: 900; letter-spacing: 4px; color: var(--primary); margin: 6px 0; }
 
-    /* Profile View */
+    /* Live CBT Exam Screen */
+    .cbt-container { background: var(--surface); border: 1px solid #23304e; border-radius: 18px; padding: 25px; }
+    .cbt-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #23304e; padding-bottom: 15px; margin-bottom: 20px; }
+    .cbt-timer { font-size: 1.3rem; font-weight: 800; color: var(--gold); background: #221808; border: 1px solid rgba(255,183,3,0.3); padding: 6px 16px; border-radius: 25px; }
+    .btn-lang-toggle { background: #1a2744; border: 1px solid var(--primary); color: #fff; padding: 6px 12px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; }
+    
+    .q-text { font-size: 1.18rem; line-height: 1.6; margin-bottom: 25px; }
+    .opt-list { display: grid; gap: 12px; }
+    .cbt-opt { background: var(--card); border: 1.5px solid #23304e; padding: 14px 18px; border-radius: 12px; font-size: 1rem; color: #fff; cursor: pointer; text-align: left; transition: 0.2s; }
+    .cbt-opt:hover { border-color: var(--primary); background: #1e2c4a; }
+    .cbt-opt.selected { border-color: var(--primary); background: rgba(0, 242, 254, 0.15); font-weight: bold; }
+    .cbt-nav { display: flex; justify-content: space-between; margin-top: 25px; padding-top: 20px; border-top: 1px solid #23304e; }
+    .btn-nav { background: #263558; border: none; color: #fff; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; }
+    .btn-submit { background: linear-gradient(90deg, #00f59b, #00b4d8); color: #000; font-weight: bold; border: none; padding: 10px 24px; border-radius: 10px; cursor: pointer; }
+
+    /* Profile Card */
     .profile-card { background: var(--surface); border: 1px solid #23304e; border-radius: 18px; padding: 25px; text-align: center; margin-bottom: 25px; }
     .user-avatar-lg { width: 85px; height: 85px; border-radius: 50%; border: 3px solid var(--primary); margin-bottom: 12px; }
     .stat-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 20px; }
     .stat-box { background: var(--card); padding: 12px; border-radius: 12px; border: 1px solid #23304e; }
     .stat-num { font-size: 1.4rem; font-weight: 800; color: var(--gold); display: block; }
-
-    /* CBT Real Exam Window */
-    .cbt-container { background: var(--surface); border: 1px solid #23304e; border-radius: 18px; padding: 25px; }
-    .cbt-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #23304e; padding-bottom: 15px; margin-bottom: 20px; }
-    .cbt-timer { font-size: 1.3rem; font-weight: 800; color: var(--gold); background: #221808; border: 1px solid rgba(255,183,3,0.3); padding: 6px 16px; border-radius: 25px; }
-    .q-text { font-size: 1.15rem; line-height: 1.6; margin-bottom: 25px; }
-    .opt-list { display: grid; gap: 12px; }
-    .cbt-opt { background: var(--card); border: 1.5px solid #23304e; padding: 14px 18px; border-radius: 12px; font-size: 1rem; color: #fff; cursor: pointer; text-align: left; transition: 0.2s; }
-    .cbt-opt:hover { border-color: var(--primary); background: #1e2c4a; }
-    .cbt-opt.selected { border-color: var(--primary); background: rgba(0, 242, 254, 0.15); }
-    .cbt-nav { display: flex; justify-content: space-between; margin-top: 25px; padding-top: 20px; border-top: 1px solid #23304e; }
-    .btn-nav { background: #263558; border: none; color: #fff; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; }
-    .btn-submit { background: linear-gradient(90deg, #00f59b, #00b4d8); color: #000; font-weight: bold; border: none; padding: 10px 24px; border-radius: 10px; cursor: pointer; }
   </style>
 
-  <!-- Firebase SDK -->
+  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
@@ -113,7 +117,7 @@
     </div>
   </header>
 
-  <!-- AUTH CARD -->
+  <!-- LOGIN SCREEN -->
   <div id="screen-auth" class="auth-card">
     <i class="fa-solid fa-shield-halved" style="font-size: 3rem; color: var(--primary); margin-bottom: 8px;"></i>
     <h2>Student CBT Portal</h2>
@@ -180,7 +184,7 @@
       <!-- Full Competition Exams -->
       <div class="section-title"><i class="fa-solid fa-file-signature" style="color:var(--gold);"></i> Full Competition Exams (Official Pattern)</div>
       <div class="exam-grid">
-        <div class="exam-card" onclick="openExamSetup('ssc_cgl', 'SSC CGL Mock Test', 25, 20)">
+        <div class="exam-card" onclick="openExamSetup('ssc_cgl', 'SSC CGL Tier-1 Mock Test', 25, 20)">
           <span class="exam-badge">Tier-1 CBT</span>
           <div class="exam-icon" style="color:#00f2fe;"><i class="fa-solid fa-building-columns"></i></div>
           <h3>SSC CGL Mock Test</h3>
@@ -224,7 +228,7 @@
       </div>
 
       <!-- Languages & Core Subjects -->
-      <div class="section-title"><i class="fa-solid fa-book-open-reader" style="color:var(--green);"></i> Language & Subject Speed Tests (20 Qs / 30 Min)</div>
+      <div class="section-title"><i class="fa-solid fa-book-open-reader" style="color:var(--green);"></i> Language & Core Speed Tests (20 Qs / 30 Min)</div>
       <div class="exam-grid">
         <div class="exam-card" onclick="openExamSetup('hindi', 'Samanya Hindi (Grammar & Competition)', 20, 30)">
           <span class="exam-badge">Grammar</span>
@@ -268,7 +272,10 @@
           <h3 id="exam-title">CBT Examination</h3>
           <p style="color:var(--text-muted); font-size:0.85rem;" id="exam-q-counter">Question 1 of 20</p>
         </div>
-        <div class="cbt-timer" id="timer-display"><i class="fa-regular fa-clock"></i> 30:00</div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <button class="btn-lang-toggle" onclick="toggleLanguageInTest()" id="btn-lang-indicator">🌐 EN / हि</button>
+          <div class="cbt-timer" id="timer-display"><i class="fa-regular fa-clock"></i> 30:00</div>
+        </div>
       </div>
 
       <div class="q-text" id="cbt-question-text">Question load ho raha hai...</div>
@@ -298,22 +305,38 @@
 
   </div>
 
-  <!-- STEP 1 & 2 MODAL (MODE SELECTION & DIFFICULTY LEVEL) -->
+  <!-- MULTI-STAGE SETUP MODAL (LANGUAGE -> MODE -> BATTLE/SOLO -> DIFFICULTY) -->
   <div id="exam-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <button class="modal-close" onclick="closeExamSetup()"><i class="fa-solid fa-xmark"></i></button>
       
-      <!-- STAGE 1: MODE SELECTION -->
-      <div id="modal-stage-mode">
+      <!-- STAGE 0: LANGUAGE SELECTION -->
+      <div id="modal-stage-lang">
         <h3 style="color:var(--primary); margin-bottom:6px;" id="modal-exam-name">Exam Name</h3>
-        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:18px;">Aap is exam ko kis tarah khelna chahte hain?</p>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:18px;">Apni pasandeeda Language (Bhasha) chunein:</p>
 
-        <button class="mode-choice-btn" onclick="selectMode('solo')">
+        <button class="choice-btn" onclick="selectExamLanguage('hi')">
+          <span>🇮🇳 <b>हिंदी (Hindi Medium)</b></span>
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+        <button class="choice-btn" onclick="selectExamLanguage('en')">
+          <span>🇬🇧 <b>English Medium</b></span>
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <!-- STAGE 1: MODE SELECTION (SOLO / BATTLE) -->
+      <div id="modal-stage-mode" class="hidden">
+        <h3 style="color:var(--primary); margin-bottom:6px;">Select Play Mode</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:18px;">Aap is test ko kis tarah khelna chahte hain?</p>
+
+        <button class="choice-btn" onclick="selectMode('solo')">
           <span><i class="fa-solid fa-user"></i> Solo Play (Akele Practice Karein)</span>
           <i class="fa-solid fa-chevron-right"></i>
         </button>
 
-        <button class="mode-choice-btn" onclick="selectMode('battle')">
+        <button class="choice-btn" onclick="selectMode('battle')">
           <span><i class="fa-solid fa-bolt" style="color:var(--gold);"></i> 1 vs 1 Live Battle Room</span>
           <i class="fa-solid fa-chevron-right"></i>
         </button>
@@ -391,6 +414,8 @@
     let selectedTimeMinutes = 30;
     let currentPlayMode = 'solo';
     let currentRoomCode = '';
+    let chosenLanguage = 'hi'; // 'hi' or 'en'
+    let currentDifficulty = 'medium';
 
     function updateUrlPath(pageName) {
       window.location.hash = pageName;
@@ -569,9 +594,9 @@
       }
     });
 
-    // ==========================================
-    // EXAM SETUP MODAL FLOW (MODE & DIFFICULTY)
-    // ==========================================
+    // =======================================================
+    // MULTI-STAGE EXAM SETUP MODAL (LANG -> MODE -> ROOM -> DIFF)
+    // =======================================================
 
     function openExamSetup(type, name, qCount, minutes) {
       selectedExamType = type;
@@ -581,7 +606,10 @@
       currentRoomCode = '';
 
       document.getElementById("modal-exam-name").innerText = name;
-      document.getElementById("modal-stage-mode").classList.remove("hidden");
+      
+      // Stage 0 (Language) visible, others hidden
+      document.getElementById("modal-stage-lang").classList.remove("hidden");
+      document.getElementById("modal-stage-mode").classList.add("hidden");
       document.getElementById("modal-stage-battle-room").classList.add("hidden");
       document.getElementById("modal-stage-diff").classList.add("hidden");
       document.getElementById("generated-code-display").classList.add("hidden");
@@ -592,6 +620,12 @@
 
     function closeExamSetup() {
       document.getElementById("exam-modal").classList.add("hidden");
+    }
+
+    function selectExamLanguage(lang) {
+      chosenLanguage = lang;
+      document.getElementById("modal-stage-lang").classList.add("hidden");
+      document.getElementById("modal-stage-mode").classList.remove("hidden");
     }
 
     function selectMode(mode) {
@@ -626,16 +660,22 @@
     }
 
     function finalizeAndStart(diffLevel) {
+      currentDifficulty = diffLevel;
       closeExamSetup();
       if (currentPlayMode === 'battle') {
-        alert(`🎮 Battle Room: ${currentRoomCode}\nMode: 1 vs 1 Battle\nLevel: ${diffLevel.toUpperCase()}\n\nOpponent ke sath match shuru ho raha hai!`);
+        alert(`🎮 Battle Room: ${currentRoomCode}\nMode: 1 vs 1 Battle\nLevel: ${diffLevel.toUpperCase()}\nLanguage: ${chosenLanguage === 'hi' ? 'हिंदी' : 'English'}\n\nOpponent ke sath battle start ho rahi hai!`);
       }
       initiateExam(selectedExamType, selectedExamName, selectedQCount, selectedTimeMinutes, diffLevel);
     }
 
-    // ==========================================
-    // UPDATED QUESTION BANK (RAJASTHAN, INDIA, HINDI, ENGLISH)
-    // ==========================================
+    function toggleLanguageInTest() {
+      chosenLanguage = (chosenLanguage === 'hi') ? 'en' : 'hi';
+      renderQuestion();
+    }
+
+    // =======================================================
+    // BILINGUAL QUESTION BANK (HINDI & ENGLISH FULL DATA)
+    // =======================================================
 
     function shuffleArray(arr) {
       for (let i = arr.length - 1; i > 0; i--) {
@@ -646,13 +686,20 @@
     }
 
     function randomizeOptions(qObj) {
-      const originalOptions = [...qObj.o];
-      const correctText = originalOptions[qObj.a];
-      const shuffledOptions = shuffleArray([...originalOptions]);
+      const pairs = qObj.o_hi.map((optHi, idx) => ({
+        hi: optHi,
+        en: qObj.o_en[idx],
+        isCorrect: idx === qObj.a
+      }));
+      const shuffled = shuffleArray(pairs);
+      const newCorrect = shuffled.findIndex(p => p.isCorrect);
+
       return {
-        q: qObj.q,
-        o: shuffledOptions,
-        a: shuffledOptions.indexOf(correctText)
+        q_hi: qObj.q_hi,
+        q_en: qObj.q_en,
+        o_hi: shuffled.map(p => p.hi),
+        o_en: shuffled.map(p => p.en),
+        a: newCorrect
       };
     }
 
@@ -663,10 +710,12 @@
         let cp = (Math.floor(Math.random() * 20) + 10) * (diff === 'hard' ? 120 : 50);
         let pct = (Math.floor(Math.random() * 6) + 2) * 5;
         let sp = cp + (cp * pct / 100);
-        let q = `Yadi kisi vastu ka kray-mulya ₹${cp} hai aur ${pct}% labh par becha jaye, to vikray-mulya kitna hoga?`;
+
         list.push(randomizeOptions({
-          q,
-          o: [`₹${sp}`, `₹${sp + 40}`, `₹${sp - 50}`, `₹${sp + 100}`],
+          q_hi: `यदि किसी वस्तु का क्रय-मूल्य ₹${cp} है और इसे ${pct}% लाभ पर बेचा जाए, तो विक्रय-मूल्य क्या होगा?`,
+          q_en: `If the cost price of an article is ₹${cp} and it is sold at a profit of ${pct}%, what is the selling price?`,
+          o_hi: [`₹${sp}`, `₹${sp + 40}`, `₹${sp - 50}`, `₹${sp + 100}`],
+          o_en: [`₹${sp}`, `₹${sp + 40}`, `₹${sp - 50}`, `₹${sp + 100}`],
           a: 0
         }));
       }
@@ -674,76 +723,221 @@
     }
 
     const masterQuestions = {
-      // 1. RAJASTHAN GK (Updated 50 Zile & Maps)
+      // 1. RAJASTHAN GK (50 Districts & History)
       raj_gk: [
-        { q: "Naye simankan ke anusar Rajasthan me kul jilo ki sankhya kitni ho gayi hai?", o: ["50 Zile", "33 Zile", "45 Zile", "52 Zile"], a: 0 },
-        { q: "Naya jila 'Anupgarh' mool roop se kin jilo se alag hokar banaya gaya hai?", o: ["Sri Ganganagar aur Bikaner", "Bikaner aur Jodhpur", "Barmer aur Jaisalmer", "Nagaur aur Churu"], a: 0 },
-        { q: "Rajasthan ka sabse chhota jila kshetraphal ki drishti se kaun sa ban gaya hai?", o: ["Dudu (दूदू)", "Dholpur", "Salumber", "Sanchore"], a: 0 },
-        { q: "Naya jila 'Phalodi' kis mool jile se alag karke banaya gaya?", o: ["Jodhpur", "Bikaner", "Nagaur", "Jaisalmer"], a: 0 },
-        { q: "Rajasthan me Sambhago (Divisions) ki kul sankhya kitni ho gayi hai?", o: ["10 Sambhag", "7 Sambhag", "8 Sambhag", "12 Sambhag"], a: 0 },
-        { q: "Rajasthan ke kis jile me Vishwa Prasiddh 'Bishnoi Sampraday' ke pravartak Jambhoji ka Mokal sthal sthit hai?", o: ["Bikaner (Mukam)", "Jodhpur", "Nagaur", "Barmer"], a: 0 },
-        { q: "Balotra jila kis mool jile se prathak kiya gaya hai?", o: ["Barmer", "Jalore", "Pali", "Sirohi"], a: 0 },
-        { q: "Neem Ka Thana naya jila kin do purane jilo ke kshetro ko jodkar bana hai?", o: ["Sikar aur Jhunjhunu", "Jaipur aur Alwar", "Churu aur Sikar", "Alwar aur Dausa"], a: 0 },
-        { q: "Thar ka marusthal Rajasthan ke kul kshetraphal ka lagbhag kitna pratishat bhag ghirta hai?", o: ["61.11%", "50%", "40%", "72%"], a: 0 },
-        { q: "Rajasthan ki aadhikarik bhasha kaun si hai?", o: ["Hindi (Devnagari Lipi)", "Rajasthani", "Marwari", "Mewari"], a: 0 }
+        {
+          q_hi: "नए सीमांकन के अनुसार राजस्थान में कुल जिलों की संख्या कितनी हो गई है?",
+          q_en: "According to the updated reorganization, what is the total number of districts in Rajasthan?",
+          o_hi: ["50 जिले", "33 जिले", "45 जिले", "52 जिले"],
+          o_en: ["50 Districts", "33 Districts", "45 Districts", "52 Districts"],
+          a: 0
+        },
+        {
+          q_hi: "नया जिला 'अनूपगढ़' मूल रूप से किन जिलों से अलग होकर बनाया गया है?",
+          q_en: "The newly formed district 'Anupgarh' has been carved out from which districts?",
+          o_hi: ["श्रीगंगानगर और बीकानेर", "बीकानेर और जोधपुर", "बाड़मेर और जैसलमेर", "नागौर और चूरू"],
+          o_en: ["Sri Ganganagar & Bikaner", "Bikaner & Jodhpur", "Barmer & Jaisalmer", "Nagaur & Churu"],
+          a: 0
+        },
+        {
+          q_hi: "क्षेत्रफल की दृष्टि से राजस्थान का सबसे छोटा जिला कौन सा बन गया है?",
+          q_en: "In terms of geographical area, which has become the smallest district in Rajasthan?",
+          o_hi: ["दूदू (Dudu)", "धौलपुर (Dholpur)", "सलूम्बर (Salumber)", "सांचौर (Sanchore)"],
+          o_en: ["Dudu", "Dholpur", "Salumber", "Sanchore"],
+          a: 0
+        },
+        {
+          q_hi: "नया जिला 'फलोदी' किस मूल जिले से अलग करके बनाया गया?",
+          q_en: "From which original district was the new district 'Phalodi' created?",
+          o_hi: ["जोधपुर (Jodhpur)", "बीकानेर", "नागौर", "जैसलमेर"],
+          o_en: ["Jodhpur", "Bikaner", "Nagaur", "Jaisalmer"],
+          a: 0
+        },
+        {
+          q_hi: "वर्तमान में राजस्थान में संभागों (Divisions) की कुल संख्या कितनी है?",
+          q_en: "At present, what is the total number of administrative divisions in Rajasthan?",
+          o_hi: ["10 संभाग", "7 संभाग", "8 संभाग", "12 संभाग"],
+          o_en: ["10 Divisions", "7 Divisions", "8 Divisions", "12 Divisions"],
+          a: 0
+        },
+        {
+          q_hi: "बालोतरा नया जिला किस मूल जिले से पृथक किया गया है?",
+          q_en: "From which parent district was 'Balotra' district carved out?",
+          o_hi: ["बाड़मेर (Barmer)", "जालौर", "पाली", "सिरोही"],
+          o_en: ["Barmer", "Jalore", "Pali", "Sirohi"],
+          a: 0
+        },
+        {
+          q_hi: "थार का मरुस्थल राजस्थान के कुल क्षेत्रफल का लगभग कितना प्रतिशत भाग घेरता है?",
+          q_en: "Thar Desert covers approximately what percentage of the total area of Rajasthan?",
+          o_hi: ["61.11%", "50%", "40%", "72%"],
+          o_en: ["61.11%", "50%", "40%", "72%"],
+          a: 0
+        }
       ],
 
-      // 2. INDIA GK (Updated National Map & Polity)
+      // 2. INDIA GK (National Maps & Polity)
       india_gk: [
-        { q: "Vartaman me Bharat me kul kitne Rajya aur Kendra Shashit Pradesh (UTs) hain?", o: ["28 Rajya aur 8 UTs", "29 Rajya aur 7 UTs", "28 Rajya aur 9 UTs", "29 Rajya aur 8 UTs"], a: 0 },
-        { q: "Bharat ki naye Sansad Bhavan ka aakar (Shape) kaisa hai?", o: ["Tribhujakar (Triangular)", "Golakar (Circular)", "Chaukor (Square)", "Panchbhujakar"], a: 0 },
-        { q: "Bharat ka sabse lamba samudra tat (Coastline) kis rajya ka hai?", o: ["Gujarat", "Andhra Pradesh", "Tamil Nadu", "Maharashtra"], a: 0 },
-        { q: "Ladakh Kendra Shashit Pradesh me kul kitne zile sthit hain?", o: ["2 (Leh aur Kargil)", "4", "1", "6"], a: 0 },
-        { q: "Bharat ka Dakshini Bindu (Indira Point) kahan sthit hai?", o: ["Great Nicobar", "Kanyakumari", "Lakshadweep", "Rameshwaram"], a: 0 },
-        { q: "Kishtwar aur Chenab nadi par bani Salal Pariyojana kis rajya/UT me hai?", o: ["Jammu & Kashmir", "Himachal Pradesh", "Uttarakhand", "Punjab"], a: 0 },
-        { q: "Bharat ke Sanvidhan me 106va Sanvidhan Sanshodhan kisse sambandhit hai?", o: ["Nari Shakti Vandan Adhiniyam (Mahila Aarakshan)", "GST", "EWS", "OBC Reservation"], a: 0 },
-        { q: "Duniya ka sabse uncha Railway Arch Bridge kis nadi par bana hai?", o: ["Chenab Nadi", "Jhelum", "Indus", "Ravi"], a: 0 }
+        {
+          q_hi: "वर्तमान में भारत में कुल कितने राज्य और केंद्र शासित प्रदेश (UTs) हैं?",
+          q_en: "Currently, how many States and Union Territories (UTs) are there in India?",
+          o_hi: ["28 राज्य और 8 UTs", "29 राज्य और 7 UTs", "28 राज्य और 9 UTs", "29 राज्य और 8 UTs"],
+          o_en: ["28 States & 8 UTs", "29 States & 7 UTs", "28 States & 9 UTs", "29 States & 8 UTs"],
+          a: 0
+        },
+        {
+          q_hi: "भारत के नए संसद भवन का मुख्य वास्तुशिल्प आकार (Shape) कैसा है?",
+          q_en: "What is the architectural shape of India's new Parliament Building?",
+          o_hi: ["त्रिभुजाकार (Triangular)", "गोलाकार (Circular)", "चौकोर (Square)", "पंचभुजाकार"],
+          o_en: ["Triangular", "Circular", "Square", "Pentagonal"],
+          a: 0
+        },
+        {
+          q_hi: "भारत की सबसे लंबी समुद्री तटरेखा (Coastline) किस राज्य की है?",
+          q_en: "Which Indian state has the longest mainland coastline?",
+          o_hi: ["गुजरात (Gujarat)", "आंध्र प्रदेश", "तमिलनाडु", "महाराष्ट्र"],
+          o_en: ["Gujarat", "Andhra Pradesh", "Tamil Nadu", "Maharashtra"],
+          a: 0
+        },
+        {
+          q_hi: "लद्दाख केंद्र शासित प्रदेश में कुल कितने जिले स्थित हैं?",
+          q_en: "How many districts are there in the Union Territory of Ladakh?",
+          o_hi: ["2 (लेह और कारगिल)", "4", "1", "6"],
+          o_en: ["2 (Leh and Kargil)", "4", "1", "6"],
+          a: 0
+        },
+        {
+          q_hi: "दुनिया का सबसे ऊँचा रेलवे आर्च ब्रिज किस नदी पर निर्मित है?",
+          q_en: "On which river is the world's highest railway arch bridge constructed?",
+          o_hi: ["चिनाब नदी (Chenab)", "झेलम", "सिंधु", "रावी"],
+          o_en: ["Chenab River", "Jhelum", "Indus", "Ravi"],
+          a: 0
+        }
       ],
 
-      // 3. SAMANYA HINDI (Grammar & Competitions)
+      // 3. SAMANYA HINDI
       hindi: [
-        { q: "'परोपकार' शब्द में कौन सी संधि है?", o: ["गुण संधि (Guṇa Sandhi)", "वृद्धि संधि", "दीर्घ संधि", "यण संधि"], a: 0 },
-        { q: "'यथाशक्ति' शब्द में कौन सा समास पाया जाता है?", o: ["अव्ययीभाव समास", "तत्पुरुष समास", "द्वंद्व समास", "कर्मधारय"], a: 0 },
-        { q: "'आँखों का तारा होना' मुहावरे का सही अर्थ क्या है?", o: ["अत्यधिक प्रिय होना", "अंधा होना", "धोखा देना", "आँख में दर्द होना"], a: 0 },
-        { q: "निम्न में से कौन सा शब्द शुद्ध वर्तनी वाला है?", o: ["उज्ज्वल", "उज्वल", "उज्जवल", "उज्वल्य"], a: 0 },
-        { q: "'अतिथि' का सही पर्यायवाची शब्द कौन सा है?", o: ["पाहुन (मेहमान)", "मित्र", "सहोदर", "आगंतुकहीन"], a: 0 },
-        { q: "'जो सब कुछ जानता हो' वाक्यांश के लिए एक शब्द क्या होगा?", o: ["सर्वज्ञ", "अल्पज्ञ", "विद्वान", "बहुज्ञ"], a: 0 },
-        { q: "'अनुराग' शब्द का सही विलोम शब्द क्या है?", o: ["विराग", "द्वेष", "क्रोध", "नफरत"], a: 0 },
-        { q: "'सूर्योदय' का सही संधि विच्छेद क्या होगा?", o: ["सूर्य + उदय", "सूर्यो + दय", "सूर्य + दय", "सूर्या + उदय"], a: 0 }
+        {
+          q_hi: "'परोपकार' शब्द में कौन सी संधि है?",
+          q_en: "Which Sandhi is present in the Hindi word 'Paropkar'?",
+          o_hi: ["गुण संधि (Guna Sandhi)", "वृद्धि संधि", "दीर्घ संधि", "यण संधि"],
+          o_en: ["Guna Sandhi", "Vriddhi Sandhi", "Dirgha Sandhi", "Yan Sandhi"],
+          a: 0
+        },
+        {
+          q_hi: "'यथाशक्ति' शब्द में कौन सा समास पाया जाता है?",
+          q_en: "Which Samas is found in the word 'Yathashakti'?",
+          o_hi: ["अव्ययीभाव समास", "तत्पुरुष समास", "द्वंद्व समास", "कर्मधारय"],
+          o_en: ["Avyayibhav Samas", "Tatpurush Samas", "Dvandva Samas", "Karmadharaya"],
+          a: 0
+        },
+        {
+          q_hi: "'आँखों का तारा होना' मुहावरे का सही अर्थ क्या है?",
+          q_en: "What is the meaning of the Hindi idiom 'Aankhon ka tara hona'?",
+          o_hi: ["अत्यधिक प्रिय होना", "अंधा होना", "धोखा देना", "आँख में दर्द होना"],
+          o_en: ["To be extremely dear / loved", "To be blind", "To deceive", "To suffer eye pain"],
+          a: 0
+        },
+        {
+          q_hi: "निम्न में से कौन सा शब्द शुद्ध वर्तनी वाला है?",
+          q_en: "Which of the following words is spelled correctly in Hindi?",
+          o_hi: ["उज्ज्वल", "उज्वल", "उज्जवल", "उज्वल्य"],
+          o_en: ["उज्ज्वल (Ujjwal)", "उज्वल", "उज्जवल", "उज्वल्य"],
+          a: 0
+        }
       ],
 
-      // 4. ENGLISH GRAMMAR & VOCAB
+      // 4. ENGLISH GRAMMAR
       english: [
-        { q: "Choose the correct SYNONYM of the word 'METICULOUS':", o: ["Careful and Thorough", "Careless", "Quick", "Lazy"], a: 0 },
-        { q: "Choose the correct ANTONYM of the word 'TRANSPARENT':", o: ["Opaque", "Clear", "Vivid", "Bright"], a: 0 },
-        { q: "Identify the correct meaning of idiom: 'Break the ice'", o: ["To initiate a conversation in an awkward situation", "To freeze something", "To get angry", "To start a fight"], a: 0 },
-        { q: "Fill in the blank: 'Neither of the boys _____ present in the classroom.'", o: ["was", "were", "are", "have been"], a: 0 },
-        { q: "Find the correctly spelt word:", o: ["Accommodate", "Acomodate", "Accomodate", "Acommodate"], a: 0 },
-        { q: "Choose the one-word substitution: 'One who looks at the bright side of things'", o: ["Optimist", "Pessimist", "Altruist", "Philanthropist"], a: 0 },
-        { q: "Passive voice of: 'She wrote a letter.'", o: ["A letter was written by her.", "A letter is written by her.", "A letter had written by her.", "A letter was wrote by her."], a: 0 },
-        { q: "Identify the error: 'He is superior than me in mathematics.'", o: ["than (should be 'to')", "is superior", "in mathematics", "No error"], a: 0 }
+        {
+          q_hi: "Choose the correct SYNONYM of 'METICULOUS':",
+          q_en: "Choose the correct SYNONYM of 'METICULOUS':",
+          o_hi: ["Careful & Thorough", "Careless", "Quick", "Lazy"],
+          o_en: ["Careful & Thorough", "Careless", "Quick", "Lazy"],
+          a: 0
+        },
+        {
+          q_hi: "Choose the correct ANTONYM of 'TRANSPARENT':",
+          q_en: "Choose the correct ANTONYM of 'TRANSPARENT':",
+          o_hi: ["Opaque", "Clear", "Vivid", "Bright"],
+          o_en: ["Opaque", "Clear", "Vivid", "Bright"],
+          a: 0
+        },
+        {
+          q_hi: "Meaning of the idiom: 'Break the ice'",
+          q_en: "Meaning of the idiom: 'Break the ice'",
+          o_hi: ["To initiate conversation in awkward silence", "To freeze water", "To show anger", "To fight"],
+          o_en: ["To initiate conversation in awkward silence", "To freeze water", "To show anger", "To fight"],
+          a: 0
+        },
+        {
+          q_hi: "Fill in the blank: 'Neither of the students _____ present.'",
+          q_en: "Fill in the blank: 'Neither of the students _____ present.'",
+          o_hi: ["was", "were", "are", "have been"],
+          o_en: ["was", "were", "are", "have been"],
+          a: 0
+        }
       ],
 
       // 5. COMPUTER
       computer: [
-        { q: "IP Address (IPv4) kul kitne bits ka hota hai?", o: ["32 bits", "16 bits", "64 bits", "128 bits"], a: 0 },
-        { q: "MS Excel me sheet save karne ki shortcut key kya hai?", o: ["Ctrl + S", "Ctrl + P", "Ctrl + E", "Alt + S"], a: 0 },
-        { q: "Kaun sa memory volatile hota hai jo bijli jate hi erase ho jata hai?", o: ["RAM", "ROM", "Hard Disk", "Pen Drive"], a: 0 },
-        { q: "OSI Network Model me kul kitni layers hoti hain?", o: ["7", "5", "6", "8"], a: 0 }
+        {
+          q_hi: "IPv4 एड्रेस कुल कितने बिट्स (Bits) का होता है?",
+          q_en: "How many bits constitute an IPv4 address?",
+          o_hi: ["32 bits", "16 bits", "64 bits", "128 bits"],
+          o_en: ["32 bits", "16 bits", "64 bits", "128 bits"],
+          a: 0
+        },
+        {
+          q_hi: "कंप्यूटर का मुख्य मस्तिष्क (Brain) किसे कहा जाता है?",
+          q_en: "Which part is known as the Brain of a computer?",
+          o_hi: ["CPU", "RAM", "Motherboard", "Hard Disk"],
+          o_en: ["CPU", "RAM", "Motherboard", "Hard Disk"],
+          a: 0
+        },
+        {
+          q_hi: "कौन सी मेमोरी अस्थायी (Volatile) होती है?",
+          q_en: "Which computer memory is volatile in nature?",
+          o_hi: ["RAM", "ROM", "Hard Disk", "Flash Drive"],
+          o_en: ["RAM", "ROM", "Hard Disk", "Flash Drive"],
+          a: 0
+        }
       ],
 
-      // 6. SSC CGL COMBINED
+      // 6. SSC CGL
       ssc_cgl: [
-        { q: "[SSC CGL] Comptroller and Auditor General (CAG) ki niyukti kis anuchhed ke tehat hoti hai?", o: ["Article 148", "Article 280", "Article 324", "Article 110"], a: 0 },
-        { q: "[SSC CGL] Kaun sa Harappan nagar teen bhago me vibhajit tha?", o: ["Dholavira", "Kalibangan", "Surkotada", "Banawali"], a: 0 },
-        { q: "[SSC CGL] 42ve Sanvidhan Sanshodhan dwara Preamble me kaun sa shabd joda gaya?", o: ["Socialist, Secular & Integrity", "Democratic", "Sovereign", "Republic"], a: 0 }
+        {
+          q_hi: "[SSC CGL] भारत के नियंत्रक एवं महालेखापरीक्षक (CAG) की नियुक्ति किस अनुच्छेद के तहत होती है?",
+          q_en: "[SSC CGL] Under which Article of the Constitution is the CAG of India appointed?",
+          o_hi: ["Article 148", "Article 280", "Article 324", "Article 110"],
+          o_en: ["Article 148", "Article 280", "Article 324", "Article 110"],
+          a: 0
+        },
+        {
+          q_hi: "[SSC CGL] हड़प्पा सभ्यता का कौन सा प्रसिद्ध नगर तीन भागों में विभाजित था?",
+          q_en: "[SSC CGL] Which Harappan city was divided into three distinct parts?",
+          o_hi: ["धौलावीरा (Dholavira)", "कालीबंगा", "सुरकोटदा", "बनावली"],
+          o_en: ["Dholavira", "Kalibangan", "Surkotada", "Banawali"],
+          a: 0
+        }
       ],
 
       // 7. POLICE SI
       police_si: [
-        { q: "[Police SI] CrPC ke tehat FIR kis section me darz ki jaati hai?", o: ["Section 154", "Section 161", "Section 173", "Section 100"], a: 0 },
-        { q: "[Police SI] Bina warrant ke police kis apradh me giraftar kar sakti hai?", o: ["Cognizable Offense (Sangheya)", "Non-cognizable", "Civil case", "Bailable"], a: 0 },
-        { q: "[Police SI] Samvidhan ki aatma kis anuchhed ko kaha gaya hai?", o: ["Article 32", "Article 21", "Article 19", "Article 14"], a: 0 }
+        {
+          q_hi: "[Police SI] CrPC के तहत प्राथमिक सूचना रिपोर्ट (FIR) किस धारा में दर्ज की जाती है?",
+          q_en: "[Police SI] Under which section of CrPC is a First Information Report (FIR) registered?",
+          o_hi: ["Section 154", "Section 161", "Section 173", "Section 100"],
+          o_en: ["Section 154", "Section 161", "Section 173", "Section 100"],
+          a: 0
+        },
+        {
+          q_hi: "[Police SI] बिना वारंट के पुलिस किस अपराध में सीधे गिरफ्तार कर सकती है?",
+          q_en: "[Police SI] In which category of offense can a police officer arrest without warrant?",
+          o_hi: ["संज्ञेय अपराध (Cognizable Offense)", "असंज्ञेय अपराध", "दीवानी मामले", "जमानती अपराध"],
+          o_en: ["Cognizable Offense", "Non-cognizable Offense", "Civil matters", "Bailable Offense"],
+          a: 0
+        }
       ]
     };
 
@@ -752,7 +946,6 @@
 
       let pool = masterQuestions[type] || masterQuestions.india_gk;
 
-      // Agar combined exam ho
       if (type === 'ssc_cgl') {
         const p1 = masterQuestions.ssc_cgl.map(q => randomizeOptions(q));
         const p2 = masterQuestions.english.map(q => randomizeOptions(q));
@@ -782,7 +975,6 @@
       userAnswers = {};
       currentIndex = 0;
 
-      // Hard mode me timer thoda tez rahega
       let timeMultiplier = (diff === 'hard') ? 0.8 : (diff === 'easy' ? 1.2 : 1.0);
       timerTotalSeconds = Math.floor(minutes * 60 * timeMultiplier);
 
@@ -798,12 +990,17 @@
     function renderQuestion() {
       const qData = currentTest[currentIndex];
       document.getElementById("exam-q-counter").innerText = `Question ${currentIndex + 1} of ${currentTest.length}`;
-      document.getElementById("cbt-question-text").innerText = (currentIndex + 1) + ". " + qData.q;
+      document.getElementById("btn-lang-indicator").innerText = chosenLanguage === 'hi' ? "🌐 हिंदी" : "🌐 English";
+
+      const qText = (chosenLanguage === 'hi') ? qData.q_hi : qData.q_en;
+      document.getElementById("cbt-question-text").innerText = `${currentIndex + 1}. ${qText}`;
 
       const optBox = document.getElementById("cbt-options-box");
       optBox.innerHTML = "";
 
-      qData.o.forEach((opt, idx) => {
+      const currentOptions = (chosenLanguage === 'hi') ? qData.o_hi : qData.o_en;
+
+      currentOptions.forEach((opt, idx) => {
         const div = document.createElement("button");
         div.className = "cbt-opt";
         if (userAnswers[currentIndex] === idx) div.classList.add("selected");
