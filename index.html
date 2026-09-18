@@ -4,6 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PARIKSHA CBT - Secure Payment & Examination Portal</title>
+  
+  <!-- PWA Manifest & Theme Settings -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#00f2fe">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135755.png">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -32,9 +40,21 @@
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
       display: flex; align-items: center; gap: 10px; cursor: pointer; 
     }
-    .nav-actions { display: flex; align-items: center; gap: 12px; position: relative; }
+    .nav-actions { display: flex; align-items: center; gap: 10px; position: relative; }
     .lang-btn-nav { background: rgba(0, 242, 254, 0.1); border: 1.5px solid var(--primary); color: #fff; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
     
+    /* PWA Install Button in Header */
+    .pwa-install-btn {
+      background: linear-gradient(90deg, #ffb703, #fb8500);
+      color: #000; border: none; padding: 6px 14px; border-radius: 20px;
+      font-weight: 800; font-size: 0.85rem; cursor: pointer; display: none; align-items: center; gap: 6px;
+      animation: pulseInstall 2s infinite;
+    }
+    @keyframes pulseInstall {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+
     .profile-pill { 
       display: flex; align-items: center; gap: 8px; background: rgba(31, 43, 72, 0.6); 
       padding: 5px 12px; border-radius: 30px; cursor: pointer; border: 1px solid rgba(255,255,255,0.15); 
@@ -140,6 +160,11 @@
   <header>
     <div class="logo" onclick="showDashboard()"><i class="fa-solid fa-graduation-cap"></i> <span id="txt-logo-title">PARIKSHA CBT</span></div>
     <div class="nav-actions">
+      <!-- PWA Install App Button -->
+      <button id="pwa-install-header-btn" class="pwa-install-btn" onclick="triggerPwaInstall()">
+        <i class="fa-solid fa-download"></i> Install App
+      </button>
+
       <button class="lang-btn-nav" onclick="toggleLanguage()" id="btn-active-lang">🌐 हिंदी</button>
       
       <!-- 3-Dot Profile Menu Toggle Button -->
@@ -163,7 +188,7 @@
       <div class="exam-grid" id="dashboard-batches-grid"></div>
     </div>
 
-    <!-- 2. SERIES LISTING VIEW (WITH IN-BATCH UPLOAD & SUB-BATCH TABS) -->
+    <!-- 2. SERIES LISTING VIEW -->
     <div id="screen-series" class="hidden">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
         <div>
@@ -171,7 +196,6 @@
           <p id="series-batch-desc" style="color:var(--gold); font-size:0.9rem; font-weight:600; margin-top:2px;"></p>
         </div>
         <div style="display:flex; gap:8px; flex-wrap:wrap;">
-          <!-- ADMIN IN-BATCH CONTROLS -->
           <button id="btn-add-subfolder" class="btn-subfolder hidden" onclick="openCreateSubBatchModal()"><i class="fa-solid fa-folder-plus"></i> Create Sub-Batch / Folder</button>
           <button id="btn-upload-test-in-batch" class="btn-submit hidden" onclick="openUploadTestInCurrentBatch()"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Test Here</button>
           <button id="btn-edit-current-batch" class="btn-batch hidden" onclick="editCurrentBatch()"><i class="fa-solid fa-pen"></i> Edit Batch</button>
@@ -184,10 +208,10 @@
         <p id="batch-inclusions-text" style="color:#cbd5e1; font-size:0.9rem; line-height:1.6;"></p>
       </div>
 
-      <!-- SUB-BATCH / SECTION TABS -->
+      <!-- Sub-Batch / Section Tabs -->
       <div class="subfolder-tabs" id="subfolder-tabs-container"></div>
 
-      <!-- TESTS CARDS CONTAINER -->
+      <!-- Tests Cards Container -->
       <div id="series-cards-container"></div>
     </div>
 
@@ -375,7 +399,7 @@
 
   </div>
 
-  <!-- AUTH SCREEN (CLEAN BUTTONS - NO PIN SHOWN) -->
+  <!-- AUTH SCREEN -->
   <div id="screen-auth" style="max-width:440px; margin:40px auto; padding:0 15px;">
     <div style="background:var(--surface); border:1.5px solid rgba(0,242,254,0.3); border-radius:24px; padding:32px 24px; text-align:center;">
       <h2 style="font-size:1.6rem; font-weight:800; color:#fff;">Student CBT Portal</h2>
@@ -415,7 +439,7 @@
     </div>
   </div>
 
-  <!-- ADMIN: CREATE SUB-BATCH / FOLDER MODAL -->
+  <!-- ADMIN: CREATE SUB-BATCH MODAL -->
   <div id="admin-subbatch-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <button onclick="closeCreateSubBatchModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -497,7 +521,7 @@
     </div>
   </div>
 
-  <!-- ADMIN: ADD TEST PAPER MODAL (WITH SUB-BATCH SELECTOR) -->
+  <!-- ADMIN: ADD TEST PAPER MODAL -->
   <div id="admin-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <button onclick="closeAdminPaperModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -538,6 +562,35 @@
   </div>
 
   <script>
+    // PWA Service Worker Registration
+    let deferredPrompt = null;
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const pwaBtn = document.getElementById('pwa-install-header-btn');
+      if (pwaBtn) pwaBtn.style.display = 'inline-flex';
+    });
+
+    function triggerPwaInstall() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            document.getElementById('pwa-install-header-btn').style.display = 'none';
+          }
+          deferredPrompt = null;
+        });
+      } else {
+        alert("Aapka browser pehle se installed hai ya installation support karta hai Chrome menu (3-dots) > 'Add to Home Screen' se.");
+      }
+    }
+
     const firebaseConfig = {
       apiKey: "AIzaSyCmhR0Y8BGjwy_w1SwWBgSoYc7AWtNbmro",
       authDomain: "battle-quiz-6e6b2.firebaseapp.com",
@@ -679,9 +732,10 @@
       }
     }
 
+    // GUEST PIN UPDATED TO 8094
     function promptGuestLogin() {
       const pin = prompt("Guest Security PIN darz karein:");
-      if (pin === "1234") {
+      if (pin === "8094") {
         currentUser = {
           uid: "guest_student_01",
           displayName: "Guest Student",
@@ -812,7 +866,6 @@
       document.getElementById("screen-dashboard").classList.remove("hidden");
     }
 
-    // BATCHES LISTING
     async function loadAllBatches() {
       allBatches = [...defaultBatches];
       try {
@@ -879,7 +932,6 @@
       return (currentUser.unlockedBatches || []).includes(batchId);
     }
 
-    // SERIES & SUB-BATCH VIEW
     async function openSeriesListing(batchObj) {
       currentSelectedBatch = batchObj;
       currentActiveSubBatch = "all";
@@ -904,14 +956,12 @@
     }
 
     async function loadSubFoldersAndPapers() {
-      // 1. Fetch sub-folders (sub-batches) for this batch
       currentBatchSubFolders = [];
       try {
         const subSnap = await db.collection("sub_batches").where("parentBatchId", "==", currentSelectedBatch.id).get();
         subSnap.forEach(doc => currentBatchSubFolders.push(doc.data()));
       } catch(e) {}
 
-      // 2. Render Subfolder Tabs
       const tabsBox = document.getElementById("subfolder-tabs-container");
       tabsBox.innerHTML = "";
 
@@ -929,7 +979,6 @@
         tabsBox.appendChild(t);
       });
 
-      // 3. Fetch all test papers for this batch
       currentBatchAllPapers = [];
       try {
         const snap = await db.collection("custom_tests").where("batchId", "==", currentSelectedBatch.id).get();
@@ -1006,7 +1055,6 @@
       window.activeCategoryPapers = papers;
     }
 
-    // CREATE SUB-BATCH (FOLDER) MODAL
     function openCreateSubBatchModal() {
       document.getElementById("subbatch-parent-name").innerText = currentSelectedBatch.title;
       document.getElementById("subbatch-title-input").value = "";
@@ -1040,7 +1088,6 @@
       }
     }
 
-    // IN-BATCH UPLOAD TEST SHORTCUT
     function openUploadTestInCurrentBatch() {
       openAdminPaperModal();
       document.getElementById("new-paper-cat").value = currentSelectedBatch.id;
@@ -1067,7 +1114,6 @@
       } catch(e) {}
     }
 
-    // DEDICATED SEPARATE CHECKOUT SCREEN HANDLERS
     function openDedicatedCheckoutScreen() {
       hideAll();
       document.getElementById("screen-checkout").classList.remove("hidden");
@@ -1141,7 +1187,6 @@
       reader.readAsDataURL(file);
     }
 
-    // ADMIN: QR CODE & UPI MANAGER
     function openAdminPaySettingsModal() {
       document.getElementById("admin-setting-upi").value = paymentConfig.upiId || "";
       document.getElementById("admin-setting-qr-preview").src = paymentConfig.qrCodeUrl;
@@ -1186,7 +1231,6 @@
       }
     }
 
-    // ADMIN PAYMENT APPROVALS
     async function openAdminRequestsModal() {
       const container = document.getElementById("admin-reqs-list-container");
       container.innerHTML = `<p style="color:#94a3b8;">Loading requests...</p>`;
@@ -1241,7 +1285,6 @@
       }
     }
 
-    // BATCH CREATE & EDIT
     function openAdminBatchModal() {
       document.getElementById("batch-modal-heading").innerHTML = `<i class="fa-solid fa-folder-plus"></i> Create New Batch`;
       document.getElementById("edit-batch-id").value = "";
@@ -1310,7 +1353,6 @@
       }
     }
 
-    // CBT ENGINE
     function startSpecificTest(paperIndex) {
       currentActiveTest = window.activeCategoryPapers[paperIndex];
       userAnswers = {};
@@ -1473,7 +1515,6 @@
       });
     }
 
-    // USER VIEWS
     function openProfileView() {
       hideAll();
       document.getElementById("screen-profile").classList.remove("hidden");
@@ -1622,7 +1663,6 @@
       document.getElementById("btn-active-lang").innerText = userLang === 'hi' ? "🌐 हिंदी" : "🌐 English";
     }
 
-    // ADMIN: ADD TEST PAPER
     function openAdminPaperModal() {
       document.getElementById("admin-modal").classList.remove("hidden");
       document.getElementById("user-dropdown-menu").classList.remove("show");
