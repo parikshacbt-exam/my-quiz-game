@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="hi" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,18 +14,40 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --bg: #060913;
+      --bg: radial-gradient(circle at top, #111a36 0%, #060913 75%);
       --surface: rgba(16, 24, 44, 0.95);
       --card: rgba(23, 33, 58, 0.85);
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --border: rgba(0, 242, 254, 0.25);
+      --sub-card: #0c1221;
+      --input-bg: #070a13;
       --primary: #00f2fe;
       --accent: #9d4edd;
       --green: #00f59b;
       --red: #ff3366;
       --gold: #ffb703;
-      --text-muted: #94a3b8;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
-    body { background: radial-gradient(circle at top, #111a36 0%, #060913 75%); color: #fff; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+
+    /* LIGHT THEME VARIABLES */
+    [data-theme="light"] {
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --card: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #cbd5e1;
+      --sub-card: #f8fafc;
+      --input-bg: #f1f5f9;
+      --primary: #0284c7;
+      --accent: #7c3aed;
+      --green: #059669;
+      --red: #dc2626;
+      --gold: #d97706;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; transition: background-color 0.25s, color 0.25s; }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
     .hidden { display: none !important; }
 
     /* SPLASH SCREEN */
@@ -36,64 +58,57 @@
     }
     .splash-logo-wrap { width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; animation: splashPulse 2s ease-in-out infinite alternate; }
     .splash-logo-wrap svg { width: 100%; height: 100%; filter: drop-shadow(0 0 25px rgba(0, 242, 254, 0.6)); }
-    .splash-app-title { font-size: 2.2rem; font-weight: 900; letter-spacing: 2px; margin-top: 18px; background: linear-gradient(90deg, var(--primary), #a855f7, var(--green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; }
-    .splash-sub-text { font-size: 0.85rem; color: var(--gold); font-weight: 700; letter-spacing: 1.5px; margin-top: 6px; text-transform: uppercase; }
+    .splash-app-title { font-size: 2.2rem; font-weight: 900; letter-spacing: 2px; margin-top: 18px; background: linear-gradient(90deg, #00f2fe, #a855f7, #00f59b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; }
+    .splash-sub-text { font-size: 0.85rem; color: #ffb703; font-weight: 700; letter-spacing: 1.5px; margin-top: 6px; text-transform: uppercase; }
     .splash-loader-bar { width: 160px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 25px; overflow: hidden; }
-    .splash-loader-progress { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary), var(--green)); border-radius: 10px; animation: splashLoad 2s forwards cubic-bezier(0.1, 0.5, 0.5, 1); }
+    .splash-loader-progress { width: 0%; height: 100%; background: linear-gradient(90deg, #00f2fe, #00f59b); border-radius: 10px; animation: splashLoad 2s forwards cubic-bezier(0.1, 0.5, 0.5, 1); }
     @keyframes splashPulse { 0% { transform: scale(0.95); } 100% { transform: scale(1.05); } }
     @keyframes splashLoad { 0% { width: 0%; } 100% { width: 100%; } }
 
     /* HEADER */
-    header { background: rgba(10, 16, 32, 0.95); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(0, 242, 254, 0.2); padding: 12px 22px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 22px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(14px); }
     .logo { font-size: 1.35rem; font-weight: 900; display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
     .nav-brand-logo-svg { width: 34px; height: 34px; filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.5)); }
-    .logo-text-gradient { background: linear-gradient(90deg, var(--primary), #a855f7, var(--green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .logo-text-gradient { background: linear-gradient(90deg, var(--primary), var(--accent), var(--green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .nav-actions { display: flex; align-items: center; gap: 10px; position: relative; }
-    .lang-btn-nav { background: rgba(0, 242, 254, 0.1); border: 1.5px solid var(--primary); color: #fff; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
+    .lang-btn-nav { background: rgba(0, 242, 254, 0.1); border: 1.5px solid var(--primary); color: var(--text); padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
 
     .pwa-install-btn { background: linear-gradient(90deg, #ffb703, #fb8500); color: #000; border: none; padding: 6px 14px; border-radius: 20px; font-weight: 800; font-size: 0.85rem; cursor: pointer; display: none; align-items: center; gap: 6px; }
-    .profile-pill { display: flex; align-items: center; gap: 8px; background: rgba(31, 43, 72, 0.6); padding: 5px 12px; border-radius: 30px; cursor: pointer; border: 1px solid rgba(255,255,255,0.15); user-select: none; }
+    .profile-pill { display: flex; align-items: center; gap: 8px; background: var(--sub-card); padding: 5px 12px; border-radius: 30px; cursor: pointer; border: 1px solid var(--border); user-select: none; }
     .profile-pill img { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--primary); object-fit: cover; }
     .dot-menu-icon { font-size: 1rem; color: var(--text-muted); margin-left: 4px; }
 
-    .dropdown-menu { position: absolute; top: 52px; right: 0; background: #0f172a; border: 1.5px solid rgba(0, 242, 254, 0.3); border-radius: 14px; width: 260px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); z-index: 200; overflow: hidden; display: none; }
+    .dropdown-menu { position: absolute; top: 52px; right: 0; background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; width: 270px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 200; overflow: hidden; display: none; }
     .dropdown-menu.show { display: block; }
-    .dropdown-header { padding: 12px 16px; border-bottom: 1px solid #1e293b; background: rgba(0, 242, 254, 0.05); }
-    .dropdown-item { padding: 12px 16px; display: flex; align-items: center; gap: 10px; font-size: 0.88rem; color: #cbd5e1; cursor: pointer; }
-    .dropdown-item:hover { background: #1e293b; color: var(--primary); }
+    .dropdown-header { padding: 12px 16px; border-bottom: 1px solid var(--border); background: rgba(0, 242, 254, 0.05); }
+    .dropdown-item { padding: 12px 16px; display: flex; align-items: center; gap: 10px; font-size: 0.88rem; color: var(--text); cursor: pointer; }
+    .dropdown-item:hover { background: var(--sub-card); color: var(--primary); }
 
     .container { max-width: 1080px; width: 100%; margin: 22px auto; padding: 0 16px; flex: 1; }
-    .section-title { font-size: 1.25rem; font-weight: 800; color: #fff; margin: 28px 0 16px; display: flex; align-items: center; gap: 10px; }
+    .section-title { font-size: 1.25rem; font-weight: 800; color: var(--text); margin: 28px 0 16px; display: flex; align-items: center; gap: 10px; }
 
-    /* COURSE CARD WITH TOP PRICE/DISCOUNT & BUY BAR */
+    /* COURSE CARD */
     .exam-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
     .exam-card { 
-      background: var(--card); backdrop-filter: blur(10px);
-      border: 1.5px solid rgba(35, 48, 78, 0.7); border-radius: 20px; padding: 0; 
+      background: var(--card); border: 1.5px solid var(--border); border-radius: 20px; 
       cursor: pointer; transition: 0.28s; position: relative; display: flex; flex-direction: column; overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
     .exam-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 12px 30px rgba(0, 242, 254, 0.2); }
     
-    .card-top-bar {
-      padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;
-      background: rgba(11, 16, 32, 0.95); border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
+    .card-top-bar { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; background: var(--sub-card); border-bottom: 1px solid var(--border); }
     .card-price-group { display: flex; align-items: baseline; gap: 8px; }
     .price-final { font-size: 1.25rem; font-weight: 900; color: var(--gold); }
     .price-original { font-size: 0.88rem; color: var(--text-muted); text-decoration: line-through; }
-    .badge-off { background: rgba(255, 51, 102, 0.2); color: var(--red); border: 1px solid var(--red); font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 12px; }
-    .badge-enrolled { background: rgba(0, 245, 155, 0.2); color: var(--green); border: 1px solid var(--green); font-size: 0.75rem; font-weight: 800; padding: 3px 10px; border-radius: 14px; }
+    .badge-off { background: rgba(255, 51, 102, 0.15); color: var(--red); border: 1px solid var(--red); font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 12px; }
+    .badge-enrolled { background: rgba(0, 245, 155, 0.15); color: var(--green); border: 1px solid var(--green); font-size: 0.75rem; font-weight: 800; padding: 3px 10px; border-radius: 14px; }
 
     .card-body-content { padding: 18px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
     .exam-icon { font-size: 2.2rem; margin-bottom: 10px; color: var(--primary); }
+    .card-footer-action { padding: 12px 18px; background: var(--sub-card); border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
 
-    .card-footer-action {
-      padding: 12px 18px; background: rgba(15, 23, 42, 0.6); border-top: 1px solid rgba(255,255,255,0.06);
-      display: flex; justify-content: space-between; align-items: center;
-    }
-
-    .series-item { background: rgba(15, 23, 42, 0.85); border: 1.5px solid #23355d; border-radius: 16px; padding: 16px 20px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; }
-    .series-item:hover { border-color: var(--primary); background: #131c33; }
+    .series-item { background: var(--card); border: 1.5px solid var(--border); border-radius: 16px; padding: 16px 20px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; }
+    .series-item:hover { border-color: var(--primary); }
 
     .btn-submit { background: linear-gradient(90deg, #00f59b, #00b4d8); color: #000; font-weight: 800; border: none; padding: 9px 18px; border-radius: 10px; cursor: pointer; font-size: 0.88rem; }
     .btn-enroll { background: linear-gradient(90deg, #00f59b, #10b981); color: #000; font-weight: 800; border: none; padding: 8px 16px; border-radius: 10px; cursor: pointer; font-size: 0.85rem; }
@@ -106,25 +121,44 @@
     .btn-sm { padding: 6px 12px; font-size: 0.8rem; border-radius: 6px; cursor: pointer; font-weight: bold; border: none; }
 
     .subfolder-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 18px; }
-    .subfolder-tab { background: #131c33; border: 1.5px solid #23355d; color: #cbd5e1; padding: 8px 18px; border-radius: 25px; font-size: 0.88rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .subfolder-tab { background: var(--sub-card); border: 1.5px solid var(--border); color: var(--text); padding: 8px 18px; border-radius: 25px; font-size: 0.88rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
     .subfolder-tab.active { background: linear-gradient(90deg, var(--primary), #3b82f6); color: #000; border-color: var(--primary); }
 
     .app-pay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
-    .app-pay-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 10px; border: 1px solid #334155; background: #131c33; color: #fff; font-size: 0.9rem; font-weight: bold; cursor: pointer; text-decoration: none; }
-    .app-pay-btn:hover { border-color: var(--primary); background: #1a2748; }
+    .app-pay-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--sub-card); color: var(--text); font-size: 0.9rem; font-weight: bold; cursor: pointer; text-decoration: none; }
 
-    .cbt-container { background: var(--surface); border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 20px; padding: 25px; }
-    .cbt-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #23355d; padding-bottom: 16px; margin-bottom: 22px; }
-    .cbt-timer { font-size: 1.35rem; font-weight: 900; color: var(--gold); background: #221808; border: 1px solid rgba(255,183,3,0.3); padding: 6px 18px; border-radius: 25px; }
+    .cbt-container { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 25px; }
+    .cbt-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 22px; }
+    .cbt-timer { font-size: 1.35rem; font-weight: 900; color: var(--gold); background: var(--sub-card); border: 1px solid var(--border); padding: 6px 18px; border-radius: 25px; }
     .q-text { font-size: 1.2rem; line-height: 1.6; margin-bottom: 25px; }
     .opt-list { display: grid; gap: 12px; }
-    .cbt-opt { background: #131c33; border: 1.5px solid #23355d; padding: 15px 18px; border-radius: 12px; font-size: 1rem; color: #fff; cursor: pointer; text-align: left; }
+    .cbt-opt { background: var(--sub-card); border: 1.5px solid var(--border); padding: 15px 18px; border-radius: 12px; font-size: 1rem; color: var(--text); cursor: pointer; text-align: left; }
     .cbt-opt.selected { border-color: var(--primary); background: rgba(0, 242, 254, 0.15); font-weight: bold; }
-    .cbt-nav { display: flex; justify-content: space-between; margin-top: 25px; padding-top: 20px; border-top: 1px solid #23355d; }
+    .cbt-nav { display: flex; justify-content: space-between; margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border); }
+
+    /* PODIUM LEADERBOARD STYLING */
+    .podium-container { display: flex; justify-content: center; align-items: flex-end; gap: 16px; margin: 25px 0 30px; }
+    .podium-card { background: var(--sub-card); border: 1.5px solid var(--border); border-radius: 18px; padding: 18px 12px; text-align: center; width: 140px; position: relative; box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
+    .podium-card.first { order: 2; border-color: #ffd700; transform: translateY(-16px); background: linear-gradient(180deg, rgba(255,215,0,0.15) 0%, var(--sub-card) 85%); }
+    .podium-card.second { order: 1; border-color: #c0c0c0; }
+    .podium-card.third { order: 3; border-color: #cd7f32; }
+    .podium-crown { font-size: 1.6rem; position: absolute; top: -18px; left: 50%; transform: translateX(-50%); }
+    .podium-avatar { width: 56px; height: 56px; border-radius: 50%; margin: 6px auto; border: 2.5px solid var(--primary); object-fit: cover; }
+    .podium-user { font-size: 0.85rem; font-weight: 800; color: var(--text); margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .podium-pts { font-size: 0.8rem; color: var(--gold); font-weight: 700; margin-top: 2px; }
+
+    .leaderboard-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    .leaderboard-table th, .leaderboard-table td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+    .leaderboard-table th { background: var(--sub-card); color: var(--text-muted); font-size: 0.8rem; }
+    .current-user-row { background: rgba(0, 242, 254, 0.12) !important; font-weight: bold; border-left: 4px solid var(--primary); }
+
+    .profile-avatar-wrap { position: relative; width: 100px; height: 100px; margin: 0 auto 15px; }
+    .profile-avatar-wrap img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; }
+    .avatar-edit-label { position: absolute; bottom: 0; right: 0; background: var(--primary); color: #000; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
     .modal-overlay { position: fixed; inset: 0; background: rgba(4, 7, 16, 0.88); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
-    .modal-card { background: #0f162a; border: 1.5px solid rgba(0, 242, 254, 0.3); border-radius: 22px; width: 100%; max-width: 650px; max-height: 90vh; overflow-y: auto; padding: 28px; position: relative; }
-    .form-input { width: 100%; padding: 12px; background: #070a13; border: 1px solid #23355d; color: #fff; border-radius: 10px; margin-bottom: 12px; font-size: 0.95rem; }
+    .modal-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 22px; width: 100%; max-width: 650px; max-height: 90vh; overflow-y: auto; padding: 28px; position: relative; }
+    .form-input { width: 100%; padding: 12px; background: var(--input-bg); border: 1px solid var(--border); color: var(--text); border-radius: 10px; margin-bottom: 12px; font-size: 0.95rem; }
   </style>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
@@ -186,30 +220,29 @@
       <div class="exam-grid" id="dashboard-batches-grid"></div>
     </div>
 
-    <!-- 2. SERIES LISTING VIEW (INSIDE BATCH) -->
+    <!-- 2. SERIES LISTING VIEW -->
     <div id="screen-series" class="hidden">
-      
-      <!-- BATCH HEADER CARD WITH PRICING & BUY NOW OPTION -->
-      <div style="background:var(--surface); border:1.5px solid rgba(0,242,254,0.3); border-radius:18px; padding:20px; margin-bottom:20px;">
+      <div style="background:var(--surface); border:1.5px solid var(--border); border-radius:18px; padding:20px; margin-bottom:20px;">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
           <div>
             <h2 id="series-header-title" style="color:var(--primary); font-size:1.4rem;">Batch Tests</h2>
-            <p id="series-batch-desc" style="color:#cbd5e1; font-size:0.9rem; margin-top:4px;"></p>
+            <p id="series-batch-desc" style="color:var(--text-muted); font-size:0.9rem; margin-top:4px;"></p>
             <div id="series-header-price-wrap" style="margin-top:10px; display:flex; align-items:center; gap:10px;"></div>
           </div>
           
           <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
             <div id="series-action-btn-placeholder"></div>
+            <button class="btn-subfolder" onclick="openBatchLeaderboard()"><i class="fa-solid fa-trophy"></i> All India Ranks</button>
             <button id="btn-add-subfolder" class="btn-subfolder hidden" onclick="openCreateSubBatchModal()"><i class="fa-solid fa-folder-plus"></i> Add Folder</button>
             <button id="btn-upload-test-in-batch" class="btn-submit hidden" onclick="openUploadTestInCurrentBatch()"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Test</button>
-            <button id="btn-edit-current-batch" class="btn-batch hidden" onclick="editCurrentBatch()"><i class="fa-solid fa-pen"></i> Edit Batch Settings</button>
+            <button id="btn-edit-current-batch" class="btn-batch hidden" onclick="editCurrentBatch()"><i class="fa-solid fa-pen"></i> Edit Batch</button>
             <button class="btn-nav" onclick="showDashboard()"><i class="fa-solid fa-arrow-left"></i> Back</button>
           </div>
         </div>
 
-        <div style="margin-top:16px; padding-top:12px; border-top:1px solid #23355d;">
+        <div style="margin-top:16px; padding-top:12px; border-top:1px solid var(--border);">
           <h4 style="color:var(--green); font-size:0.88rem; margin-bottom:4px;"><i class="fa-solid fa-list-check"></i> Course Syllabus & Topics Included:</h4>
-          <p id="batch-inclusions-text" style="color:#94a3b8; font-size:0.85rem; line-height:1.6;"></p>
+          <p id="batch-inclusions-text" style="color:var(--text-muted); font-size:0.85rem; line-height:1.6;"></p>
         </div>
       </div>
 
@@ -237,28 +270,86 @@
       </div>
     </div>
 
-    <!-- 4. RESULT SCREEN -->
+    <!-- 4. REAL-TIME RANK & RESULT SCREEN (NO PASS/FAIL - LIVE RANK DISPLAY) -->
     <div id="screen-result" class="cbt-container hidden" style="text-align:center;">
-      <i class="fa-solid fa-award" style="font-size:4rem; color:var(--gold); margin-bottom:12px;"></i>
-      <h2 id="res-heading">Official Scorecard</h2>
-      <p id="res-sub" style="margin: 8px 0; font-size: 1.05rem;"></p>
       
-      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:12px; margin:20px 0;">
-        <div style="background:#0c1221; padding:12px; border-radius:12px; border:1px solid #1e293b;">Score Points<span style="font-size:1.4rem; font-weight:bold; color:var(--primary); display:block;" id="res-points-added">+0</span></div>
-        <div style="background:#0c1221; padding:12px; border-radius:12px; border:1px solid #1e293b;">Score<span style="font-size:1.4rem; font-weight:bold; color:var(--gold); display:block;" id="res-score">0</span></div>
-        <div style="background:#0c1221; padding:12px; border-radius:12px; border:1px solid #1e293b;">Accuracy<span style="font-size:1.4rem; font-weight:bold; color:#fff; display:block;" id="res-acc">0%</span></div>
-        <div style="background:#0c1221; padding:12px; border-radius:12px; border:1px solid #1e293b;">Status<span style="font-size:1.2rem; font-weight:bold; display:block;" id="res-status">PASS</span></div>
+      <!-- TOP 3 PODIUM (1st, 2nd, 3rd) -->
+      <h3 style="color:var(--gold); margin-bottom:10px;"><i class="fa-solid fa-crown"></i> Series Top 3 Rank Holders (Podium)</h3>
+      <div class="podium-container" id="res-podium-box"></div>
+
+      <!-- CANDIDATE LIVE AIR RANK CARD -->
+      <div style="background:var(--sub-card); border:2px solid var(--primary); border-radius:18px; padding:20px; margin:20px 0; display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:12px;">
+        <div>
+          <span style="font-size:0.8rem; color:var(--text-muted);">Your All India Rank</span>
+          <div style="font-size:2rem; font-weight:900; color:var(--gold);" id="res-user-air">#1</div>
+        </div>
+        <div>
+          <span style="font-size:0.8rem; color:var(--text-muted);">Total Candidates</span>
+          <div style="font-size:1.8rem; font-weight:800; color:var(--text);" id="res-total-students">50+</div>
+        </div>
+        <div>
+          <span style="font-size:0.8rem; color:var(--text-muted);">Points Scored</span>
+          <div style="font-size:1.8rem; font-weight:800; color:var(--green);" id="res-score-pts">+0 Pts</div>
+        </div>
+        <div>
+          <span style="font-size:0.8rem; color:var(--text-muted);">Accuracy</span>
+          <div style="font-size:1.8rem; font-weight:800; color:var(--primary);" id="res-accuracy-val">0%</div>
+        </div>
       </div>
 
-      <button class="btn-submit" onclick="showDashboard()">Return to Dashboard</button>
-      <div style="margin-top:35px; text-align:left;">
-        <h3 style="color:var(--primary); margin-bottom:15px; border-bottom:1px solid #23355d; padding-bottom:8px;">Detailed Answer Key</h3>
+      <!-- FULL SERIES LEADERBOARD LIST -->
+      <div style="text-align:left; margin-top:25px;">
+        <h3 style="color:var(--primary); margin-bottom:10px;"><i class="fa-solid fa-list-ol"></i> Live Leaderboard & All Candidates Ranks</h3>
+        <div style="overflow-x:auto;">
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Candidate</th>
+                <th>Score Points</th>
+                <th>Tests Completed</th>
+              </tr>
+            </thead>
+            <tbody id="res-leaderboard-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="text-align:left; margin-top:35px;">
+        <h3 style="color:var(--primary); margin-bottom:15px; border-bottom:1px solid var(--border); padding-bottom:8px;">Detailed Answer Key</h3>
         <div id="review-cards-container"></div>
       </div>
+
       <button class="btn-submit" style="margin-top:25px;" onclick="showDashboard()">Return to Dashboard</button>
     </div>
 
-    <!-- 5. MY ENROLLED BATCHES SCREEN -->
+    <!-- 5. USER PROFILE SCREEN -->
+    <div id="screen-profile" class="hidden">
+      <div style="max-width:540px; margin:0 auto; background:var(--surface); border:1.5px solid var(--border); border-radius:22px; padding:30px; text-align:center;">
+        <div class="profile-avatar-wrap">
+          <img id="prof-avatar-lg" src="" alt="avatar">
+          <label for="avatar-file-input" class="avatar-edit-label" title="Change Avatar Photo">
+            <i class="fa-solid fa-camera"></i>
+          </label>
+          <input type="file" id="avatar-file-input" accept="image/*" style="display:none;" onchange="handleAvatarUpload(event)">
+        </div>
+
+        <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-bottom:6px;">
+          <h2 id="prof-display-name">Candidate Name</h2>
+          <button onclick="editDisplayName()" class="btn-sm" style="background:#263558; color:#fff;"><i class="fa-solid fa-pen"></i> Edit</button>
+        </div>
+        <p id="prof-email" style="color:var(--text-muted); font-size:0.9rem;"></p>
+
+        <div style="background:var(--sub-card); border-radius:14px; padding:15px; margin:20px 0; border:1px solid var(--border); display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div><span style="font-size:0.8rem; color:var(--text-muted);">Total Points</span><h3 id="prof-points" style="color:var(--gold);">0</h3></div>
+          <div><span style="font-size:0.8rem; color:var(--text-muted);">Tests Attempted</span><h3 id="prof-tests" style="color:var(--primary);">0</h3></div>
+        </div>
+
+        <button class="btn-nav" onclick="showDashboard()">Back to Dashboard</button>
+      </div>
+    </div>
+
+    <!-- 6. MY ENROLLED BATCHES SCREEN -->
     <div id="screen-enrolled-batches" class="hidden">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
         <h2><i class="fa-solid fa-box-open" style="color:var(--gold);"></i> My Enrolled Batches / Purchased Courses</h2>
@@ -267,22 +358,48 @@
       <div id="purchased-courses-container"></div>
     </div>
 
-    <!-- 6. DEDICATED SEPARATE CHECKOUT SCREEN -->
-    <div id="screen-checkout" class="hidden">
-      <div style="max-width:580px; margin:0 auto; background:var(--surface); border:1.5px solid rgba(0,242,254,0.3); border-radius:24px; padding:28px 22px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #23355d; padding-bottom:12px;">
-          <div>
-            <h2 style="color:var(--gold); font-size:1.3rem;"><i class="fa-solid fa-lock-open"></i> Unlock & Buy Batch</h2>
-            <p style="font-size:0.8rem; color:var(--text-muted);">Step-by-step Batch Unlock Process</p>
+    <!-- 7. BATCH TEST HISTORY SCREEN -->
+    <div id="screen-history" class="hidden">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2><i class="fa-solid fa-clock-rotate-left" style="color:var(--primary);"></i> My Attempted Test History</h2>
+        <button class="btn-nav" onclick="showDashboard()"><i class="fa-solid fa-arrow-left"></i> Dashboard</button>
+      </div>
+      <div id="history-container"></div>
+    </div>
+
+    <!-- 8. SETTINGS SCREEN (THEME DARK / LIGHT) -->
+    <div id="screen-settings" class="hidden">
+      <div style="max-width:540px; margin:0 auto; background:var(--surface); border:1.5px solid var(--border); border-radius:22px; padding:28px;">
+        <h2 style="color:var(--primary); margin-bottom:16px;"><i class="fa-solid fa-gear"></i> App Settings</h2>
+        
+        <div style="background:var(--sub-card); border:1px solid var(--border); border-radius:14px; padding:18px; margin-bottom:18px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <h4 style="color:var(--text);">Appearance Theme</h4>
+              <p style="font-size:0.8rem; color:var(--text-muted);">Dark mode & White mode switcher</p>
+            </div>
+            <button id="theme-toggle-btn" class="btn-sm" style="background:var(--primary); color:#000; padding:8px 16px;" onclick="toggleTheme()">
+              <i class="fa-solid fa-sun"></i> Light Theme
+            </button>
           </div>
+        </div>
+
+        <button class="btn-nav" onclick="showDashboard()"><i class="fa-solid fa-arrow-left"></i> Back</button>
+      </div>
+    </div>
+
+    <!-- 9. DEDICATED CHECKOUT SCREEN -->
+    <div id="screen-checkout" class="hidden">
+      <div style="max-width:580px; margin:0 auto; background:var(--surface); border:1.5px solid var(--border); border-radius:24px; padding:28px 22px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid var(--border); padding-bottom:12px;">
+          <h2 style="color:var(--gold); font-size:1.3rem;"><i class="fa-solid fa-lock-open"></i> Unlock & Buy Batch</h2>
           <button class="btn-sm" style="background:#263558; color:#fff;" onclick="showDashboard()">Close</button>
         </div>
 
         <div id="checkout-step-1">
-          <div style="background:#070a13; border:1.5px dashed var(--gold); border-radius:14px; padding:18px; text-align:center; margin-bottom:15px;">
+          <div style="background:var(--sub-card); border:1.5px dashed var(--gold); border-radius:14px; padding:18px; text-align:center; margin-bottom:15px;">
             <h3 id="checkout-batch-name" style="color:var(--primary); margin-bottom:4px;">Batch Name</h3>
             
-            <!-- Dynamic Price with Discount Strike on Checkout -->
             <div style="display:flex; justify-content:center; align-items:baseline; gap:10px; margin:6px 0;">
               <span style="font-size:1.2rem; color:var(--text-muted); text-decoration:line-through;" id="checkout-price-mrp">₹99</span>
               <span style="font-size:2.2rem; font-weight:900; color:var(--gold);" id="checkout-price-final">₹49</span>
@@ -290,60 +407,43 @@
             </div>
             
             <div style="margin:12px 0;">
-              <img id="checkout-qr-img" src="" style="width:190px; height:190px; border-radius:12px; border:2px solid #334155; object-fit:contain; background:#fff; padding:4px;">
+              <img id="checkout-qr-img" src="" style="width:190px; height:190px; border-radius:12px; border:2px solid var(--border); object-fit:contain; background:#fff; padding:4px;">
             </div>
 
-            <div style="background:#131c33; padding:10px; border-radius:8px; margin-top:8px; font-weight:bold; color:#00f59b; font-size:0.95rem; display:flex; justify-content:center; align-items:center; gap:8px;">
+            <div style="background:var(--surface); padding:10px; border-radius:8px; margin-top:8px; font-weight:bold; color:var(--green); font-size:0.95rem; display:flex; justify-content:center; align-items:center; gap:8px;">
               <span>UPI ID: <span id="checkout-upi-id">sunil.official8094@ybl</span></span>
               <button onclick="copyCheckoutUpiId()" class="btn-sm" style="background:#00f2fe; color:#000;"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
           </div>
 
-          <h4 style="color:#cbd5e1; font-size:0.88rem; margin-bottom:8px; text-align:center;">Click App to Pay Directly:</h4>
           <div class="app-pay-grid">
             <a id="link-pay-phonepe" href="#" class="app-pay-btn"><i class="fa-solid fa-mobile-screen" style="color:#8a3ffc;"></i> PhonePe</a>
             <a id="link-pay-gpay" href="#" class="app-pay-btn"><i class="fa-brands fa-google" style="color:#4285f4;"></i> Google Pay</a>
             <a id="link-pay-paytm" href="#" class="app-pay-btn"><i class="fa-solid fa-wallet" style="color:#00b9f5;"></i> Paytm</a>
-            <a id="link-pay-mobikwik" href="#" class="app-pay-btn"><i class="fa-solid fa-bolt" style="color:#ff5722;"></i> BHIM / Other UPI</a>
+            <a id="link-pay-mobikwik" href="#" class="app-pay-btn"><i class="fa-solid fa-bolt" style="color:#ff5722;"></i> Other UPI</a>
           </div>
 
-          <div style="margin-top:20px; background:#070d1e; border:1px solid #23355d; border-radius:14px; padding:15px; text-align:center;">
-            <p style="font-size:0.9rem; font-weight:700; color:#fff; margin-bottom:12px;">Payment complete hone ke baad next step par click karein:</p>
-            <div style="display:flex; gap:10px; justify-content:center;">
-              <button class="btn-submit" style="flex:1;" onclick="goToCheckoutStep2()"><i class="fa-solid fa-circle-check"></i> I Have Paid (Next Step)</button>
-              <button class="btn-danger" style="flex:1;" onclick="showDashboard()"><i class="fa-solid fa-circle-xmark"></i> Cancel</button>
-            </div>
+          <div style="display:flex; gap:10px; margin-top:15px;">
+            <button class="btn-submit" style="flex:1;" onclick="goToCheckoutStep2()"><i class="fa-solid fa-circle-check"></i> I Have Paid (Next)</button>
+            <button class="btn-danger" style="flex:1;" onclick="showDashboard()">Cancel</button>
           </div>
         </div>
 
         <div id="checkout-step-2" class="hidden">
-          <div style="background:rgba(0,245,155,0.1); border-left:4px solid var(--green); padding:10px 14px; border-radius:8px; margin-bottom:14px;">
-            <p style="font-size:0.85rem; color:var(--green); font-weight:bold;">
-              Step 2: Verification Details Submit Karein
-            </p>
-          </div>
+          <label style="font-size:0.85rem;">Aapki UPI ID (Payment Vali):</label>
+          <input type="text" id="chk-user-upi" class="form-input" placeholder="e.g. rahul@oksbi">
 
-          <label style="font-size:0.85rem; color:#cbd5e1;">Aapki UPI ID (Jisse payment kiya):</label>
-          <input type="text" id="chk-user-upi" class="form-input" placeholder="e.g. candidate@oksbi">
-
-          <label style="font-size:0.85rem; color:#cbd5e1;">UTR / Transaction Ref Number (12 Digits):</label>
+          <label style="font-size:0.85rem;">UTR / Transaction Ref Number (12 Digits):</label>
           <input type="text" id="chk-user-utr" class="form-input" placeholder="e.g. 423587912456">
 
-          <label style="font-size:0.85rem; color:#cbd5e1;">Payment Screenshot (SS) Upload Karein:</label>
+          <label style="font-size:0.85rem;">Payment Screenshot (SS):</label>
           <input type="file" id="chk-user-ss" accept="image/*" class="form-input" style="padding:8px;">
 
-          <div style="background:rgba(255,183,3,0.1); border-left:4px solid var(--gold); padding:10px 14px; border-radius:8px; margin-bottom:14px;">
-            <p style="font-size:0.8rem; color:#ffb703; font-weight:600;">
-              ⏳ Details submit hone ke baad Admin panel par aapki request verify hokar batch unlock ho jayega.
-            </p>
-          </div>
-
-          <div style="display:flex; gap:10px;">
-            <button class="btn-nav" onclick="backToCheckoutStep1()"><i class="fa-solid fa-arrow-left"></i> Back</button>
+          <div style="display:flex; gap:10px; margin-top:15px;">
+            <button class="btn-nav" onclick="backToCheckoutStep1()">Back</button>
             <button class="btn-submit" style="flex:1;" onclick="submitCheckoutPaymentProof()">Submit Payment Proof</button>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -351,13 +451,13 @@
 
   <!-- AUTH SCREEN -->
   <div id="screen-auth" style="max-width:440px; margin:40px auto; padding:0 15px;">
-    <div style="background:var(--surface); border:1.5px solid rgba(0,242,254,0.3); border-radius:24px; padding:32px 24px; text-align:center;">
-      <h2 style="font-size:1.6rem; font-weight:800; color:#fff;">Student CBT Portal</h2>
+    <div style="background:var(--surface); border:1.5px solid var(--border); border-radius:24px; padding:32px 24px; text-align:center;">
+      <h2 style="font-size:1.6rem; font-weight:800; color:var(--text);">Student CBT Portal</h2>
       <p style="color:var(--text-muted); font-size:0.85rem; margin-top:5px;">Sign in to access your batches & tests</p>
 
-      <div style="display:flex; background:#070a13; border-radius:10px; padding:4px; margin:20px 0; border:1px solid #1e293b;">
+      <div style="display:flex; background:var(--sub-card); border-radius:10px; padding:4px; margin:20px 0; border:1px solid var(--border);">
         <button id="tab-login" style="flex:1; padding:10px; border:none; background:var(--primary); color:#000; font-weight:bold; border-radius:8px; cursor:pointer;" onclick="setAuthTab('login')">Existing Login</button>
-        <button id="tab-signup" style="flex:1; padding:10px; border:none; background:transparent; color:#94a3b8; font-weight:bold; border-radius:8px; cursor:pointer;" onclick="setAuthTab('signup')">Create Account</button>
+        <button id="tab-signup" style="flex:1; padding:10px; border:none; background:transparent; color:var(--text-muted); font-weight:bold; border-radius:8px; cursor:pointer;" onclick="setAuthTab('signup')">Create Account</button>
       </div>
 
       <div id="auth-login-box">
@@ -373,159 +473,171 @@
         <button class="btn-submit" style="width:100%;" onclick="handleEmailSignup()">Create Candidate Account</button>
       </div>
 
-      <div style="margin:18px 0; color:#64748b; font-size:0.8rem;">--- OR ---</div>
-      <button onclick="loginWithGoogle()" style="width:100%; background:#fff; color:#000; border:none; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px;">
+      <div style="margin:18px 0; color:var(--text-muted); font-size:0.8rem;">--- OR ---</div>
+      <button onclick="loginWithGoogle()" style="width:100%; background:#fff; color:#000; border:1px solid var(--border); padding:12px; border-radius:10px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px;">
         <img width="18" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> Continue with Google
       </button>
 
-      <div style="margin-top:24px; padding-top:16px; border-top:1px dashed #23355d; display:flex; gap:12px; justify-content:center;">
+      <div style="margin-top:24px; padding-top:16px; border-top:1px dashed var(--border); display:flex; gap:12px; justify-content:center;">
         <button onclick="promptAdminLogin()" style="background:#1c1333; border:1px solid #9d4edd; color:#00f2fe; padding:10px 16px; border-radius:10px; font-size:0.85rem; cursor:pointer; font-weight:bold;">👑 Admin Login</button>
         <button onclick="promptGuestLogin()" style="background:#131c30; border:1px solid #23355d; color:#38bdf8; padding:10px 16px; border-radius:10px; font-size:0.85rem; cursor:pointer; font-weight:bold;">👤 Guest Login</button>
       </div>
     </div>
   </div>
 
-  <!-- ADMIN: PAYMENT SETTINGS MODAL (UPI & QR) -->
+  <!-- APP FEEDBACK MODAL -->
+  <div id="feedback-modal" class="modal-overlay hidden">
+    <div class="modal-card" style="max-width:500px;">
+      <button onclick="closeFeedbackModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+      <h2 style="color:var(--primary); margin-bottom:12px;"><i class="fa-solid fa-comment-dots"></i> App Feedback</h2>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">Aapka anubhav kaisa raha? Humare sath share karein:</p>
+
+      <label style="font-size:0.85rem;">Rating:</label>
+      <select id="feed-rating" class="form-input">
+        <option value="5">⭐⭐⭐⭐⭐ Excellent (5/5)</option>
+        <option value="4">⭐⭐⭐⭐ Good (4/5)</option>
+        <option value="3">⭐⭐⭐ Average (3/5)</option>
+        <option value="2">⭐⭐ Needs Improvement (2/5)</option>
+      </select>
+
+      <label style="font-size:0.85rem;">Feedback Message:</label>
+      <textarea id="feed-msg" class="form-input" rows="4" placeholder="Apna sujhav ya feedback likhein..."></textarea>
+
+      <button class="btn-submit" style="width:100%;" onclick="submitFeedback()">Send Feedback</button>
+    </div>
+  </div>
+
+  <!-- ADMIN MODALS (PAYMENT CONFIG, APPROVALS, BATCH, TEST) -->
   <div id="admin-payment-settings-modal" class="modal-overlay hidden">
     <div class="modal-card">
-      <button onclick="closeAdminPaySettingsModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+      <button onclick="closeAdminPaySettingsModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
       <h2 style="color:var(--primary); margin-bottom:12px;"><i class="fa-solid fa-qrcode"></i> Payment Settings (UPI & QR)</h2>
-      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">Yahan apni UPI ID aur Official QR Code save karein:</p>
-
-      <label style="font-size:0.85rem; color:#cbd5e1;">Admin UPI ID:</label>
+      <label style="font-size:0.85rem;">Admin UPI ID:</label>
       <input type="text" id="admin-setting-upi" class="form-input" placeholder="e.g. sunil.official8094@ybl">
-
-      <label style="font-size:0.85rem; color:#cbd5e1;">Upload Official QR Code Image:</label>
-      <input type="file" id="admin-setting-qr-file" accept="image/*" class="form-input" style="padding:8px;" onchange="previewAdminQR(event)">
-
+      <label style="font-size:0.85rem;">Upload QR Code Image:</label>
+      <input type="file" id="admin-setting-qr-file" accept="image/*" class="form-input" onchange="previewAdminQR(event)">
       <div style="text-align:center; margin:15px 0;">
-        <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:6px;">Current QR Preview:</p>
-        <img id="admin-setting-qr-preview" src="" style="width:160px; height:160px; border-radius:10px; border:1px solid #334155; object-fit:contain; background:#fff; padding:4px;">
+        <img id="admin-setting-qr-preview" src="" style="width:160px; height:160px; border-radius:10px; border:1px solid var(--border); object-fit:contain; background:#fff; padding:4px;">
       </div>
-
       <button class="btn-submit" style="width:100%;" onclick="saveAdminPaymentSettings()">Save Payment Settings</button>
     </div>
   </div>
 
-  <!-- ADMIN: PENDING PAYMENT REQUESTS APPROVAL MODAL -->
   <div id="admin-requests-modal" class="modal-overlay hidden">
     <div class="modal-card" style="max-width:750px;">
-      <button onclick="closeAdminRequestsModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+      <button onclick="closeAdminRequestsModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
       <h2 style="color:var(--primary); margin-bottom:12px;"><i class="fa-solid fa-receipt"></i> Pending Batch Approvals</h2>
       <div id="admin-reqs-list-container"></div>
     </div>
   </div>
 
-  <!-- ADMIN: CREATE / EDIT BATCH (WITH MRP, DISCOUNT & SELLING PRICE) -->
   <div id="admin-batch-modal" class="modal-overlay hidden">
     <div class="modal-card">
-      <button onclick="closeAdminBatchModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+      <button onclick="closeAdminBatchModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
       <h2 id="batch-modal-heading" style="color:var(--gold); margin-bottom:12px;"><i class="fa-solid fa-folder-plus"></i> Course Settings</h2>
       <input type="hidden" id="edit-batch-id" value="">
-
-      <label style="font-size:0.85rem; color:#cbd5e1;">Batch Title / Name:</label>
-      <input type="text" id="batch-title-input" class="form-input" placeholder="e.g. SSC CGL Complete Mock 2026">
-
-      <label style="font-size:0.85rem; color:#cbd5e1;">Short Description:</label>
-      <input type="text" id="batch-desc-input" class="form-input" placeholder="e.g. Full Tier-1 Tests & Notes">
-
-      <label style="font-size:0.85rem; color:#cbd5e1;">Syllabus & Topics Included:</label>
-      <textarea id="batch-syllabus-input" class="form-input" rows="3" placeholder="Course syllabus details..."></textarea>
-
+      <label style="font-size:0.85rem;">Batch Name:</label>
+      <input type="text" id="batch-title-input" class="form-input">
+      <label style="font-size:0.85rem;">Description:</label>
+      <input type="text" id="batch-desc-input" class="form-input">
+      <label style="font-size:0.85rem;">Syllabus:</label>
+      <textarea id="batch-syllabus-input" class="form-input" rows="3"></textarea>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
         <div>
-          <label style="font-size:0.85rem; color:#cbd5e1;">Batch Type:</label>
+          <label style="font-size:0.85rem;">Type:</label>
           <select id="batch-type-select" class="form-input" onchange="toggleBatchPriceInput()">
-            <option value="paid">Paid Batch (Requires Buy / Unlock)</option>
-            <option value="free">100% Free Batch (Auto Enroll)</option>
+            <option value="paid">Paid Batch</option>
+            <option value="free">100% Free Batch</option>
           </select>
         </div>
         <div>
-          <label style="font-size:0.85rem; color:#cbd5e1;">Original MRP Price (₹):</label>
+          <label style="font-size:0.85rem;">MRP (₹):</label>
           <input type="number" id="batch-mrp-input" class="form-input" value="99" oninput="calculateDiscountPercent()">
         </div>
       </div>
-
       <div id="batch-price-box" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
         <div>
-          <label style="font-size:0.85rem; color:#cbd5e1;">Final Discounted Selling Price (₹):</label>
+          <label style="font-size:0.85rem;">Selling Price (₹):</label>
           <input type="number" id="batch-price-input" class="form-input" value="49" oninput="calculateDiscountPercent()">
         </div>
         <div>
-          <label style="font-size:0.85rem; color:#cbd5e1;">Discount Percentage (% Chhoot):</label>
+          <label style="font-size:0.85rem;">Discount (%):</label>
           <input type="number" id="batch-discount-input" class="form-input" value="50" oninput="calculatePriceFromDiscount()">
         </div>
       </div>
-
-      <button class="btn-batch" style="width:100%; margin-top:10px;" onclick="saveAdminBatch()">Save Batch Settings</button>
+      <button class="btn-batch" style="width:100%; margin-top:10px;" onclick="saveAdminBatch()">Save Batch</button>
     </div>
   </div>
 
-  <!-- ADMIN: CREATE SUB-BATCH MODAL -->
   <div id="admin-subbatch-modal" class="modal-overlay hidden">
     <div class="modal-card">
-      <button onclick="closeCreateSubBatchModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
-      <h2 style="color:var(--primary); margin-bottom:12px;"><i class="fa-solid fa-folder-plus"></i> Create Folder / Subject</h2>
-      <input type="text" id="subbatch-title-input" class="form-input" placeholder="e.g. Hindi, Math, Reasoning">
-      <button class="btn-subfolder" style="width:100%; margin-top:10px;" onclick="saveAdminSubBatch()">Save Folder</button>
+      <button onclick="closeCreateSubBatchModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+      <h2 style="color:var(--primary); margin-bottom:12px;">Create Folder / Subject</h2>
+      <input type="text" id="subbatch-title-input" class="form-input" placeholder="e.g. Reasoning, Math">
+      <button class="btn-subfolder" style="width:100%;" onclick="saveAdminSubBatch()">Save Folder</button>
     </div>
   </div>
 
-  <!-- ADMIN: ADD TEST PAPER MODAL -->
   <div id="admin-modal" class="modal-overlay hidden">
     <div class="modal-card">
-      <button onclick="closeAdminPaperModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
-      <h2 id="modal-test-action-heading" style="color:var(--primary); margin-bottom:12px;"><i class="fa-solid fa-plus-circle"></i> Create Test Paper</h2>
+      <button onclick="closeAdminPaperModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+      <h2 id="modal-test-action-heading" style="color:var(--primary); margin-bottom:12px;">Create Test Paper</h2>
       <input type="hidden" id="edit-test-id" value="">
-
-      <label style="font-size:0.85rem; color:#cbd5e1;">Select Batch:</label>
+      <label style="font-size:0.85rem;">Batch:</label>
       <select id="new-paper-cat" class="form-input" onchange="onBatchSelectedInModal()"></select>
-
-      <label style="font-size:0.85rem; color:#cbd5e1;">Select Folder / Subject:</label>
+      <label style="font-size:0.85rem;">Folder:</label>
       <select id="new-paper-subfolder" class="form-input"><option value="general">General / Main</option></select>
-
       <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px;">
-        <div>
-          <label style="font-size:0.85rem; color:#cbd5e1;">Test Title:</label>
-          <input type="text" id="new-paper-title" class="form-input" placeholder="e.g. Test 1 (Full Mock)">
-        </div>
-        <div>
-          <label style="font-size:0.85rem; color:#cbd5e1;">Time (Min):</label>
-          <input type="number" id="new-paper-time" class="form-input" value="20">
-        </div>
+        <div><label style="font-size:0.85rem;">Test Title:</label><input type="text" id="new-paper-title" class="form-input"></div>
+        <div><label style="font-size:0.85rem;">Time (Min):</label><input type="number" id="new-paper-time" class="form-input" value="20"></div>
       </div>
-
-      <div style="background:#070a13; border:1px solid #23355d; padding:12px; border-radius:10px; margin-bottom:14px;">
-        <label style="font-size:0.9rem; color:var(--gold); font-weight:bold; display:block; margin-bottom:6px;">
-          <i class="fa-solid fa-sliders"></i> Test Access Setting:
-        </label>
-        <select id="test-access-type" class="form-input" style="margin-bottom:0;">
-          <option value="free">🟢 Free Test (Open For All Candidates)</option>
-          <option value="paid">🔒 Locked / Paid Test (Requires Batch Purchase)</option>
+      <div style="background:var(--sub-card); border:1px solid var(--border); padding:12px; border-radius:10px; margin-bottom:14px;">
+        <label style="font-size:0.85rem; color:var(--gold); font-weight:bold;">Test Access Status:</label>
+        <select id="test-access-type" class="form-input">
+          <option value="free">🟢 Free Test (Open For All)</option>
+          <option value="paid">🔒 Locked / Paid Test</option>
         </select>
       </div>
-
-      <input type="text" id="q-input-text" class="form-input" placeholder="Question text">
+      <input type="text" id="q-input-text" class="form-input" placeholder="Question">
       <input type="text" id="q-opt-0" class="form-input" placeholder="Option A">
       <input type="text" id="q-opt-1" class="form-input" placeholder="Option B">
       <input type="text" id="q-opt-2" class="form-input" placeholder="Option C">
       <input type="text" id="q-opt-3" class="form-input" placeholder="Option D">
-      
-      <label style="font-size:0.85rem; color:#cbd5e1;">Correct Option:</label>
+      <label style="font-size:0.85rem;">Correct Option:</label>
       <select id="q-correct-idx" class="form-input">
         <option value="0">Option A</option>
         <option value="1">Option B</option>
         <option value="2">Option C</option>
         <option value="3">Option D</option>
       </select>
-
-      <button class="btn-submit" style="width:100%;" onclick="saveAdminTestPaper()">Publish Test Paper</button>
+      <button class="btn-submit" style="width:100%;" onclick="saveAdminTestPaper()">Publish Test</button>
     </div>
   </div>
 
   <script>
-    // SPLASH DISMISS
+    // THEME MANAGEMENT (DARK / WHITE)
+    let currentTheme = localStorage.getItem('pariksha_theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+
+    function toggleTheme() {
+      currentTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      localStorage.setItem('pariksha_theme', currentTheme);
+      updateThemeButton();
+    }
+
+    function updateThemeButton() {
+      const btn = document.getElementById('theme-toggle-btn');
+      if (btn) {
+        btn.innerHTML = (currentTheme === 'dark') 
+          ? `<i class="fa-solid fa-sun"></i> Light Theme` 
+          : `<i class="fa-solid fa-moon"></i> Dark Theme`;
+      }
+    }
+
+    // SPLASH SCREEN DISMISS
     window.addEventListener('load', () => {
+      updateThemeButton();
       setTimeout(() => {
         const s = document.getElementById('app-splash-screen');
         if (s) { s.style.opacity = '0'; setTimeout(() => s.classList.add('hidden'), 600); }
@@ -560,46 +672,15 @@
     let timerInterval = null;
     let userLang = localStorage.getItem('user_cbt_lang') || 'hi';
 
-    // DYNAMIC ADMIN PAYMENT CONFIG
     let paymentConfig = {
       upiId: "sunil.official8094@ybl",
       qrCodeUrl: "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=sunil.official8094@ybl&pn=Sunil%20Kumar"
     };
 
     const defaultBatches = [
-      { 
-        id: "batch_ssc_cgl", 
-        title: "SSC CGL Mock Batch", 
-        desc: "Tier-1 Mock Series, English & GK", 
-        syllabus: "Complete official mock tests and solutions", 
-        isPaid: true, 
-        mrp: 99, 
-        price: 49, 
-        discountPercent: 50, 
-        icon: "fa-building-columns" 
-      },
-      { 
-        id: "batch_police_si", 
-        title: "Police SI Batch", 
-        desc: "Moolvidhi, Sanvidhan & Hindi", 
-        syllabus: "Complete Law, Crime procedure & GK", 
-        isPaid: true, 
-        mrp: 199, 
-        price: 99, 
-        discountPercent: 50, 
-        icon: "fa-shield-halved" 
-      },
-      { 
-        id: "batch_raj_gk", 
-        title: "Rajasthan GK (Free Batch)", 
-        desc: "41 Zile & Comprehensive Geography", 
-        syllabus: "All districts, culture and state history", 
-        isPaid: false, 
-        mrp: 0, 
-        price: 0, 
-        discountPercent: 0, 
-        icon: "fa-landmark" 
-      }
+      { id: "batch_ssc_cgl", title: "SSC CGL Mock Batch", desc: "Tier-1 Mock Series", syllabus: "Mock tests and solutions", isPaid: true, mrp: 99, price: 49, discountPercent: 50, icon: "fa-building-columns" },
+      { id: "batch_police_si", title: "Police SI Batch", desc: "Moolvidhi & Hindi", syllabus: "Complete Law & GK", isPaid: true, mrp: 199, price: 99, discountPercent: 50, icon: "fa-shield-halved" },
+      { id: "batch_raj_gk", title: "Rajasthan GK (Free Batch)", desc: "41 Zile & Geography", syllabus: "Districts & History", isPaid: false, mrp: 0, price: 0, discountPercent: 0, icon: "fa-landmark" }
     ];
 
     function setAuthTab(mode) {
@@ -607,14 +688,14 @@
         document.getElementById("tab-login").style.background = "var(--primary)";
         document.getElementById("tab-login").style.color = "#000";
         document.getElementById("tab-signup").style.background = "transparent";
-        document.getElementById("tab-signup").style.color = "#94a3b8";
+        document.getElementById("tab-signup").style.color = "var(--text-muted)";
         document.getElementById("auth-login-box").classList.remove("hidden");
         document.getElementById("auth-signup-box").classList.add("hidden");
       } else {
         document.getElementById("tab-signup").style.background = "var(--primary)";
         document.getElementById("tab-signup").style.color = "#000";
         document.getElementById("tab-login").style.background = "transparent";
-        document.getElementById("tab-login").style.color = "#94a3b8";
+        document.getElementById("tab-login").style.color = "var(--text-muted)";
         document.getElementById("auth-signup-box").classList.remove("hidden");
         document.getElementById("auth-login-box").classList.add("hidden");
       }
@@ -724,21 +805,27 @@
       const menu = document.getElementById("user-dropdown-menu");
       menu.innerHTML = `
         <div class="dropdown-header">
-          <div style="font-weight:bold; color:#fff;">${currentUser.displayName}</div>
+          <div style="font-weight:bold; color:var(--text);">${currentUser.displayName}</div>
           <p style="font-size:0.75rem; color:var(--text-muted);">${isAdmin ? '👑 Master Administrator' : currentUser.email}</p>
         </div>
       `;
       if (isAdmin) {
         menu.innerHTML += `
-          <div class="dropdown-item" onclick="openAdminPaySettingsModal()"><i class="fa-solid fa-qrcode" style="color:var(--gold);"></i> Payment Settings (UPI & QR)</div>
+          <div class="dropdown-item" onclick="openAdminPaySettingsModal()"><i class="fa-solid fa-qrcode" style="color:var(--gold);"></i> Payment Settings</div>
           <div class="dropdown-item" onclick="openAdminRequestsModal()"><i class="fa-solid fa-receipt" style="color:var(--primary);"></i> Pending Batch Approvals</div>
           <div class="dropdown-item" onclick="openAdminBatchModal()"><i class="fa-solid fa-folder-plus" style="color:var(--accent);"></i> Add New Batch</div>
           <div class="dropdown-item" onclick="openAdminPaperModal()"><i class="fa-solid fa-cloud-arrow-up" style="color:var(--green);"></i> Upload Test Paper</div>
+          <div class="dropdown-item" onclick="openProfileView()"><i class="fa-solid fa-user-gear" style="color:var(--primary);"></i> Edit Profile</div>
+          <div class="dropdown-item" onclick="openSettingsView()"><i class="fa-solid fa-gear" style="color:#f59e0b;"></i> Settings (Theme)</div>
           <div class="dropdown-item" onclick="logout()" style="color:var(--red);"><i class="fa-solid fa-power-off"></i> Logout Admin</div>
         `;
       } else {
         menu.innerHTML += `
+          <div class="dropdown-item" onclick="openProfileView()"><i class="fa-solid fa-user" style="color:var(--primary);"></i> Edit Profile</div>
           <div class="dropdown-item" onclick="openEnrolledBatchesView()"><i class="fa-solid fa-box-open" style="color:var(--gold);"></i> My Enrolled Batches</div>
+          <div class="dropdown-item" onclick="openHistoryView()"><i class="fa-solid fa-clock-rotate-left" style="color:var(--green);"></i> Test History</div>
+          <div class="dropdown-item" onclick="openFeedbackModal()"><i class="fa-solid fa-comment-dots" style="color:#e879f9;"></i> App Feedback</div>
+          <div class="dropdown-item" onclick="openSettingsView()"><i class="fa-solid fa-gear" style="color:#f59e0b;"></i> Settings (Theme)</div>
           <div class="dropdown-item" onclick="logout()" style="color:var(--red);"><i class="fa-solid fa-power-off"></i> Logout</div>
         `;
       }
@@ -749,7 +836,7 @@
     function logout() { currentUser = null; auth.signOut(); location.reload(); }
 
     function hideAll() {
-      ["screen-dashboard", "screen-series", "screen-cbt", "screen-result", "screen-enrolled-batches", "screen-checkout"].forEach(id => {
+      ["screen-dashboard", "screen-series", "screen-cbt", "screen-result", "screen-enrolled-batches", "screen-history", "screen-profile", "screen-settings", "screen-checkout"].forEach(id => {
         document.getElementById(id).classList.add("hidden");
       });
       document.getElementById("user-dropdown-menu").classList.remove("show");
@@ -757,7 +844,7 @@
 
     function showDashboard() { hideAll(); document.getElementById("screen-dashboard").classList.remove("hidden"); }
 
-    // DYNAMIC BATCH LISTING WITH TOP BUY BAR & PRICING
+    // DASHBOARD BATCHES
     async function loadAllBatches() {
       allBatches = [...defaultBatches];
       try {
@@ -783,10 +870,7 @@
 
         if (b.isPaid) {
           if (isUnlocked) {
-            topPricingHtml = `
-              <div class="card-price-group"><span class="price-final">Purchased</span></div>
-              <span class="badge-enrolled"><i class="fa-solid fa-check"></i> UNLOCKED</span>
-            `;
+            topPricingHtml = `<div class="card-price-group"><span class="price-final">Purchased</span></div><span class="badge-enrolled"><i class="fa-solid fa-check"></i> UNLOCKED</span>`;
             actionButtonHtml = `<button class="btn-submit" onclick="event.stopPropagation(); openSeriesListing(allBatches.find(x => x.id === '${b.id}'))">Open Batch <i class="fa-solid fa-arrow-right"></i></button>`;
           } else {
             topPricingHtml = `
@@ -800,31 +884,23 @@
             actionButtonHtml = `<button class="btn-pay" onclick="event.stopPropagation(); triggerBuyBatch('${b.id}')"><i class="fa-solid fa-lock"></i> Unlock (₹${b.price})</button>`;
           }
         } else {
-          // FREE BATCH
           if (isUnlocked) {
-            topPricingHtml = `
-              <div class="card-price-group"><span class="price-final" style="color:var(--green);">Free Batch</span></div>
-              <span class="badge-enrolled"><i class="fa-solid fa-check"></i> ENROLLED</span>
-            `;
+            topPricingHtml = `<div class="card-price-group"><span class="price-final" style="color:var(--green);">Free Batch</span></div><span class="badge-enrolled"><i class="fa-solid fa-check"></i> ENROLLED</span>`;
             actionButtonHtml = `<button class="btn-submit" onclick="event.stopPropagation(); openSeriesListing(allBatches.find(x => x.id === '${b.id}'))">Start Learning <i class="fa-solid fa-arrow-right"></i></button>`;
           } else {
-            topPricingHtml = `
-              <div class="card-price-group"><span class="price-final" style="color:var(--green);">100% Free</span></div>
-              <button class="btn-enroll" onclick="event.stopPropagation(); autoEnrollFreeBatch('${b.id}')"><i class="fa-solid fa-circle-check"></i> Enroll Now</button>
-            `;
+            topPricingHtml = `<div class="card-price-group"><span class="price-final" style="color:var(--green);">100% Free</span></div><button class="btn-enroll" onclick="event.stopPropagation(); autoEnrollFreeBatch('${b.id}')"><i class="fa-solid fa-circle-check"></i> Enroll Now</button>`;
             actionButtonHtml = `<button class="btn-enroll" onclick="event.stopPropagation(); autoEnrollFreeBatch('${b.id}')">Enroll Free</button>`;
           }
         }
 
         card.onclick = () => openSeriesListing(b);
-
         card.innerHTML = `
           <div class="card-top-bar">${topPricingHtml}</div>
           <div class="card-body-content">
             <div>
               <div class="exam-icon"><i class="fa-solid ${b.icon || 'fa-graduation-cap'}"></i></div>
-              <h3 style="margin-bottom:6px; color:#fff;">${b.title}</h3>
-              <p style="font-size:0.85rem; color:#94a3b8;">${b.desc || 'Click to view mock tests'}</p>
+              <h3 style="margin-bottom:6px; color:var(--text);">${b.title}</h3>
+              <p style="font-size:0.85rem; color:var(--text-muted);">${b.desc || 'Click to view mock tests'}</p>
             </div>
           </div>
           <div class="card-footer-action">
@@ -849,7 +925,6 @@
       return (currentUser.unlockedBatches || []).includes(batchId);
     }
 
-    // AUTO ENROLL FOR FREE BATCHES
     async function autoEnrollFreeBatch(batchId) {
       if (!currentUser) return alert("Pehle Login karein!");
       try {
@@ -860,24 +935,19 @@
             unlockedBatches: firebase.firestore.FieldValue.arrayUnion(batchId)
           });
         }
-        alert("🎉 Congratulations! Free Batch safaltapoorvak aapki profile me enroll ho gaya!");
+        alert("🎉 Congratulations! Free Batch aapki profile me enroll ho gaya!");
         loadAllBatches();
         const b = allBatches.find(x => x.id === batchId);
         if (b) openSeriesListing(b);
-      } catch(e) {
-        alert("Enroll error: " + e.message);
-      }
+      } catch(e) { alert("Enroll error: " + e.message); }
     }
 
     function triggerBuyBatch(batchId) {
       const b = allBatches.find(x => x.id === batchId);
-      if (b) {
-        currentSelectedBatch = b;
-        openDedicatedCheckoutScreen();
-      }
+      if (b) { currentSelectedBatch = b; openDedicatedCheckoutScreen(); }
     }
 
-    // INSIDE BATCH SCREEN
+    // SERIES LISTING
     async function openSeriesListing(batchObj) {
       currentSelectedBatch = batchObj;
       currentActiveSubBatch = "all";
@@ -888,8 +958,7 @@
       const isUnlocked = isBatchUnlockedForUser(batchObj.id);
       const priceWrap = document.getElementById("series-header-price-wrap");
       const btnActionBox = document.getElementById("series-action-btn-placeholder");
-      priceWrap.innerHTML = "";
-      btnActionBox.innerHTML = "";
+      priceWrap.innerHTML = ""; btnActionBox.innerHTML = "";
 
       if (batchObj.isPaid) {
         if (!isUnlocked) {
@@ -903,11 +972,8 @@
           priceWrap.innerHTML = `<span class="badge-enrolled"><i class="fa-solid fa-check"></i> Course Unlocked & Active</span>`;
         }
       } else {
-        if (!isUnlocked) {
-          btnActionBox.innerHTML = `<button class="btn-enroll" onclick="autoEnrollFreeBatch('${batchObj.id}')"><i class="fa-solid fa-circle-check"></i> Enroll Free</button>`;
-        } else {
-          priceWrap.innerHTML = `<span class="badge-enrolled"><i class="fa-solid fa-check"></i> Enrolled Free Batch</span>`;
-        }
+        if (!isUnlocked) btnActionBox.innerHTML = `<button class="btn-enroll" onclick="autoEnrollFreeBatch('${batchObj.id}')"><i class="fa-solid fa-circle-check"></i> Enroll Free</button>`;
+        else priceWrap.innerHTML = `<span class="badge-enrolled"><i class="fa-solid fa-check"></i> Enrolled Free Batch</span>`;
       }
 
       if (isAdmin) {
@@ -982,7 +1048,7 @@
       }
 
       if (papers.length === 0) {
-        container.innerHTML = `<div style="background:#0c1221; padding:30px; border-radius:14px; text-align:center; border:1px dashed #23355d;"><h3 style="color:#cbd5e1;">Is folder me abhi koi test nahi hai.</h3></div>`;
+        container.innerHTML = `<div style="background:var(--sub-card); padding:30px; border-radius:14px; text-align:center; border:1px dashed var(--border);"><h3 style="color:var(--text-muted);">Is folder me abhi koi test nahi hai.</h3></div>`;
         return;
       }
 
@@ -1004,14 +1070,14 @@
 
         let adminControls = isAdmin ? `
           <div style="display:flex; gap:6px; margin-left:10px;">
-            <button class="btn-sm" style="background:#263558; color:#00f2fe;" onclick="openEditTestModal('${test.docId}')" title="Edit Test"><i class="fa-solid fa-pen"></i></button>
-            <button class="btn-sm" style="background:#263558; color:#ff3366;" onclick="deleteTestPaper('${test.docId}')" title="Delete Test"><i class="fa-solid fa-trash"></i></button>
+            <button class="btn-sm" style="background:#263558; color:#00f2fe;" onclick="openEditTestModal('${test.docId}')"><i class="fa-solid fa-pen"></i></button>
+            <button class="btn-sm" style="background:#263558; color:#ff3366;" onclick="deleteTestPaper('${test.docId}')"><i class="fa-solid fa-trash"></i></button>
           </div>
         ` : '';
 
         item.innerHTML = `
           <div>
-            <h3 style="color:#fff; font-size:1.05rem; display:flex; align-items:center;">
+            <h3 style="color:var(--text); font-size:1.05rem; display:flex; align-items:center;">
               <i class="fa-solid fa-file-lines" style="color:var(--primary); margin-right:8px;"></i> ${test.title} ${statusTag}
             </h3>
             <p style="color:var(--text-muted); font-size:0.85rem; margin-top:4px;">
@@ -1027,391 +1093,6 @@
       });
 
       window.activeCategoryPapers = papers;
-    }
-
-    // CHECKOUT PAGE WITH APP BUTTONS & REAL QR
-    function openDedicatedCheckoutScreen() {
-      hideAll();
-      document.getElementById("screen-checkout").classList.remove("hidden");
-
-      document.getElementById("checkout-batch-name").innerText = currentSelectedBatch.title;
-      document.getElementById("checkout-price-mrp").innerText = `₹${currentSelectedBatch.mrp || currentSelectedBatch.price * 2}`;
-      document.getElementById("checkout-price-final").innerText = `₹${currentSelectedBatch.price}`;
-      document.getElementById("checkout-price-discount-tag").innerText = `${currentSelectedBatch.discountPercent || 50}% OFF`;
-      
-      document.getElementById("checkout-upi-id").innerText = paymentConfig.upiId;
-      document.getElementById("checkout-qr-img").src = paymentConfig.qrCodeUrl;
-
-      const upiLink = `upi://pay?pa=${encodeURIComponent(paymentConfig.upiId)}&pn=Sunil%20Kumar&am=${currentSelectedBatch.price}&cu=INR&tn=${encodeURIComponent(currentSelectedBatch.title)}`;
-      document.getElementById("link-pay-phonepe").href = upiLink;
-      document.getElementById("link-pay-gpay").href = upiLink;
-      document.getElementById("link-pay-paytm").href = upiLink;
-      document.getElementById("link-pay-mobikwik").href = upiLink;
-
-      backToCheckoutStep1();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function copyCheckoutUpiId() {
-      const upi = document.getElementById("checkout-upi-id").innerText;
-      navigator.clipboard.writeText(upi);
-      alert("✅ UPI ID Copied: " + upi);
-    }
-
-    function goToCheckoutStep2() {
-      document.getElementById("checkout-step-1").classList.add("hidden");
-      document.getElementById("checkout-step-2").classList.remove("hidden");
-    }
-
-    function backToCheckoutStep1() {
-      document.getElementById("checkout-step-2").classList.add("hidden");
-      document.getElementById("checkout-step-1").classList.remove("hidden");
-    }
-
-    async function submitCheckoutPaymentProof() {
-      const userUpi = document.getElementById("chk-user-upi").value.trim();
-      const utr = document.getElementById("chk-user-utr").value.trim();
-      const file = document.getElementById("chk-user-ss").files[0];
-
-      if (!userUpi || !utr || !file) return alert("Kripya apni UPI ID, UTR Number aur Screenshot upload karein!");
-
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const payload = {
-          userId: currentUser.uid,
-          userName: currentUser.displayName,
-          userEmail: currentUser.email,
-          batchId: currentSelectedBatch.id,
-          batchTitle: currentSelectedBatch.title,
-          amount: currentSelectedBatch.price,
-          userUpi: userUpi,
-          utrNumber: utr,
-          screenshot: e.target.result,
-          status: "pending",
-          submittedAt: new Date().toISOString()
-        };
-        try {
-          await db.collection("payment_requests").add(payload);
-          alert("✅ Verification details received!\nAdmin approval hote hi aapka batch turant unlock ho jayega.");
-          showDashboard();
-        } catch(err) {
-          alert("Submission error: " + err.message);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-
-    // ADMIN PAYMENT APPROVALS
-    async function openAdminRequestsModal() {
-      const container = document.getElementById("admin-reqs-list-container");
-      container.innerHTML = `<p style="color:#94a3b8;">Loading pending requests...</p>`;
-      document.getElementById("admin-requests-modal").classList.remove("hidden");
-      document.getElementById("user-dropdown-menu").classList.remove("show");
-
-      const snap = await db.collection("payment_requests").where("status", "==", "pending").get();
-      container.innerHTML = "";
-
-      if (snap.empty) {
-        container.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:20px;">Koi pending payment request nahi hai.</p>`;
-        return;
-      }
-
-      snap.forEach(doc => {
-        const req = doc.data();
-        const div = document.createElement("div");
-        div.style = "background:#0c1221; border:1px solid #23355d; border-radius:12px; padding:16px; margin-bottom:14px;";
-        div.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px;">
-            <div>
-              <h4 style="color:#fff;">Candidate: ${req.userName} (<span style="color:var(--primary);">${req.userEmail}</span>)</h4>
-              <p style="font-size:0.8rem; color:#94a3b8;">UID: <b style="color:#e879f9;">${req.userId}</b></p>
-              <p style="font-size:0.85rem; color:var(--gold); margin-top:2px;">Course: <b>${req.batchTitle}</b> (Amount: ₹${req.amount})</p>
-              <p style="font-size:0.85rem; color:#cbd5e1; margin-top:4px;">UPI: <b>${req.userUpi}</b> | UTR: <b style="color:var(--green);">${req.utrNumber}</b></p>
-            </div>
-            <button class="btn-submit" onclick="approvePayment('${doc.id}', '${req.userId}', '${req.batchId}')"><i class="fa-solid fa-unlock"></i> Approve & Unlock</button>
-          </div>
-          <div style="margin-top:10px;">
-            <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:6px;">Payment Screenshot:</p>
-            <img src="${req.screenshot}" style="max-width:220px; max-height:160px; border-radius:8px; border:1px solid #334155; object-fit:contain; cursor:pointer;" onclick="window.open('${req.screenshot}')">
-          </div>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    function closeAdminRequestsModal() { document.getElementById("admin-requests-modal").classList.add("hidden"); }
-
-    async function approvePayment(reqId, userId, batchId) {
-      try {
-        await db.collection("payment_requests").doc(reqId).update({ status: "approved" });
-        await db.collection("candidates").doc(userId).update({
-          unlockedBatches: firebase.firestore.FieldValue.arrayUnion(batchId)
-        });
-        alert("✅ Payment Approved! Candidate ka batch unlock ho gaya.");
-        openAdminRequestsModal();
-      } catch (e) {
-        alert("Error approving: " + e.message);
-      }
-    }
-
-    // ADMIN PAYMENT QR & UPI SETTINGS
-    function openAdminPaySettingsModal() {
-      document.getElementById("admin-setting-upi").value = paymentConfig.upiId || "";
-      document.getElementById("admin-setting-qr-preview").src = paymentConfig.qrCodeUrl;
-      document.getElementById("admin-payment-settings-modal").classList.remove("hidden");
-      document.getElementById("user-dropdown-menu").classList.remove("show");
-    }
-
-    function closeAdminPaySettingsModal() { document.getElementById("admin-payment-settings-modal").classList.add("hidden"); }
-
-    function previewAdminQR(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => { document.getElementById("admin-setting-qr-preview").src = e.target.result; };
-        reader.readAsDataURL(file);
-      }
-    }
-
-    async function saveAdminPaymentSettings() {
-      const upi = document.getElementById("admin-setting-upi").value.trim();
-      const qrSrc = document.getElementById("admin-setting-qr-preview").src;
-      if (!upi) return alert("Valid UPI ID bharein!");
-
-      const payload = {
-        upiId: upi,
-        qrCodeUrl: qrSrc || `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=${encodeURIComponent(upi)}&pn=Sunil%20Kumar`,
-        updatedAt: new Date().toISOString()
-      };
-      try {
-        await db.collection("settings").doc("payment_config").set(payload, { merge: true });
-        paymentConfig = payload;
-        alert("✅ UPI ID aur Payment QR Code update ho gaya!");
-        closeAdminPaySettingsModal();
-      } catch(err) { alert(err.message); }
-    }
-
-    // ADMIN BATCH DISCOUNT & PRICE CALCULATIONS
-    function calculateDiscountPercent() {
-      const mrp = parseFloat(document.getElementById("batch-mrp-input").value) || 0;
-      const price = parseFloat(document.getElementById("batch-price-input").value) || 0;
-      if (mrp > 0 && mrp > price) {
-        const discount = Math.round(((mrp - price) / mrp) * 100);
-        document.getElementById("batch-discount-input").value = discount;
-      }
-    }
-
-    function calculatePriceFromDiscount() {
-      const mrp = parseFloat(document.getElementById("batch-mrp-input").value) || 0;
-      const discount = parseFloat(document.getElementById("batch-discount-input").value) || 0;
-      if (mrp > 0) {
-        const sellingPrice = Math.round(mrp - (mrp * (discount / 100)));
-        document.getElementById("batch-price-input").value = sellingPrice;
-      }
-    }
-
-    function openAdminBatchModal() {
-      document.getElementById("batch-modal-heading").innerHTML = `<i class="fa-solid fa-folder-plus"></i> Create New Batch`;
-      document.getElementById("edit-batch-id").value = "";
-      document.getElementById("batch-title-input").value = "";
-      document.getElementById("batch-desc-input").value = "";
-      document.getElementById("batch-syllabus-input").value = "";
-      document.getElementById("batch-type-select").value = "paid";
-      document.getElementById("batch-mrp-input").value = "99";
-      document.getElementById("batch-price-input").value = "49";
-      document.getElementById("batch-discount-input").value = "50";
-      toggleBatchPriceInput();
-      document.getElementById("admin-batch-modal").classList.remove("hidden");
-    }
-
-    function editCurrentBatch() {
-      if (!currentSelectedBatch) return;
-      document.getElementById("batch-modal-heading").innerHTML = `<i class="fa-solid fa-pen"></i> Edit Batch Details`;
-      document.getElementById("edit-batch-id").value = currentSelectedBatch.id;
-      document.getElementById("batch-title-input").value = currentSelectedBatch.title;
-      document.getElementById("batch-desc-input").value = currentSelectedBatch.desc || "";
-      document.getElementById("batch-syllabus-input").value = currentSelectedBatch.syllabus || "";
-      document.getElementById("batch-type-select").value = currentSelectedBatch.isPaid ? "paid" : "free";
-      document.getElementById("batch-mrp-input").value = currentSelectedBatch.mrp || 99;
-      document.getElementById("batch-price-input").value = currentSelectedBatch.price || 49;
-      document.getElementById("batch-discount-input").value = currentSelectedBatch.discountPercent || 50;
-      toggleBatchPriceInput();
-      document.getElementById("admin-batch-modal").classList.remove("hidden");
-    }
-
-    function closeAdminBatchModal() { document.getElementById("admin-batch-modal").classList.add("hidden"); }
-
-    function toggleBatchPriceInput() {
-      const type = document.getElementById("batch-type-select").value;
-      document.getElementById("batch-price-box").style.display = (type === 'paid') ? 'grid' : 'none';
-    }
-
-    async function saveAdminBatch() {
-      const editId = document.getElementById("edit-batch-id").value;
-      const title = document.getElementById("batch-title-input").value.trim();
-      const desc = document.getElementById("batch-desc-input").value.trim();
-      const syllabus = document.getElementById("batch-syllabus-input").value.trim();
-      const isPaid = document.getElementById("batch-type-select").value === 'paid';
-      const mrp = isPaid ? (parseFloat(document.getElementById("batch-mrp-input").value) || 0) : 0;
-      const price = isPaid ? (parseFloat(document.getElementById("batch-price-input").value) || 0) : 0;
-      const discountPercent = isPaid ? (parseInt(document.getElementById("batch-discount-input").value) || 0) : 0;
-
-      if (!title) return alert("Batch title likhein!");
-
-      const batchId = editId || ("batch_" + Date.now());
-      const payload = {
-        id: batchId, title, desc, syllabus, isPaid, mrp, price, discountPercent, icon: "fa-graduation-cap"
-      };
-
-      try {
-        await db.collection("custom_batches").doc(batchId).set(payload, { merge: true });
-        alert(`✅ Batch "${title}" safaltapoorvak save ho gaya!`);
-        closeAdminBatchModal();
-        loadAllBatches();
-        if (currentSelectedBatch && currentSelectedBatch.id === batchId) openSeriesListing(payload);
-      } catch(e) { alert(e.message); }
-    }
-
-    function openEnrolledBatchesView() {
-      hideAll();
-      document.getElementById("screen-enrolled-batches").classList.remove("hidden");
-      const box = document.getElementById("purchased-courses-container");
-      box.innerHTML = "";
-
-      const unlocked = currentUser.unlockedBatches || [];
-      if (unlocked.length === 0) {
-        box.innerHTML = `<div style="background:#0c1221; padding:30px; border-radius:14px; text-align:center; border:1px dashed #23355d;"><p style="color:#94a3b8;">Aapne abhi tak koi batch enroll nahi kiya hai.</p></div>`;
-        return;
-      }
-
-      unlocked.forEach(bId => {
-        const b = allBatches.find(x => x.id === bId) || { title: bId, desc: "Course Enrolled" };
-        const card = document.createElement("div");
-        card.className = "series-item";
-        card.innerHTML = `
-          <div><h3 style="color:var(--primary);">${b.title}</h3><p style="color:#94a3b8; font-size:0.85rem;">${b.desc || ''}</p></div>
-          <button class="btn-submit" onclick="openSeriesListing(allBatches.find(x => x.id === '${bId}'))">Open Tests <i class="fa-solid fa-arrow-right"></i></button>
-        `;
-        box.appendChild(card);
-      });
-    }
-
-    // SUB-BATCH / FOLDERS
-    function openCreateSubBatchModal() {
-      document.getElementById("subbatch-title-input").value = "";
-      document.getElementById("admin-subbatch-modal").classList.remove("hidden");
-    }
-    function closeCreateSubBatchModal() { document.getElementById("admin-subbatch-modal").classList.add("hidden"); }
-
-    async function saveAdminSubBatch() {
-      const title = document.getElementById("subbatch-title-input").value.trim();
-      if (!title) return alert("Folder name likhein!");
-      const subId = "sub_" + Date.now();
-      const payload = { id: subId, parentBatchId: currentSelectedBatch.id, title: title };
-      try {
-        await db.collection("sub_batches").doc(subId).set(payload);
-        closeCreateSubBatchModal();
-        await loadSubFoldersAndPapers();
-      } catch(e) { alert(e.message); }
-    }
-
-    // TEST PAPERS MANAGEMENT
-    function openUploadTestInCurrentBatch() {
-      openAdminPaperModal();
-      document.getElementById("new-paper-cat").value = currentSelectedBatch.id;
-      onBatchSelectedInModal();
-      if (currentActiveSubBatch !== "all") document.getElementById("new-paper-subfolder").value = currentActiveSubBatch;
-    }
-
-    function openAdminPaperModal() {
-      document.getElementById("modal-test-action-heading").innerHTML = `<i class="fa-solid fa-plus-circle"></i> Create Test Paper`;
-      document.getElementById("edit-test-id").value = "";
-      document.getElementById("new-paper-title").value = "";
-      document.getElementById("test-access-type").value = "free";
-      document.getElementById("q-input-text").value = "";
-      document.getElementById("q-opt-0").value = "";
-      document.getElementById("q-opt-1").value = "";
-      document.getElementById("admin-modal").classList.remove("hidden");
-    }
-
-    function closeAdminPaperModal() { document.getElementById("admin-modal").classList.add("hidden"); }
-
-    async function onBatchSelectedInModal() {
-      const batchId = document.getElementById("new-paper-cat").value;
-      const subSelect = document.getElementById("new-paper-subfolder");
-      subSelect.innerHTML = `<option value="general">General / Main</option>`;
-      try {
-        const snap = await db.collection("sub_batches").where("parentBatchId", "==", batchId).get();
-        snap.forEach(doc => {
-          const sf = doc.data();
-          const opt = document.createElement("option"); opt.value = sf.id; opt.innerText = sf.title; subSelect.appendChild(opt);
-        });
-      } catch(e) {}
-    }
-
-    async function saveAdminTestPaper() {
-      const editDocId = document.getElementById("edit-test-id").value;
-      const batchId = document.getElementById("new-paper-cat").value;
-      const catSelect = document.getElementById("new-paper-cat");
-      const batchName = catSelect.options[catSelect.selectedIndex].text;
-      const subFolderId = document.getElementById("new-paper-subfolder").value;
-      const subFolderSelect = document.getElementById("new-paper-subfolder");
-      const subFolderName = (subFolderId === "general") ? "" : subFolderSelect.options[subFolderSelect.selectedIndex].text;
-
-      const title = document.getElementById("new-paper-title").value.trim();
-      const time = parseInt(document.getElementById("new-paper-time").value) || 20;
-      const accessType = document.getElementById("test-access-type").value;
-
-      const qText = document.getElementById("q-input-text").value.trim();
-      const o0 = document.getElementById("q-opt-0").value.trim();
-      const o1 = document.getElementById("q-opt-1").value.trim();
-      const o2 = document.getElementById("q-opt-2").value.trim();
-      const o3 = document.getElementById("q-opt-3").value.trim();
-      const correctIdx = parseInt(document.getElementById("q-correct-idx").value);
-
-      if (!title || !qText || !o0 || !o1) return alert("Test title aur questions bharein!");
-
-      const payload = {
-        batchId, batchName, subFolderId, subFolderName, title, time, accessType,
-        questions: [{ q: qText, opts: [o0, o1, o2 || "None", o3 || "All"], a: correctIdx }]
-      };
-
-      try {
-        if (editDocId) await db.collection("custom_tests").doc(editDocId).update(payload);
-        else await db.collection("custom_tests").add(payload);
-        alert(`✅ Test "${title}" publish ho gaya!`);
-        closeAdminPaperModal();
-        if (currentSelectedBatch && currentSelectedBatch.id === batchId) await loadSubFoldersAndPapers();
-      } catch(e) { alert(e.message); }
-    }
-
-    function openEditTestModal(docId) {
-      const test = currentBatchAllPapers.find(p => p.docId === docId);
-      if (!test) return;
-      document.getElementById("modal-test-action-heading").innerHTML = `<i class="fa-solid fa-pen"></i> Edit Test Settings`;
-      document.getElementById("edit-test-id").value = docId;
-      document.getElementById("new-paper-cat").value = test.batchId;
-      onBatchSelectedInModal();
-      document.getElementById("new-paper-title").value = test.title;
-      document.getElementById("new-paper-time").value = test.time;
-      document.getElementById("test-access-type").value = test.accessType || "free";
-      if (test.questions && test.questions[0]) {
-        document.getElementById("q-input-text").value = test.questions[0].q;
-        document.getElementById("q-opt-0").value = test.questions[0].opts[0] || "";
-        document.getElementById("q-opt-1").value = test.questions[0].opts[1] || "";
-        document.getElementById("q-opt-2").value = test.questions[0].opts[2] || "";
-        document.getElementById("q-opt-3").value = test.questions[0].opts[3] || "";
-        document.getElementById("q-correct-idx").value = test.questions[0].a || 0;
-      }
-      document.getElementById("admin-modal").classList.remove("hidden");
-    }
-
-    async function deleteTestPaper(docId) {
-      if (!confirm("Is test paper ko delete karna chahte hain?")) return;
-      try {
-        await db.collection("custom_tests").doc(docId).delete();
-        await loadSubFoldersAndPapers();
-      } catch(e) { alert(e.message); }
     }
 
     // CBT ENGINE
@@ -1458,20 +1139,122 @@
       }, 1000);
     }
 
+    // SUBMIT EXAM & DYNAMIC LIVE RANKING CALCULATION
     async function submitExam() {
       clearInterval(timerInterval);
       let correct = 0;
       let total = currentActiveTest.questions.length;
       currentActiveTest.questions.forEach((item, idx) => { if (userAnswers[idx] === item.a) correct++; });
 
-      document.getElementById("res-heading").innerText = "EXAM COMPLETED";
-      document.getElementById("res-sub").innerText = `${currentActiveTest.title} | Total Qs: ${total} | Sahi: ${correct}`;
-      document.getElementById("res-score").innerText = `${correct} / ${total}`;
-      document.getElementById("res-acc").innerText = Math.round((correct / total) * 100) + "%";
-      document.getElementById("res-status").innerText = (correct / total >= 0.5) ? "PASSED" : "FAILED";
-      document.getElementById("res-status").style.color = (correct / total >= 0.5) ? "var(--green)" : "var(--red)";
+      let pts = correct * 10;
+      let acc = Math.round((correct / total) * 100);
+
+      currentUser.scorePoints = (currentUser.scorePoints || 0) + pts;
+      currentUser.totalTests = (currentUser.totalTests || 0) + 1;
+
+      const testRecord = {
+        batchId: currentActiveTest.batchId,
+        batchName: currentActiveTest.batchName || (currentSelectedBatch ? currentSelectedBatch.title : "Batch"),
+        examTitle: currentActiveTest.title,
+        date: new Date().toLocaleDateString('en-GB'),
+        total: total,
+        correct: correct,
+        points: pts,
+        accuracy: acc,
+        paperData: currentActiveTest.questions,
+        userPicks: userAnswers
+      };
+
+      if (!currentUser.testHistory) currentUser.testHistory = [];
+      currentUser.testHistory.unshift(testRecord);
+
+      try {
+        await db.collection("candidates").doc(currentUser.uid).update({
+          scorePoints: currentUser.scorePoints,
+          totalTests: currentUser.totalTests,
+          testHistory: currentUser.testHistory
+        });
+      } catch(e) {}
+
+      document.getElementById("res-score-pts").innerText = `+${pts} Pts`;
+      document.getElementById("res-accuracy-val").innerText = `${acc}%`;
 
       renderReviewCards(currentActiveTest.questions, userAnswers);
+      await calculateAndDisplayLiveRankings();
+
+      hideAll();
+      document.getElementById("screen-result").classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // PODIUM & LEADERBOARD RENDERING
+    async function calculateAndDisplayLiveRankings() {
+      let candidatesList = [];
+      try {
+        const snap = await db.collection("candidates").orderBy("scorePoints", "desc").limit(50).get();
+        snap.forEach(doc => candidatesList.push(doc.data()));
+      } catch(e) {
+        candidatesList.push(currentUser);
+      }
+
+      // Ensure current user is in list
+      const userIdx = candidatesList.findIndex(c => c.uid === currentUser.uid);
+      let userRank = userIdx >= 0 ? (userIdx + 1) : candidatesList.length + 1;
+      
+      document.getElementById("res-user-air").innerText = `#${userRank}`;
+      document.getElementById("res-total-students").innerText = `${Math.max(candidatesList.length, 50)}+`;
+
+      // TOP 3 PODIUM
+      const podiumBox = document.getElementById("res-podium-box");
+      podiumBox.innerHTML = "";
+
+      const rank1 = candidatesList[0] || { displayName: "Topper 1", scorePoints: 100, photoURL: "https://ui-avatars.com/api/?name=1&background=ffd700&color=000" };
+      const rank2 = candidatesList[1] || { displayName: "Rank 2", scorePoints: 80, photoURL: "https://ui-avatars.com/api/?name=2&background=c0c0c0&color=000" };
+      const rank3 = candidatesList[2] || { displayName: "Rank 3", scorePoints: 60, photoURL: "https://ui-avatars.com/api/?name=3&background=cd7f32&color=000" };
+
+      podiumBox.innerHTML = `
+        <div class="podium-card second">
+          <span class="podium-crown">🥈</span>
+          <img class="podium-avatar" src="${rank2.photoURL || ''}">
+          <div class="podium-user">${rank2.displayName}</div>
+          <div class="podium-pts">${rank2.scorePoints} Pts</div>
+        </div>
+        <div class="podium-card first">
+          <span class="podium-crown">👑</span>
+          <img class="podium-avatar" src="${rank1.photoURL || ''}">
+          <div class="podium-user">${rank1.displayName}</div>
+          <div class="podium-pts">${rank1.scorePoints} Pts</div>
+        </div>
+        <div class="podium-card third">
+          <span class="podium-crown">🥉</span>
+          <img class="podium-avatar" src="${rank3.photoURL || ''}">
+          <div class="podium-user">${rank3.displayName}</div>
+          <div class="podium-pts">${rank3.scorePoints} Pts</div>
+        </div>
+      `;
+
+      // FULL LEADERBOARD TABLE
+      const tbody = document.getElementById("res-leaderboard-tbody");
+      tbody.innerHTML = "";
+      candidatesList.forEach((c, idx) => {
+        const isMe = c.uid === currentUser.uid;
+        const tr = document.createElement("tr");
+        if (isMe) tr.className = "current-user-row";
+        tr.innerHTML = `
+          <td><b>#${idx + 1}</b></td>
+          <td style="display:flex; align-items:center; gap:8px;">
+            <img src="${c.photoURL || ''}" style="width:24px; height:24px; border-radius:50%;">
+            <span>${c.displayName} ${isMe ? '(You)' : ''}</span>
+          </td>
+          <td><b style="color:var(--gold);">${c.scorePoints || 0}</b></td>
+          <td>${c.totalTests || 1} Tests</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function openBatchLeaderboard() {
+      await calculateAndDisplayLiveRankings();
       hideAll();
       document.getElementById("screen-result").classList.remove("hidden");
     }
@@ -1484,17 +1267,427 @@
         const correctChoice = item.a;
         const isCorr = userChoice === correctChoice;
         const card = document.createElement("div");
-        card.className = "review-card " + (isCorr ? "correct-card" : "wrong-card");
+        card.className = "series-item";
+        card.style.borderLeft = isCorr ? "5px solid var(--green)" : "5px solid var(--red)";
+
         let optHtml = "";
         item.opts.forEach((opt, oIdx) => {
-          let cls = "review-opt-item";
-          if (oIdx === correctChoice) cls += " is-correct";
-          if (userChoice === oIdx && !isCorr) cls += " is-user-selected";
-          optHtml += `<div class="${cls}"><b>${String.fromCharCode(65 + oIdx)}.</b> ${opt}</div>`;
+          let style = "padding:8px 12px; margin-top:6px; border-radius:8px; font-size:0.9rem; background:var(--sub-card);";
+          if (oIdx === correctChoice) style += " color:var(--green); font-weight:bold; border:1px solid var(--green);";
+          if (userChoice === oIdx && !isCorr) style += " color:var(--red); font-weight:bold; border:1px solid var(--red);";
+          optHtml += `<div style="${style}">${String.fromCharCode(65 + oIdx)}. ${opt}</div>`;
         });
-        card.innerHTML = `<div style="font-weight:bold; margin-bottom:8px;">${idx + 1}. ${item.q}</div><div>${optHtml}</div>`;
+
+        card.innerHTML = `<div style="width:100%;"><h4 style="color:var(--text);">${idx + 1}. ${item.q}</h4><div>${optHtml}</div></div>`;
         container.appendChild(card);
       });
+    }
+
+    // USER PROFILE VIEW & EDIT
+    function openProfileView() {
+      hideAll();
+      document.getElementById("screen-profile").classList.remove("hidden");
+      document.getElementById("prof-display-name").innerText = currentUser.displayName;
+      document.getElementById("prof-email").innerText = currentUser.email;
+      document.getElementById("prof-avatar-lg").src = currentUser.photoURL;
+      document.getElementById("prof-points").innerText = currentUser.scorePoints || 0;
+      document.getElementById("prof-tests").innerText = currentUser.totalTests || 0;
+    }
+
+    async function editDisplayName() {
+      const newName = prompt("Naya Display Name daalein:", currentUser.displayName);
+      if (newName && newName.trim().length > 0) {
+        currentUser.displayName = newName.trim();
+        document.getElementById("prof-display-name").innerText = currentUser.displayName;
+        document.getElementById("header-name").innerText = currentUser.displayName.split(" ")[0];
+        try { await db.collection("candidates").doc(currentUser.uid).update({ displayName: currentUser.displayName }); } catch(e) {}
+      }
+    }
+
+    function handleAvatarUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        currentUser.photoURL = e.target.result;
+        document.getElementById("prof-avatar-lg").src = currentUser.photoURL;
+        document.getElementById("header-avatar").src = currentUser.photoURL;
+        try { await db.collection("candidates").doc(currentUser.uid).update({ photoURL: currentUser.photoURL }); } catch(e) {}
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // ENROLLED BATCHES & TEST HISTORY
+    function openEnrolledBatchesView() {
+      hideAll();
+      document.getElementById("screen-enrolled-batches").classList.remove("hidden");
+      const box = document.getElementById("purchased-courses-container");
+      box.innerHTML = "";
+
+      const unlocked = currentUser.unlockedBatches || [];
+      if (unlocked.length === 0) {
+        box.innerHTML = `<div style="background:var(--sub-card); padding:30px; border-radius:14px; text-align:center; border:1px dashed var(--border);"><p style="color:var(--text-muted);">Aapne abhi tak koi batch enroll nahi kiya hai.</p></div>`;
+        return;
+      }
+
+      unlocked.forEach(bId => {
+        const b = allBatches.find(x => x.id === bId) || { title: bId, desc: "Course Enrolled" };
+        const card = document.createElement("div");
+        card.className = "series-item";
+        card.innerHTML = `
+          <div><h3 style="color:var(--primary);">${b.title}</h3><p style="color:var(--text-muted); font-size:0.85rem;">${b.desc || ''}</p></div>
+          <button class="btn-submit" onclick="openSeriesListing(allBatches.find(x => x.id === '${bId}'))">Open Tests <i class="fa-solid fa-arrow-right"></i></button>
+        `;
+        box.appendChild(card);
+      });
+    }
+
+    function openHistoryView() {
+      hideAll();
+      document.getElementById("screen-history").classList.remove("hidden");
+      const box = document.getElementById("history-container");
+      box.innerHTML = "";
+
+      const history = currentUser.testHistory || [];
+      if (history.length === 0) {
+        box.innerHTML = `<p style="color:var(--text-muted);">Abhi tak koi test attempt nahi kiya hai.</p>`;
+        return;
+      }
+
+      history.forEach((rec, idx) => {
+        const item = document.createElement("div");
+        item.className = "series-item";
+        item.innerHTML = `
+          <div>
+            <h4 style="color:var(--text);">${rec.examTitle}</h4>
+            <p style="font-size:0.8rem; color:var(--text-muted);">Date: ${rec.date} | Batch: ${rec.batchName} | Sahi: ${rec.correct}/${rec.total}</p>
+          </div>
+          <div style="font-weight:bold; color:var(--gold);">+${rec.points} Pts</div>
+        `;
+        box.appendChild(item);
+      });
+    }
+
+    // SETTINGS VIEW
+    function openSettingsView() {
+      hideAll();
+      document.getElementById("screen-settings").classList.remove("hidden");
+      updateThemeButton();
+    }
+
+    // FEEDBACK SYSTEM
+    function openFeedbackModal() { document.getElementById("feedback-modal").classList.remove("hidden"); document.getElementById("user-dropdown-menu").classList.remove("show"); }
+    function closeFeedbackModal() { document.getElementById("feedback-modal").classList.add("hidden"); }
+
+    async function submitFeedback() {
+      const rating = document.getElementById("feed-rating").value;
+      const msg = document.getElementById("feed-msg").value.trim();
+      if (!msg) return alert("Feedback message likhein!");
+
+      try {
+        await db.collection("feedbacks").add({
+          userId: currentUser.uid,
+          userName: currentUser.displayName,
+          userEmail: currentUser.email,
+          rating: rating,
+          message: msg,
+          createdAt: new Date().toISOString()
+        });
+        alert("✅ Dhanyawad! Aapka feedback team tak pahuch gaya hai.");
+        closeFeedbackModal();
+        document.getElementById("feed-msg").value = "";
+      } catch(e) { alert("Error: " + e.message); }
+    }
+
+    // CHECKOUT FUNCTIONS
+    function openDedicatedCheckoutScreen() {
+      hideAll();
+      document.getElementById("screen-checkout").classList.remove("hidden");
+      document.getElementById("checkout-batch-name").innerText = currentSelectedBatch.title;
+      document.getElementById("checkout-price-mrp").innerText = `₹${currentSelectedBatch.mrp || currentSelectedBatch.price * 2}`;
+      document.getElementById("checkout-price-final").innerText = `₹${currentSelectedBatch.price}`;
+      document.getElementById("checkout-price-discount-tag").innerText = `${currentSelectedBatch.discountPercent || 50}% OFF`;
+      document.getElementById("checkout-upi-id").innerText = paymentConfig.upiId;
+      document.getElementById("checkout-qr-img").src = paymentConfig.qrCodeUrl;
+
+      const upiLink = `upi://pay?pa=${encodeURIComponent(paymentConfig.upiId)}&pn=Sunil%20Kumar&am=${currentSelectedBatch.price}&cu=INR&tn=${encodeURIComponent(currentSelectedBatch.title)}`;
+      document.getElementById("link-pay-phonepe").href = upiLink;
+      document.getElementById("link-pay-gpay").href = upiLink;
+      document.getElementById("link-pay-paytm").href = upiLink;
+      document.getElementById("link-pay-mobikwik").href = upiLink;
+
+      backToCheckoutStep1();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function copyCheckoutUpiId() {
+      navigator.clipboard.writeText(document.getElementById("checkout-upi-id").innerText);
+      alert("✅ UPI ID Copied!");
+    }
+    function goToCheckoutStep2() { document.getElementById("checkout-step-1").classList.add("hidden"); document.getElementById("checkout-step-2").classList.remove("hidden"); }
+    function backToCheckoutStep1() { document.getElementById("checkout-step-2").classList.add("hidden"); document.getElementById("checkout-step-1").classList.remove("hidden"); }
+
+    async function submitCheckoutPaymentProof() {
+      const userUpi = document.getElementById("chk-user-upi").value.trim();
+      const utr = document.getElementById("chk-user-utr").value.trim();
+      const file = document.getElementById("chk-user-ss").files[0];
+      if (!userUpi || !utr || !file) return alert("UPI ID, UTR aur Screenshot teeno zaroori hain!");
+
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        try {
+          await db.collection("payment_requests").add({
+            userId: currentUser.uid, userName: currentUser.displayName, userEmail: currentUser.email,
+            batchId: currentSelectedBatch.id, batchTitle: currentSelectedBatch.title, amount: currentSelectedBatch.price,
+            userUpi: userUpi, utrNumber: utr, screenshot: e.target.result, status: "pending", submittedAt: new Date().toISOString()
+          });
+          alert("✅ Payment proof submit ho gaya! Admin verify karke unlock kar dega.");
+          showDashboard();
+        } catch(err) { alert(err.message); }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // ADMIN CONTROLS
+    function openAdminPaySettingsModal() {
+      document.getElementById("admin-setting-upi").value = paymentConfig.upiId || "";
+      document.getElementById("admin-setting-qr-preview").src = paymentConfig.qrCodeUrl;
+      document.getElementById("admin-payment-settings-modal").classList.remove("hidden");
+      document.getElementById("user-dropdown-menu").classList.remove("show");
+    }
+    function closeAdminPaySettingsModal() { document.getElementById("admin-payment-settings-modal").classList.add("hidden"); }
+    function previewAdminQR(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => { document.getElementById("admin-setting-qr-preview").src = e.target.result; };
+        reader.readAsDataURL(file);
+      }
+    }
+    async function saveAdminPaymentSettings() {
+      const upi = document.getElementById("admin-setting-upi").value.trim();
+      const qrSrc = document.getElementById("admin-setting-qr-preview").src;
+      if (!upi) return alert("Valid UPI ID likhein!");
+      const payload = { upiId: upi, qrCodeUrl: qrSrc || "", updatedAt: new Date().toISOString() };
+      try {
+        await db.collection("settings").doc("payment_config").set(payload, { merge: true });
+        paymentConfig = payload;
+        alert("✅ Payment settings saved!");
+        closeAdminPaySettingsModal();
+      } catch(e) { alert(e.message); }
+    }
+
+    async function openAdminRequestsModal() {
+      const container = document.getElementById("admin-reqs-list-container");
+      container.innerHTML = `<p style="color:var(--text-muted);">Loading requests...</p>`;
+      document.getElementById("admin-requests-modal").classList.remove("hidden");
+      document.getElementById("user-dropdown-menu").classList.remove("show");
+
+      const snap = await db.collection("payment_requests").where("status", "==", "pending").get();
+      container.innerHTML = "";
+      if (snap.empty) { container.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:20px;">Koi pending payment nahi hai.</p>`; return; }
+
+      snap.forEach(doc => {
+        const req = doc.data();
+        const div = document.createElement("div");
+        div.style = "background:var(--sub-card); border:1px solid var(--border); border-radius:12px; padding:16px; margin-bottom:14px;";
+        div.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px;">
+            <div>
+              <h4 style="color:var(--text);">Candidate: ${req.userName} (<span style="color:var(--primary);">${req.userEmail}</span>)</h4>
+              <p style="font-size:0.85rem; color:var(--gold); margin-top:2px;">Course: <b>${req.batchTitle}</b> (₹${req.amount})</p>
+              <p style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">UPI: <b>${req.userUpi}</b> | UTR: <b style="color:var(--green);">${req.utrNumber}</b></p>
+            </div>
+            <button class="btn-submit" onclick="approvePayment('${doc.id}', '${req.userId}', '${req.batchId}')"><i class="fa-solid fa-unlock"></i> Approve</button>
+          </div>
+          <div style="margin-top:10px;">
+            <img src="${req.screenshot}" style="max-width:220px; max-height:160px; border-radius:8px; border:1px solid var(--border); cursor:pointer;" onclick="window.open('${req.screenshot}')">
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+    function closeAdminRequestsModal() { document.getElementById("admin-requests-modal").classList.add("hidden"); }
+
+    async function approvePayment(reqId, userId, batchId) {
+      try {
+        await db.collection("payment_requests").doc(reqId).update({ status: "approved" });
+        await db.collection("candidates").doc(userId).update({ unlockedBatches: firebase.firestore.FieldValue.arrayUnion(batchId) });
+        alert("✅ Batch Approved!");
+        openAdminRequestsModal();
+      } catch (e) { alert(e.message); }
+    }
+
+    function calculateDiscountPercent() {
+      const mrp = parseFloat(document.getElementById("batch-mrp-input").value) || 0;
+      const price = parseFloat(document.getElementById("batch-price-input").value) || 0;
+      if (mrp > 0 && mrp > price) document.getElementById("batch-discount-input").value = Math.round(((mrp - price) / mrp) * 100);
+    }
+    function calculatePriceFromDiscount() {
+      const mrp = parseFloat(document.getElementById("batch-mrp-input").value) || 0;
+      const discount = parseFloat(document.getElementById("batch-discount-input").value) || 0;
+      if (mrp > 0) document.getElementById("batch-price-input").value = Math.round(mrp - (mrp * (discount / 100)));
+    }
+
+    function openAdminBatchModal() {
+      document.getElementById("batch-modal-heading").innerHTML = `<i class="fa-solid fa-folder-plus"></i> Create New Batch`;
+      document.getElementById("edit-batch-id").value = "";
+      document.getElementById("batch-title-input").value = "";
+      document.getElementById("batch-desc-input").value = "";
+      document.getElementById("batch-syllabus-input").value = "";
+      document.getElementById("batch-type-select").value = "paid";
+      document.getElementById("batch-mrp-input").value = "99";
+      document.getElementById("batch-price-input").value = "49";
+      document.getElementById("batch-discount-input").value = "50";
+      toggleBatchPriceInput();
+      document.getElementById("admin-batch-modal").classList.remove("hidden");
+    }
+
+    function editCurrentBatch() {
+      if (!currentSelectedBatch) return;
+      document.getElementById("batch-modal-heading").innerHTML = `<i class="fa-solid fa-pen"></i> Edit Batch Details`;
+      document.getElementById("edit-batch-id").value = currentSelectedBatch.id;
+      document.getElementById("batch-title-input").value = currentSelectedBatch.title;
+      document.getElementById("batch-desc-input").value = currentSelectedBatch.desc || "";
+      document.getElementById("batch-syllabus-input").value = currentSelectedBatch.syllabus || "";
+      document.getElementById("batch-type-select").value = currentSelectedBatch.isPaid ? "paid" : "free";
+      document.getElementById("batch-mrp-input").value = currentSelectedBatch.mrp || 99;
+      document.getElementById("batch-price-input").value = currentSelectedBatch.price || 49;
+      document.getElementById("batch-discount-input").value = currentSelectedBatch.discountPercent || 50;
+      toggleBatchPriceInput();
+      document.getElementById("admin-batch-modal").classList.remove("hidden");
+    }
+    function closeAdminBatchModal() { document.getElementById("admin-batch-modal").classList.add("hidden"); }
+    function toggleBatchPriceInput() {
+      const type = document.getElementById("batch-type-select").value;
+      document.getElementById("batch-price-box").style.display = (type === 'paid') ? 'grid' : 'none';
+    }
+
+    async function saveAdminBatch() {
+      const editId = document.getElementById("edit-batch-id").value;
+      const title = document.getElementById("batch-title-input").value.trim();
+      const desc = document.getElementById("batch-desc-input").value.trim();
+      const syllabus = document.getElementById("batch-syllabus-input").value.trim();
+      const isPaid = document.getElementById("batch-type-select").value === 'paid';
+      const mrp = isPaid ? (parseFloat(document.getElementById("batch-mrp-input").value) || 0) : 0;
+      const price = isPaid ? (parseFloat(document.getElementById("batch-price-input").value) || 0) : 0;
+      const discountPercent = isPaid ? (parseInt(document.getElementById("batch-discount-input").value) || 0) : 0;
+      if (!title) return alert("Batch title likhein!");
+
+      const batchId = editId || ("batch_" + Date.now());
+      const payload = { id: batchId, title, desc, syllabus, isPaid, mrp, price, discountPercent, icon: "fa-graduation-cap" };
+      try {
+        await db.collection("custom_batches").doc(batchId).set(payload, { merge: true });
+        alert(`✅ Batch "${title}" saved!`);
+        closeAdminBatchModal();
+        loadAllBatches();
+        if (currentSelectedBatch && currentSelectedBatch.id === batchId) openSeriesListing(payload);
+      } catch(e) { alert(e.message); }
+    }
+
+    function openCreateSubBatchModal() { document.getElementById("subbatch-title-input").value = ""; document.getElementById("admin-subbatch-modal").classList.remove("hidden"); }
+    function closeCreateSubBatchModal() { document.getElementById("admin-subbatch-modal").classList.add("hidden"); }
+    async function saveAdminSubBatch() {
+      const title = document.getElementById("subbatch-title-input").value.trim();
+      if (!title) return alert("Folder name likhein!");
+      const subId = "sub_" + Date.now();
+      try {
+        await db.collection("sub_batches").doc(subId).set({ id: subId, parentBatchId: currentSelectedBatch.id, title });
+        closeCreateSubBatchModal();
+        await loadSubFoldersAndPapers();
+      } catch(e) { alert(e.message); }
+    }
+
+    function openUploadTestInCurrentBatch() {
+      openAdminPaperModal();
+      document.getElementById("new-paper-cat").value = currentSelectedBatch.id;
+      onBatchSelectedInModal();
+      if (currentActiveSubBatch !== "all") document.getElementById("new-paper-subfolder").value = currentActiveSubBatch;
+    }
+    function openAdminPaperModal() {
+      document.getElementById("modal-test-action-heading").innerHTML = `Create Test Paper`;
+      document.getElementById("edit-test-id").value = "";
+      document.getElementById("new-paper-title").value = "";
+      document.getElementById("test-access-type").value = "free";
+      document.getElementById("q-input-text").value = "";
+      document.getElementById("q-opt-0").value = "";
+      document.getElementById("q-opt-1").value = "";
+      document.getElementById("admin-modal").classList.remove("hidden");
+    }
+    function closeAdminPaperModal() { document.getElementById("admin-modal").classList.add("hidden"); }
+
+    async function onBatchSelectedInModal() {
+      const batchId = document.getElementById("new-paper-cat").value;
+      const subSelect = document.getElementById("new-paper-subfolder");
+      subSelect.innerHTML = `<option value="general">General / Main</option>`;
+      try {
+        const snap = await db.collection("sub_batches").where("parentBatchId", "==", batchId).get();
+        snap.forEach(doc => {
+          const sf = doc.data();
+          const opt = document.createElement("option"); opt.value = sf.id; opt.innerText = sf.title; subSelect.appendChild(opt);
+        });
+      } catch(e) {}
+    }
+
+    async function saveAdminTestPaper() {
+      const editDocId = document.getElementById("edit-test-id").value;
+      const batchId = document.getElementById("new-paper-cat").value;
+      const catSelect = document.getElementById("new-paper-cat");
+      const batchName = catSelect.options[catSelect.selectedIndex].text;
+      const subFolderId = document.getElementById("new-paper-subfolder").value;
+      const subFolderSelect = document.getElementById("new-paper-subfolder");
+      const subFolderName = (subFolderId === "general") ? "" : subFolderSelect.options[subFolderSelect.selectedIndex].text;
+      const title = document.getElementById("new-paper-title").value.trim();
+      const time = parseInt(document.getElementById("new-paper-time").value) || 20;
+      const accessType = document.getElementById("test-access-type").value;
+      const qText = document.getElementById("q-input-text").value.trim();
+      const o0 = document.getElementById("q-opt-0").value.trim();
+      const o1 = document.getElementById("q-opt-1").value.trim();
+      const o2 = document.getElementById("q-opt-2").value.trim();
+      const o3 = document.getElementById("q-opt-3").value.trim();
+      const correctIdx = parseInt(document.getElementById("q-correct-idx").value);
+      if (!title || !qText || !o0 || !o1) return alert("Title aur questions bharein!");
+
+      const payload = {
+        batchId, batchName, subFolderId, subFolderName, title, time, accessType,
+        questions: [{ q: qText, opts: [o0, o1, o2 || "None", o3 || "All"], a: correctIdx }]
+      };
+      try {
+        if (editDocId) await db.collection("custom_tests").doc(editDocId).update(payload);
+        else await db.collection("custom_tests").add(payload);
+        alert(`✅ Test "${title}" saved!`);
+        closeAdminPaperModal();
+        if (currentSelectedBatch && currentSelectedBatch.id === batchId) await loadSubFoldersAndPapers();
+      } catch(e) { alert(e.message); }
+    }
+
+    function openEditTestModal(docId) {
+      const test = currentBatchAllPapers.find(p => p.docId === docId);
+      if (!test) return;
+      document.getElementById("modal-test-action-heading").innerHTML = `Edit Test Settings`;
+      document.getElementById("edit-test-id").value = docId;
+      document.getElementById("new-paper-cat").value = test.batchId;
+      onBatchSelectedInModal();
+      document.getElementById("new-paper-title").value = test.title;
+      document.getElementById("new-paper-time").value = test.time;
+      document.getElementById("test-access-type").value = test.accessType || "free";
+      if (test.questions && test.questions[0]) {
+        document.getElementById("q-input-text").value = test.questions[0].q;
+        document.getElementById("q-opt-0").value = test.questions[0].opts[0] || "";
+        document.getElementById("q-opt-1").value = test.questions[0].opts[1] || "";
+        document.getElementById("q-opt-2").value = test.questions[0].opts[2] || "";
+        document.getElementById("q-opt-3").value = test.questions[0].opts[3] || "";
+        document.getElementById("q-correct-idx").value = test.questions[0].a || 0;
+      }
+      document.getElementById("admin-modal").classList.remove("hidden");
+    }
+
+    async function deleteTestPaper(docId) {
+      if (!confirm("Is test paper ko delete karna chahte hain?")) return;
+      try {
+        await db.collection("custom_tests").doc(docId).delete();
+        await loadSubFoldersAndPapers();
+      } catch(e) { alert(e.message); }
     }
 
     function toggleLanguage() {
@@ -1504,7 +1697,7 @@
     }
 
     function triggerPwaInstall() {
-      alert("Aapka browser installation support karta hai Chrome menu (3-dots) > 'Install App / Add to Home Screen' se.");
+      alert("Aapka browser installation support karta hai Chrome menu (3-dots) > 'Install App' se.");
     }
   </script>
 </body>
