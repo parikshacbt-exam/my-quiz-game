@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PARIKSHA CBT - Dynamic Batches & Verification Engine</title>
+  <title>PARIKSHA CBT - Portal</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -32,18 +32,37 @@
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
       display: flex; align-items: center; gap: 10px; cursor: pointer; 
     }
-    .nav-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .nav-actions { display: flex; align-items: center; gap: 12px; position: relative; }
     .lang-btn-nav { background: rgba(0, 242, 254, 0.1); border: 1.5px solid var(--primary); color: #fff; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
-    .profile-pill { display: flex; align-items: center; gap: 10px; background: rgba(31, 43, 72, 0.6); padding: 5px 14px; border-radius: 30px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
+    
+    /* 3-Dot Profile Pill */
+    .profile-pill { 
+      display: flex; align-items: center; gap: 8px; background: rgba(31, 43, 72, 0.6); 
+      padding: 5px 12px; border-radius: 30px; cursor: pointer; border: 1px solid rgba(255,255,255,0.15); 
+      user-select: none; transition: 0.2s;
+    }
+    .profile-pill:hover { border-color: var(--primary); }
     .profile-pill img { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--primary); object-fit: cover; }
+    .dot-menu-icon { font-size: 1rem; color: var(--text-muted); margin-left: 4px; }
+
+    /* Dropdown Menu (3-Dots Style) */
+    .dropdown-menu {
+      position: absolute; top: 52px; right: 0; background: #0f172a; 
+      border: 1.5px solid rgba(0, 242, 254, 0.3); border-radius: 14px; 
+      width: 240px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); z-index: 200; overflow: hidden;
+      display: none;
+    }
+    .dropdown-menu.show { display: block; }
+    .dropdown-header { padding: 12px 16px; border-bottom: 1px solid #1e293b; background: rgba(0, 242, 254, 0.05); }
+    .dropdown-header p { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+    .dropdown-item { 
+      padding: 12px 16px; display: flex; align-items: center; gap: 10px; 
+      font-size: 0.88rem; color: #cbd5e1; cursor: pointer; transition: 0.2s; 
+    }
+    .dropdown-item:hover { background: #1e293b; color: var(--primary); }
+    .dropdown-item i { width: 18px; text-align: center; }
 
     .container { max-width: 1060px; width: 100%; margin: 22px auto; padding: 0 16px; flex: 1; }
-
-    .admin-indicator {
-      background: linear-gradient(90deg, #9d4edd, #ff3366);
-      padding: 12px 20px; border-radius: 12px; font-weight: bold; font-size: 0.88rem;
-      display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 10px; flex-wrap: wrap;
-    }
 
     .section-title { font-size: 1.25rem; font-weight: 800; color: #fff; margin: 28px 0 16px; display: flex; align-items: center; gap: 10px; }
 
@@ -98,46 +117,39 @@
     .avatar-edit-label { position: absolute; bottom: 0; right: 0; background: var(--primary); color: #000; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
     .batch-badge { background: rgba(157, 78, 221, 0.2); border: 1px solid var(--accent); color: #e879f9; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; display: inline-block; margin: 4px; }
 
+    .history-card { background: rgba(13, 20, 38, 0.9); border: 1px solid #23355d; border-radius: 14px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+
     .modal-overlay { position: fixed; inset: 0; background: rgba(4, 7, 16, 0.88); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
     .modal-card { background: #0f162a; border: 1.5px solid rgba(0, 242, 254, 0.3); border-radius: 22px; width: 100%; max-width: 650px; max-height: 90vh; overflow-y: auto; padding: 28px; position: relative; }
     .form-input { width: 100%; padding: 12px; background: #070a13; border: 1px solid #23355d; color: #fff; border-radius: 10px; margin-bottom: 12px; font-size: 0.95rem; }
   </style>
 
-  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 </head>
-<body>
+<body onclick="closeDropdownMenuOutside(event)">
 
   <!-- HEADER -->
   <header>
     <div class="logo" onclick="showDashboard()"><i class="fa-solid fa-graduation-cap"></i> <span id="txt-logo-title">PARIKSHA CBT</span></div>
     <div class="nav-actions">
       <button class="lang-btn-nav" onclick="toggleLanguage()" id="btn-active-lang">🌐 हिंदी</button>
-      <button id="admin-reqs-btn" class="btn-pay hidden" onclick="openAdminRequestsModal()"><i class="fa-solid fa-bell"></i> Payment Requests</button>
-      <button id="admin-batch-btn" class="btn-batch hidden" onclick="openAdminBatchModal()"><i class="fa-solid fa-folder-plus"></i> Create Batch</button>
-      <button id="admin-action-btn" class="btn-submit hidden" onclick="openAdminPaperModal()"><i class="fa-solid fa-plus"></i> Add Test</button>
-      <div id="nav-profile-pill" class="profile-pill hidden" onclick="openProfileView()">
+      
+      <!-- 3-Dot Profile Menu Toggle Button -->
+      <div id="nav-profile-pill" class="profile-pill hidden" onclick="toggleDropdownMenu(event)">
         <img id="header-avatar" src="" alt="avatar">
-        <span id="header-name" style="font-size:0.9rem; font-weight:700;">Candidate</span>
+        <span id="header-name" style="font-size:0.9rem; font-weight:700;">User</span>
+        <i class="fa-solid fa-ellipsis-vertical dot-menu-icon"></i>
       </div>
-      <button id="logout-btn" class="btn-nav hidden" onclick="logout()"><i class="fa-solid fa-power-off"></i></button>
+
+      <!-- Profile Dropdown (Dynamic for Admin & User) -->
+      <div id="user-dropdown-menu" class="dropdown-menu"></div>
     </div>
   </header>
 
   <!-- MAIN APP CONTAINER -->
   <div class="container hidden" id="main-content">
-
-    <!-- Admin Notification Indicator -->
-    <div id="admin-banner" class="admin-indicator hidden">
-      <span><i class="fa-solid fa-shield-halved"></i> <b>Sunil Kumar (Admin Mode Active)</b></span>
-      <div style="display:flex; gap:8px; flex-wrap:wrap;">
-        <button class="btn-pay" onclick="openAdminRequestsModal()">💳 Payment Requests (<span id="pending-count">0</span>)</button>
-        <button class="btn-batch" onclick="openAdminBatchModal()">➕ New Batch</button>
-        <button class="btn-submit" onclick="openAdminPaperModal()">➕ Add Test</button>
-      </div>
-    </div>
 
     <!-- 1. DASHBOARD VIEW -->
     <div id="screen-dashboard">
@@ -212,7 +224,7 @@
       <button class="btn-submit" style="margin-top:25px;" onclick="showDashboard()">Return to Dashboard</button>
     </div>
 
-    <!-- 5. PROFILE SCREEN -->
+    <!-- 5. CANDIDATE PROFILE SCREEN -->
     <div id="screen-profile" class="hidden">
       <div style="background:var(--surface); border:1.5px solid rgba(0,242,254,0.25); border-radius:20px; padding:30px; text-align:center; margin-bottom:25px;">
         <div class="profile-avatar-wrap">
@@ -235,25 +247,40 @@
           <button onclick="setUserLanguageFromProfile('en')" class="btn-sm" id="btn-prof-en">English</button>
         </div>
 
-        <div style="margin-top:25px; text-align:left; background:#0c1221; padding:18px; border-radius:14px; border:1px solid #1e293b;">
-          <h4 style="color:var(--gold); margin-bottom:8px;"><i class="fa-solid fa-graduation-cap"></i> My Unlocked / Enrolled Batches:</h4>
-          <div id="prof-batches-list"></div>
-        </div>
-
         <button class="btn-nav" style="margin-top:24px;" onclick="showDashboard()">Back to Dashboard</button>
       </div>
+    </div>
 
-      <div style="background:var(--surface); border:1.5px solid rgba(0,242,254,0.25); border-radius:20px; padding:25px;">
-        <h3 style="color:var(--primary); margin-bottom:16px;"><i class="fa-solid fa-clock-rotate-left"></i> My Test History</h3>
-        <div id="history-container">
-          <p style="color:var(--text-muted); font-size:0.9rem;">No tests attempted yet.</p>
-        </div>
+    <!-- 6. MY ENROLLED BATCHES SCREEN (COURSES PURCHASED) -->
+    <div id="screen-enrolled-batches" class="hidden">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2><i class="fa-solid fa-box-open" style="color:var(--gold);"></i> My Enrolled Batches / Purchased Courses</h2>
+        <button class="btn-nav" onclick="showDashboard()"><i class="fa-solid fa-arrow-left"></i> Dashboard</button>
       </div>
+      <div id="purchased-courses-container"></div>
+    </div>
+
+    <!-- 7. BATCH-WISE TEST HISTORY SCREEN -->
+    <div id="screen-history" class="hidden">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
+        <div>
+          <h2><i class="fa-solid fa-clock-rotate-left" style="color:var(--primary);"></i> Batch-Wise Test History & Solutions</h2>
+          <p style="color:var(--text-muted); font-size:0.85rem;">Pichle sabhi tests ka result aur solution key yahan dekhein:</p>
+        </div>
+        <button class="btn-nav" onclick="showDashboard()"><i class="fa-solid fa-arrow-left"></i> Dashboard</button>
+      </div>
+
+      <div style="margin-bottom:15px;">
+        <select id="history-batch-filter" class="form-input" style="max-width:280px;" onchange="filterHistoryByBatch()">
+          <option value="all">All Batches History</option>
+        </select>
+      </div>
+      <div id="history-container"></div>
     </div>
 
   </div>
 
-  <!-- AUTH SCREEN -->
+  <!-- AUTH SCREEN (CLEAN BUTTONS - NO PIN SHOWN) -->
   <div id="screen-auth" style="max-width:440px; margin:40px auto; padding:0 15px;">
     <div style="background:var(--surface); border:1.5px solid rgba(0,242,254,0.3); border-radius:24px; padding:32px 24px; text-align:center;">
       <h2 style="font-size:1.6rem; font-weight:800; color:#fff;">Student CBT Portal</h2>
@@ -282,19 +309,19 @@
         <img width="18" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> Continue with Google
       </button>
 
-      <!-- Separate Passwords / PINs for Admin & Guest -->
-      <div style="margin-top:22px; padding-top:14px; border-top:1px dashed #23355d; display:flex; gap:10px; justify-content:center;">
-        <button onclick="promptAdminLogin()" style="background:#1c1333; border:1px solid #9d4edd; color:#00f2fe; padding:8px 14px; border-radius:8px; font-size:0.8rem; cursor:pointer; font-weight:bold;">
-          👑 Admin Sunil (PIN: 9988)
+      <!-- Clean Admin / Guest Login Options (NO PIN DISPLAYED) -->
+      <div style="margin-top:24px; padding-top:16px; border-top:1px dashed #23355d; display:flex; gap:12px; justify-content:center;">
+        <button onclick="promptAdminLogin()" style="background:#1c1333; border:1px solid #9d4edd; color:#00f2fe; padding:10px 16px; border-radius:10px; font-size:0.85rem; cursor:pointer; font-weight:bold; display:flex; align-items:center; gap:6px;">
+          👑 Admin Login
         </button>
-        <button onclick="promptGuestLogin()" style="background:#131c30; border:1px solid #23355d; color:#38bdf8; padding:8px 14px; border-radius:8px; font-size:0.8rem; cursor:pointer; font-weight:bold;">
-          👤 Guest Login (PIN: 1234)
+        <button onclick="promptGuestLogin()" style="background:#131c30; border:1px solid #23355d; color:#38bdf8; padding:10px 16px; border-radius:10px; font-size:0.85rem; cursor:pointer; font-weight:bold; display:flex; align-items:center; gap:6px;">
+          👤 Guest Login
         </button>
       </div>
     </div>
   </div>
 
-  <!-- PAYMENT REQUEST MODAL FOR STUDENTS (UPI + UTR + SS) -->
+  <!-- PAYMENT REQUEST MODAL -->
   <div id="payment-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <button onclick="closePaymentModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -306,7 +333,7 @@
         <div style="font-size:1.8rem; font-weight:900; color:var(--gold); margin:6px 0;" id="pay-modal-price">₹99</div>
         <p style="font-size:0.85rem; color:#cbd5e1;">Pay via PhonePe / Google Pay / Paytm QR or UPI</p>
         <div style="background:#131c33; padding:8px; border-radius:8px; margin-top:8px; font-weight:bold; color:#00f59b; font-size:0.9rem;">
-          UPI ID: <span id="admin-upi-display">sunil.official8094@ybl</span>
+          UPI ID: <span>sunil.official8094@ybl</span>
         </div>
       </div>
 
@@ -329,7 +356,7 @@
     </div>
   </div>
 
-  <!-- ADMIN: PAYMENT REQUESTS VERIFICATION LIST MODAL -->
+  <!-- ADMIN: PAYMENT REQUESTS VERIFICATION MODAL -->
   <div id="admin-requests-modal" class="modal-overlay hidden">
     <div class="modal-card" style="max-width:750px;">
       <button onclick="closeAdminRequestsModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -338,7 +365,7 @@
     </div>
   </div>
 
-  <!-- ADMIN: CREATE / EDIT BATCH MODAL (WITH SYLLABUS EDIT) -->
+  <!-- ADMIN: CREATE / EDIT BATCH MODAL -->
   <div id="admin-batch-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <button onclick="closeAdminBatchModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -434,7 +461,6 @@
     let timerInterval = null;
     let userLang = localStorage.getItem('user_cbt_lang') || 'hi';
 
-    // DEFAULT BATCHES WITH DETAILED INCLUSIONS (EDITABLE ANYTIME)
     const defaultBatches = [
       { 
         id: "batch_ssc_cgl", 
@@ -521,9 +547,9 @@
       auth.signInWithPopup(p).catch(() => auth.signInWithRedirect(p));
     }
 
-    // PIN AUTH
+    // PIN PROMPTS (WITHOUT SHOWING PIN ON BUTTON)
     function promptAdminLogin() {
-      const pin = prompt("Sunil Kumar Admin Security PIN:");
+      const pin = prompt("Admin Security PIN darz karein:");
       if (pin === "9988") {
         currentUser = {
           uid: "admin_sunil_kumar",
@@ -540,17 +566,17 @@
         isAdmin = true;
         onAuthSuccess();
       } else if (pin !== null) {
-        alert("❌ Galat Admin PIN!");
+        alert("❌ Galat Security PIN!");
       }
     }
 
     function promptGuestLogin() {
-      const pin = prompt("Testing Guest PIN:");
+      const pin = prompt("Guest Security PIN darz karein:");
       if (pin === "1234") {
         currentUser = {
           uid: "guest_student_01",
-          displayName: "Guest Student (Tester)",
-          email: "guest.tester@parikshacbt.edu.in",
+          displayName: "Guest Student",
+          email: "guest.student@test.com",
           photoURL: "https://ui-avatars.com/api/?name=Guest+Student&background=00f59b&color=000",
           scorePoints: 120,
           totalTests: 3,
@@ -598,24 +624,57 @@
       document.getElementById("screen-auth").classList.add("hidden");
       document.getElementById("main-content").classList.remove("hidden");
       document.getElementById("nav-profile-pill").classList.remove("hidden");
-      document.getElementById("logout-btn").classList.remove("hidden");
       document.getElementById("header-name").innerText = currentUser.displayName.split(" ")[0];
       document.getElementById("header-avatar").src = currentUser.photoURL;
 
-      if (isAdmin) {
-        document.getElementById("admin-banner").classList.remove("hidden");
-        document.getElementById("admin-action-btn").classList.remove("hidden");
-        document.getElementById("admin-batch-btn").classList.remove("hidden");
-        document.getElementById("admin-reqs-btn").classList.remove("hidden");
-        listenToPendingPayments();
-      } else {
-        document.getElementById("admin-banner").classList.add("hidden");
-        document.getElementById("admin-action-btn").classList.add("hidden");
-        document.getElementById("admin-batch-btn").classList.add("hidden");
-        document.getElementById("admin-reqs-btn").classList.add("hidden");
-      }
+      buildDropdownMenu();
       loadAllBatches();
       showDashboard();
+    }
+
+    // 3-DOT DROPDOWN MENU BUILDER
+    function buildDropdownMenu() {
+      const menu = document.getElementById("user-dropdown-menu");
+      menu.innerHTML = "";
+
+      const headerDiv = document.createElement("div");
+      headerDiv.className = "dropdown-header";
+      headerDiv.innerHTML = `
+        <div style="font-weight:bold; color:#fff; font-size:0.92rem;">${currentUser.displayName}</div>
+        <p>${isAdmin ? '👑 Master Administrator' : currentUser.email}</p>
+      `;
+      menu.appendChild(headerDiv);
+
+      if (isAdmin) {
+        // ADMIN SPECIFIC OPTIONS (No purchase/course buying)
+        menu.innerHTML += `
+          <div class="dropdown-item" onclick="openAdminRequestsModal()"><i class="fa-solid fa-receipt" style="color:var(--primary);"></i> Payment Requests</div>
+          <div class="dropdown-item" onclick="openAdminBatchModal()"><i class="fa-solid fa-folder-plus" style="color:var(--gold);"></i> Create New Batch</div>
+          <div class="dropdown-item" onclick="openAdminPaperModal()"><i class="fa-solid fa-plus-circle" style="color:var(--green);"></i> Add Test Paper</div>
+          <div class="dropdown-item" onclick="openProfileView()"><i class="fa-solid fa-user-gear" style="color:var(--accent);"></i> Profile Settings</div>
+          <div class="dropdown-item" onclick="logout()" style="color:var(--red); border-top:1px solid #1e293b;"><i class="fa-solid fa-power-off"></i> Logout Admin</div>
+        `;
+      } else {
+        // USER / CANDIDATE SPECIFIC OPTIONS
+        menu.innerHTML += `
+          <div class="dropdown-item" onclick="openProfileView()"><i class="fa-solid fa-user" style="color:var(--primary);"></i> Profile Details</div>
+          <div class="dropdown-item" onclick="openEnrolledBatchesView()"><i class="fa-solid fa-box-open" style="color:var(--gold);"></i> My Enrolled Batches</div>
+          <div class="dropdown-item" onclick="openHistoryView()"><i class="fa-solid fa-clock-rotate-left" style="color:var(--green);"></i> Batch Test History</div>
+          <div class="dropdown-item" onclick="logout()" style="color:var(--red); border-top:1px solid #1e293b;"><i class="fa-solid fa-power-off"></i> Logout</div>
+        `;
+      }
+    }
+
+    function toggleDropdownMenu(e) {
+      e.stopPropagation();
+      document.getElementById("user-dropdown-menu").classList.toggle("show");
+    }
+
+    function closeDropdownMenuOutside(e) {
+      const menu = document.getElementById("user-dropdown-menu");
+      if (menu && menu.classList.contains("show")) {
+        menu.classList.remove("show");
+      }
     }
 
     function logout() {
@@ -625,9 +684,10 @@
     }
 
     function hideAll() {
-      ["screen-dashboard", "screen-series", "screen-cbt", "screen-result", "screen-profile"].forEach(id => {
+      ["screen-dashboard", "screen-series", "screen-cbt", "screen-result", "screen-profile", "screen-enrolled-batches", "screen-history"].forEach(id => {
         document.getElementById(id).classList.add("hidden");
       });
+      document.getElementById("user-dropdown-menu").classList.remove("show");
     }
 
     function showDashboard() {
@@ -675,6 +735,7 @@
         grid.appendChild(card);
       });
 
+      // Update Modals
       const sel = document.getElementById("new-paper-cat");
       sel.innerHTML = "";
       allBatches.forEach(b => {
@@ -683,17 +744,26 @@
         opt.innerText = b.title;
         sel.appendChild(opt);
       });
+
+      const filterSel = document.getElementById("history-batch-filter");
+      filterSel.innerHTML = `<option value="all">All Batches History</option>`;
+      allBatches.forEach(b => {
+        const opt = document.createElement("option");
+        opt.value = b.id;
+        opt.innerText = b.title;
+        filterSel.appendChild(opt);
+      });
     }
 
     function isBatchUnlockedForUser(batchId) {
-      if (isAdmin) return true;
+      if (isAdmin) return true; // Admin never pays
       if (!currentUser) return false;
       const b = allBatches.find(x => x.id === batchId);
       if (b && !b.isPaid) return true;
       return (currentUser.unlockedBatches || []).includes(batchId);
     }
 
-    // SERIES LISTING (TEST 1, TEST 2 FREE RULE)
+    // SERIES LISTING (TEST 1 & 2 FREE RULE)
     async function openSeriesListing(batchObj) {
       currentSelectedBatch = batchObj;
       document.getElementById("series-header-title").innerText = batchObj.title;
@@ -737,7 +807,7 @@
         const item = document.createElement("div");
         item.className = "series-item";
 
-        // First 2 Tests are FREE for everyone
+        // First 2 Tests are FREE
         const isTestFree = (idx < 2) || !batchObj.isPaid || isBatchUnlocked;
 
         let actionBtn = isTestFree 
@@ -782,7 +852,7 @@
       const file = document.getElementById("pay-user-ss").files[0];
 
       if (!userUpi || !utr || !file) {
-        return alert("Kripya apni UPI ID, UTR Number aur Payment Screenshot teeno daalein!");
+        return alert("Kripya apni UPI ID, UTR Number aur Screenshot teeno upload karein!");
       }
 
       const reader = new FileReader();
@@ -813,13 +883,7 @@
       reader.readAsDataURL(file);
     }
 
-    // ADMIN PAYMENT REQUEST VERIFICATION
-    function listenToPendingPayments() {
-      db.collection("payment_requests").where("status", "==", "pending").onSnapshot(snap => {
-        document.getElementById("pending-count").innerText = snap.size;
-      });
-    }
-
+    // ADMIN PAYMENT APPROVALS
     async function openAdminRequestsModal() {
       const container = document.getElementById("admin-reqs-list-container");
       container.innerHTML = `<p style="color:#94a3b8;">Loading requests...</p>`;
@@ -872,7 +936,7 @@
       }
     }
 
-    // BATCH CREATE & EDIT (WITH SYLLABUS)
+    // BATCH CREATE & EDIT
     function openAdminBatchModal() {
       document.getElementById("batch-modal-heading").innerHTML = `<i class="fa-solid fa-folder-plus"></i> Create New Batch`;
       document.getElementById("edit-batch-id").value = "";
@@ -929,7 +993,7 @@
 
       try {
         await db.collection("custom_batches").doc(batchId).set(batchPayload, { merge: true });
-        alert(`✅ Batch "${title}" safaltapoorvak update/save ho gaya!`);
+        alert(`✅ Batch "${title}" safaltapoorvak update ho gaya!`);
         closeAdminBatchModal();
         loadAllBatches();
         if (currentSelectedBatch && currentSelectedBatch.id === batchId) {
@@ -1103,28 +1167,114 @@
       });
     }
 
-    // PROFILE VIEW
+    // USER VIEWS: PROFILE, PURCHASED COURSES, HISTORY
     function openProfileView() {
       hideAll();
       document.getElementById("screen-profile").classList.remove("hidden");
       document.getElementById("prof-display-name").innerText = currentUser.displayName;
       document.getElementById("prof-email").innerText = currentUser.email;
       document.getElementById("prof-avatar-lg").src = currentUser.photoURL;
+    }
 
-      const batchBox = document.getElementById("prof-batches-list");
-      batchBox.innerHTML = "";
+    function openEnrolledBatchesView() {
+      hideAll();
+      document.getElementById("screen-enrolled-batches").classList.remove("hidden");
+      const box = document.getElementById("purchased-courses-container");
+      box.innerHTML = "";
+
       const unlocked = currentUser.unlockedBatches || [];
       if (unlocked.length === 0) {
-        batchBox.innerHTML = `<span style="color:#94a3b8; font-size:0.85rem;">Koi paid batch unlock nahi hai.</span>`;
-      } else {
-        unlocked.forEach(bId => {
-          const b = allBatches.find(x => x.id === bId);
-          const span = document.createElement("span");
-          span.className = "batch-badge";
-          span.innerText = b ? b.title : bId;
-          batchBox.appendChild(span);
-        });
+        box.innerHTML = `
+          <div style="background:#0c1221; padding:30px; border-radius:14px; text-align:center; border:1px dashed #23355d;">
+            <i class="fa-solid fa-box-open" style="font-size:2.5rem; color:var(--text-muted); margin-bottom:12px;"></i>
+            <h3 style="color:#cbd5e1; margin-bottom:6px;">Aapne abhi tak koi paid batch purchase nahi kiya hai.</h3>
+            <p style="color:var(--text-muted); font-size:0.85rem;">Dashboard par jakar premium test series unlock karein.</p>
+          </div>
+        `;
+        return;
       }
+
+      unlocked.forEach(bId => {
+        const b = allBatches.find(x => x.id === bId) || { title: bId, desc: "Unlocked Course" };
+        const card = document.createElement("div");
+        card.className = "series-item";
+        card.innerHTML = `
+          <div>
+            <h3 style="color:var(--primary);">${b.title}</h3>
+            <p style="color:#94a3b8; font-size:0.85rem; margin-top:4px;">${b.desc || ''}</p>
+          </div>
+          <button class="btn-submit" onclick="openSeriesListing(allBatches.find(x => x.id === '${bId}'))">Open Tests <i class="fa-solid fa-arrow-right"></i></button>
+        `;
+        box.appendChild(card);
+      });
+    }
+
+    function openHistoryView() {
+      hideAll();
+      document.getElementById("screen-history").classList.remove("hidden");
+      renderHistoryList('all');
+    }
+
+    function filterHistoryByBatch() {
+      const filter = document.getElementById("history-batch-filter").value;
+      renderHistoryList(filter);
+    }
+
+    function renderHistoryList(filterBatch) {
+      const box = document.getElementById("history-container");
+      box.innerHTML = "";
+
+      if (!currentUser.testHistory || currentUser.testHistory.length === 0) {
+        box.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">No tests attempted yet.</p>`;
+        return;
+      }
+
+      let filtered = currentUser.testHistory;
+      if (filterBatch !== 'all') {
+        filtered = currentUser.testHistory.filter(h => h.batchId === filterBatch);
+      }
+
+      if (filtered.length === 0) {
+        box.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">Is batch me koi test record nahi mila.</p>`;
+        return;
+      }
+
+      filtered.forEach((rec, idx) => {
+        const item = document.createElement("div");
+        item.className = "history-card";
+        item.innerHTML = `
+          <div>
+            <div style="font-weight:bold; font-size:1.05rem; color:#fff;">${rec.examTitle}</div>
+            <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">
+              Batch: <b style="color:var(--accent);">${rec.batchName}</b> | Date: ${rec.date} | Total Qs: ${rec.total} | 
+              Sahi: <b style="color:var(--green);">${rec.correct}</b> | Galat: <b style="color:var(--red);">${rec.wrong}</b> | Chhoda: <b style="color:var(--gold);">${rec.unattempted}</b>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div style="font-weight:bold; color:${rec.passed ? 'var(--green)' : 'var(--red)'};">${rec.passed ? 'PASSED' : 'FAILED'} (+${rec.points} Pts)</div>
+            <button class="btn-sm" style="background:#00f2fe; color:#000;" onclick="reviewPastTest(${idx})">View Solution Key</button>
+          </div>
+        `;
+        box.appendChild(item);
+      });
+    }
+
+    function reviewPastTest(historyIndex) {
+      const rec = currentUser.testHistory[historyIndex];
+      if (!rec) return;
+
+      document.getElementById("res-heading").innerText = `Paper Review: ${rec.examTitle}`;
+      document.getElementById("res-sub").innerText = `Batch: ${rec.batchName} | Sahi: ${rec.correct} | Galat: ${rec.wrong} | Chhoda: ${rec.unattempted}`;
+      document.getElementById("res-points-added").innerText = `+${rec.points}`;
+      document.getElementById("res-score").innerText = `${rec.correct} / ${rec.total}`;
+      document.getElementById("res-acc").innerText = Math.round((rec.correct / rec.total) * 100) + "%";
+      document.getElementById("res-status").innerText = rec.passed ? "PASSED" : "FAILED";
+      document.getElementById("res-status").style.color = rec.passed ? "var(--green)" : "var(--red)";
+
+      renderReviewCards(rec.paperData, rec.userPicks);
+      hideAll();
+      document.getElementById("screen-result").classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     async function editDisplayName() {
@@ -1169,6 +1319,7 @@
     // ADMIN: ADD TEST PAPER
     function openAdminPaperModal() {
       document.getElementById("admin-modal").classList.remove("hidden");
+      document.getElementById("user-dropdown-menu").classList.remove("show");
     }
 
     function closeAdminPaperModal() {
