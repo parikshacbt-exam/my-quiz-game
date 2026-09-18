@@ -85,12 +85,17 @@
 
     .btn-submit { background: linear-gradient(90deg, #00f59b, #00b4d8); color: #000; font-weight: 800; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 0.88rem; }
     .btn-batch { background: linear-gradient(90deg, #ffb703, #fb8500); color: #000; font-weight: 800; border: none; padding: 10px 18px; border-radius: 10px; cursor: pointer; font-size: 0.88rem; }
+    .btn-subfolder { background: linear-gradient(90deg, #a855f7, #3b82f6); color: #fff; font-weight: 800; border: none; padding: 10px 18px; border-radius: 10px; cursor: pointer; font-size: 0.88rem; }
     .btn-pay { background: linear-gradient(90deg, #9d4edd, #ff3366); color: #fff; font-weight: 800; border: none; padding: 10px 18px; border-radius: 10px; cursor: pointer; font-size: 0.88rem; }
     .btn-danger { background: #ff3366; color: #fff; font-weight: 800; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 0.88rem; }
     .btn-nav { background: #263558; border: none; color: #fff; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 700; }
     .btn-sm { padding: 6px 14px; font-size: 0.8rem; border-radius: 6px; cursor: pointer; font-weight: bold; border: none; }
 
-    /* App Redirect Grid */
+    /* Sub-Batch Tabs */
+    .subfolder-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 18px; }
+    .subfolder-tab { background: #131c33; border: 1.5px solid #23355d; color: #cbd5e1; padding: 8px 18px; border-radius: 25px; font-size: 0.88rem; font-weight: 700; cursor: pointer; white-space: nowrap; transition: 0.2s; }
+    .subfolder-tab.active { background: linear-gradient(90deg, var(--primary), #3b82f6); color: #000; border-color: var(--primary); }
+
     .app-pay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
     .app-pay-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 10px; border: 1px solid #334155; background: #131c33; color: #fff; font-size: 0.9rem; font-weight: bold; cursor: pointer; text-decoration: none; transition: 0.2s; }
     .app-pay-btn:hover { border-color: var(--primary); background: #1a2748; }
@@ -158,24 +163,31 @@
       <div class="exam-grid" id="dashboard-batches-grid"></div>
     </div>
 
-    <!-- 2. SERIES LISTING VIEW -->
+    <!-- 2. SERIES LISTING VIEW (WITH IN-BATCH UPLOAD & SUB-BATCH TABS) -->
     <div id="screen-series" class="hidden">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
         <div>
           <h2 id="series-header-title" style="color:var(--primary);">Batch Tests</h2>
           <p id="series-batch-desc" style="color:var(--gold); font-size:0.9rem; font-weight:600; margin-top:2px;"></p>
         </div>
-        <div style="display:flex; gap:8px;">
-          <button id="btn-edit-current-batch" class="btn-batch hidden" onclick="editCurrentBatch()"><i class="fa-solid fa-pen"></i> Edit Batch Details</button>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <!-- ADMIN IN-BATCH CONTROLS -->
+          <button id="btn-add-subfolder" class="btn-subfolder hidden" onclick="openCreateSubBatchModal()"><i class="fa-solid fa-folder-plus"></i> Create Sub-Batch / Folder</button>
+          <button id="btn-upload-test-in-batch" class="btn-submit hidden" onclick="openUploadTestInCurrentBatch()"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Test Here</button>
+          <button id="btn-edit-current-batch" class="btn-batch hidden" onclick="editCurrentBatch()"><i class="fa-solid fa-pen"></i> Edit Batch</button>
           <button class="btn-nav" onclick="showDashboard()"><i class="fa-solid fa-arrow-left"></i> Back</button>
         </div>
       </div>
 
-      <div id="batch-syllabus-card" style="background:#0c1221; border:1px solid #23355d; border-radius:14px; padding:16px 20px; margin-bottom:20px;">
+      <div id="batch-syllabus-card" style="background:#0c1221; border:1px solid #23355d; border-radius:14px; padding:16px 20px; margin-bottom:16px;">
         <h4 style="color:var(--green); margin-bottom:6px;"><i class="fa-solid fa-list-check"></i> Is Batch Me Kya-Kya Samlit Hai (Syllabus & Inclusions):</h4>
         <p id="batch-inclusions-text" style="color:#cbd5e1; font-size:0.9rem; line-height:1.6;"></p>
       </div>
 
+      <!-- SUB-BATCH / SECTION TABS -->
+      <div class="subfolder-tabs" id="subfolder-tabs-container"></div>
+
+      <!-- TESTS CARDS CONTAINER -->
       <div id="series-cards-container"></div>
     </div>
 
@@ -278,7 +290,7 @@
       <div id="history-container"></div>
     </div>
 
-    <!-- 8. DEDICATED SEPARATE CHECKOUT / PAYMENT SCREEN -->
+    <!-- 8. DEDICATED SEPARATE CHECKOUT SCREEN -->
     <div id="screen-checkout" class="hidden">
       <div style="max-width:580px; margin:0 auto; background:var(--surface); border:1.5px solid rgba(0,242,254,0.3); border-radius:24px; padding:28px 22px;">
         
@@ -313,10 +325,10 @@
 
           <h4 style="color:#cbd5e1; font-size:0.9rem; margin-bottom:8px; text-align:center;">Click App Icon to Pay Directly:</h4>
           <div class="app-pay-grid">
-            <a id="link-pay-phonepe" href="#" class="app-pay-btn" onclick="triggerAppPay()"><i class="fa-solid fa-mobile-screen" style="color:#8a3ffc;"></i> PhonePe</a>
-            <a id="link-pay-gpay" href="#" class="app-pay-btn" onclick="triggerAppPay()"><i class="fa-brands fa-google" style="color:#4285f4;"></i> Google Pay</a>
-            <a id="link-pay-paytm" href="#" class="app-pay-btn" onclick="triggerAppPay()"><i class="fa-solid fa-wallet" style="color:#00b9f5;"></i> Paytm</a>
-            <a id="link-pay-mobikwik" href="#" class="app-pay-btn" onclick="triggerAppPay()"><i class="fa-solid fa-bolt" style="color:#ff5722;"></i> Mobikwik / BHIM</a>
+            <a id="link-pay-phonepe" href="#" class="app-pay-btn"><i class="fa-solid fa-mobile-screen" style="color:#8a3ffc;"></i> PhonePe</a>
+            <a id="link-pay-gpay" href="#" class="app-pay-btn"><i class="fa-brands fa-google" style="color:#4285f4;"></i> Google Pay</a>
+            <a id="link-pay-paytm" href="#" class="app-pay-btn"><i class="fa-solid fa-wallet" style="color:#00b9f5;"></i> Paytm</a>
+            <a id="link-pay-mobikwik" href="#" class="app-pay-btn"><i class="fa-solid fa-bolt" style="color:#ff5722;"></i> Mobikwik / BHIM</a>
           </div>
 
           <!-- PAYMENT DONE / CANCEL PROMPT -->
@@ -363,7 +375,7 @@
 
   </div>
 
-  <!-- AUTH SCREEN (CLEAN BUTTONS) -->
+  <!-- AUTH SCREEN (CLEAN BUTTONS - NO PIN SHOWN) -->
   <div id="screen-auth" style="max-width:440px; margin:40px auto; padding:0 15px;">
     <div style="background:var(--surface); border:1.5px solid rgba(0,242,254,0.3); border-radius:24px; padding:32px 24px; text-align:center;">
       <h2 style="font-size:1.6rem; font-weight:800; color:#fff;">Student CBT Portal</h2>
@@ -403,12 +415,28 @@
     </div>
   </div>
 
-  <!-- ADMIN: PAYMENT SETTINGS (MANAGE QR & UPI ID) -->
+  <!-- ADMIN: CREATE SUB-BATCH / FOLDER MODAL -->
+  <div id="admin-subbatch-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <button onclick="closeCreateSubBatchModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+      <h2 style="color:var(--primary); margin-bottom:12px;"><i class="fa-solid fa-folder-plus"></i> Create Sub-Batch / Folder</h2>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">
+        Current Batch: <b id="subbatch-parent-name" style="color:var(--gold);">Batch</b> ke andar naya subject ya folder banayein:
+      </p>
+
+      <label style="font-size:0.85rem; color:#cbd5e1;">Sub-Batch Name / Title:</label>
+      <input type="text" id="subbatch-title-input" class="form-input" placeholder="e.g. Hindi, English, Reasoning, ya Full Mock Papers">
+
+      <button class="btn-subfolder" style="width:100%; margin-top:10px;" onclick="saveAdminSubBatch()">Create & Save Sub-Batch</button>
+    </div>
+  </div>
+
+  <!-- ADMIN: PAYMENT SETTINGS MODAL -->
   <div id="admin-payment-settings-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <button onclick="closeAdminPaySettingsModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
       <h2 style="color:var(--primary); margin-bottom:12px;"><i class="fa-solid fa-qrcode"></i> Manage Admin Payment Settings</h2>
-      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">Yahan aap apni UPI ID aur QR Code badal sakte hain. Jo yahan save karenge wahi sabhi students ko checkout screen par dikhega:</p>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">Yahan aap apni UPI ID aur QR Code badal sakte hain:</p>
 
       <label style="font-size:0.85rem; color:#cbd5e1;">Admin UPI ID:</label>
       <input type="text" id="admin-setting-upi" class="form-input" placeholder="e.g. yourname@ybl ya yourname@paytm">
@@ -469,16 +497,21 @@
     </div>
   </div>
 
-  <!-- ADMIN: ADD TEST PAPER MODAL -->
+  <!-- ADMIN: ADD TEST PAPER MODAL (WITH SUB-BATCH SELECTOR) -->
   <div id="admin-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <button onclick="closeAdminPaperModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
       <h2 style="color:var(--primary); margin-bottom:12px;"><i class="fa-solid fa-plus-circle"></i> Create Test Paper</h2>
 
       <label style="font-size:0.85rem; color:#cbd5e1;">Select Batch:</label>
-      <select id="new-paper-cat" class="form-input"></select>
+      <select id="new-paper-cat" class="form-input" onchange="onBatchSelectedInModal()"></select>
 
-      <label style="font-size:0.85rem; color:#cbd5e1;">Test Paper Title (e.g. Test 1, Test 2, Test 3):</label>
+      <label style="font-size:0.85rem; color:#cbd5e1;">Select Sub-Batch / Folder (Subject):</label>
+      <select id="new-paper-subfolder" class="form-input">
+        <option value="general">General / Main Batch</option>
+      </select>
+
+      <label style="font-size:0.85rem; color:#cbd5e1;">Test Paper Title (e.g. Test 1, Test 2):</label>
       <input type="text" id="new-paper-title" class="form-input" placeholder="e.g. Test 1 (Full Model Test)">
 
       <label style="font-size:0.85rem; color:#cbd5e1;">Exam Time (Minutes):</label>
@@ -523,6 +556,9 @@
     let isAdmin = false;
     let allBatches = [];
     let currentSelectedBatch = null;
+    let currentActiveSubBatch = "all";
+    let currentBatchSubFolders = [];
+    let currentBatchAllPapers = [];
     let currentActiveTest = null;
     let userAnswers = {};
     let currentIndex = 0;
@@ -530,7 +566,6 @@
     let timerInterval = null;
     let userLang = localStorage.getItem('user_cbt_lang') || 'hi';
 
-    // GLOBAL PAYMENT CONFIG (DEFAULT + FIRESTORE SYNCED)
     let paymentConfig = {
       upiId: "sunil.official8094@ybl",
       qrCodeUrl: "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=sunil.official8094@ybl&pn=Sunil%20Kumar"
@@ -844,63 +879,120 @@
       return (currentUser.unlockedBatches || []).includes(batchId);
     }
 
+    // SERIES & SUB-BATCH VIEW
     async function openSeriesListing(batchObj) {
       currentSelectedBatch = batchObj;
+      currentActiveSubBatch = "all";
       document.getElementById("series-header-title").innerText = batchObj.title;
       document.getElementById("series-batch-desc").innerText = batchObj.isPaid ? `Paid Batch - ₹${batchObj.price} (First 2 Tests are Free)` : `100% Free Batch`;
       document.getElementById("batch-inclusions-text").innerText = batchObj.syllabus || "Detailed syllabus and mock tests.";
 
       if (isAdmin) {
+        document.getElementById("btn-add-subfolder").classList.remove("hidden");
+        document.getElementById("btn-upload-test-in-batch").classList.remove("hidden");
         document.getElementById("btn-edit-current-batch").classList.remove("hidden");
       } else {
+        document.getElementById("btn-add-subfolder").classList.add("hidden");
+        document.getElementById("btn-upload-test-in-batch").classList.add("hidden");
         document.getElementById("btn-edit-current-batch").classList.add("hidden");
       }
 
-      const container = document.getElementById("series-cards-container");
-      container.innerHTML = `<p style="color:#94a3b8; padding:15px;">Loading tests...</p>`;
       hideAll();
       document.getElementById("screen-series").classList.remove("hidden");
 
-      let papers = [];
+      await loadSubFoldersAndPapers();
+    }
+
+    async function loadSubFoldersAndPapers() {
+      // 1. Fetch sub-folders (sub-batches) for this batch
+      currentBatchSubFolders = [];
       try {
-        const snap = await db.collection("custom_tests").where("batchId", "==", batchObj.id).get();
-        snap.forEach(doc => {
-          papers.push(doc.data());
-        });
+        const subSnap = await db.collection("sub_batches").where("parentBatchId", "==", currentSelectedBatch.id).get();
+        subSnap.forEach(doc => currentBatchSubFolders.push(doc.data()));
       } catch(e) {}
 
+      // 2. Render Subfolder Tabs
+      const tabsBox = document.getElementById("subfolder-tabs-container");
+      tabsBox.innerHTML = "";
+
+      const allTab = document.createElement("div");
+      allTab.className = "subfolder-tab" + (currentActiveSubBatch === "all" ? " active" : "");
+      allTab.innerText = "📁 All Tests";
+      allTab.onclick = () => { currentActiveSubBatch = "all"; renderSubFolderTabs(); renderFilteredTestPapers(); };
+      tabsBox.appendChild(allTab);
+
+      currentBatchSubFolders.forEach(sf => {
+        const t = document.createElement("div");
+        t.className = "subfolder-tab" + (currentActiveSubBatch === sf.id ? " active" : "");
+        t.innerText = `📂 ${sf.title}`;
+        t.onclick = () => { currentActiveSubBatch = sf.id; renderSubFolderTabs(); renderFilteredTestPapers(); };
+        tabsBox.appendChild(t);
+      });
+
+      // 3. Fetch all test papers for this batch
+      currentBatchAllPapers = [];
+      try {
+        const snap = await db.collection("custom_tests").where("batchId", "==", currentSelectedBatch.id).get();
+        snap.forEach(doc => currentBatchAllPapers.push(doc.data()));
+      } catch(e) {}
+
+      renderFilteredTestPapers();
+    }
+
+    function renderSubFolderTabs() {
+      const tabs = document.querySelectorAll(".subfolder-tab");
+      tabs.forEach((tab, idx) => {
+        if (idx === 0) {
+          tab.className = "subfolder-tab" + (currentActiveSubBatch === "all" ? " active" : "");
+        } else {
+          const sf = currentBatchSubFolders[idx - 1];
+          tab.className = "subfolder-tab" + (currentActiveSubBatch === (sf ? sf.id : "") ? " active" : "");
+        }
+      });
+    }
+
+    function renderFilteredTestPapers() {
+      const container = document.getElementById("series-cards-container");
       container.innerHTML = "";
+
+      let papers = currentBatchAllPapers;
+      if (currentActiveSubBatch !== "all") {
+        papers = currentBatchAllPapers.filter(p => (p.subFolderId || "general") === currentActiveSubBatch);
+      }
+
       if (papers.length === 0) {
         container.innerHTML = `
           <div style="background:#0c1221; padding:30px; border-radius:14px; text-align:center; border:1px dashed #23355d;">
             <i class="fa-solid fa-folder-open" style="font-size:2.5rem; color:var(--text-muted); margin-bottom:12px;"></i>
-            <h3 style="color:#cbd5e1; margin-bottom:6px;">Is Batch me abhi koi test uplabdh nahi hai.</h3>
-            <p style="color:var(--text-muted); font-size:0.85rem;">Admin jald hi Test 1, Test 2... upload karenge.</p>
+            <h3 style="color:#cbd5e1; margin-bottom:6px;">Is Section me abhi koi test uplabdh nahi hai.</h3>
+            <p style="color:var(--text-muted); font-size:0.85rem;">Admin 'Upload Test Here' button se naye papers add kar sakte hain.</p>
           </div>
         `;
         return;
       }
 
-      const isBatchUnlocked = isBatchUnlockedForUser(batchObj.id);
+      const isBatchUnlocked = isBatchUnlockedForUser(currentSelectedBatch.id);
 
       papers.forEach((test, idx) => {
         const item = document.createElement("div");
         item.className = "series-item";
 
-        const isTestFree = (idx < 2) || !batchObj.isPaid || isBatchUnlocked;
+        const isTestFree = (idx < 2) || !currentSelectedBatch.isPaid || isBatchUnlocked;
 
         let actionBtn = isTestFree 
           ? `<button class="btn-submit" onclick="startSpecificTest(${idx})">Start Test <i class="fa-solid fa-play"></i></button>`
-          : `<button class="btn-pay" onclick="openDedicatedCheckoutScreen()"><i class="fa-solid fa-lock"></i> Unlock at ₹${batchObj.price}</button>`;
+          : `<button class="btn-pay" onclick="openDedicatedCheckoutScreen()"><i class="fa-solid fa-lock"></i> Unlock at ₹${currentSelectedBatch.price}</button>`;
 
-        let tag = (idx < 2 && batchObj.isPaid && !isBatchUnlocked) 
+        let tag = (idx < 2 && currentSelectedBatch.isPaid && !isBatchUnlocked) 
           ? `<span style="color:var(--green); font-size:0.75rem; font-weight:bold; margin-left:8px;">[FREE DEMO]</span>` 
           : "";
+
+        let subNameTag = test.subFolderName ? `<span style="color:var(--primary); font-size:0.78rem; font-weight:bold; margin-left:6px;">[${test.subFolderName}]</span>` : "";
 
         item.innerHTML = `
           <div>
             <h3 style="color:#fff; font-size:1.1rem; display:flex; align-items:center;">
-              <i class="fa-solid fa-file-lines" style="color:var(--primary); margin-right:8px;"></i> ${test.title} ${tag}
+              <i class="fa-solid fa-file-lines" style="color:var(--primary); margin-right:8px;"></i> ${test.title} ${subNameTag} ${tag}
             </h3>
             <p style="color:var(--text-muted); font-size:0.85rem; margin-top:4px;">
               <i class="fa-regular fa-circle-question"></i> ${test.questions.length} Questions | <i class="fa-regular fa-clock"></i> ${test.time} Minutes
@@ -914,6 +1006,67 @@
       window.activeCategoryPapers = papers;
     }
 
+    // CREATE SUB-BATCH (FOLDER) MODAL
+    function openCreateSubBatchModal() {
+      document.getElementById("subbatch-parent-name").innerText = currentSelectedBatch.title;
+      document.getElementById("subbatch-title-input").value = "";
+      document.getElementById("admin-subbatch-modal").classList.remove("hidden");
+    }
+
+    function closeCreateSubBatchModal() {
+      document.getElementById("admin-subbatch-modal").classList.add("hidden");
+    }
+
+    async function saveAdminSubBatch() {
+      const title = document.getElementById("subbatch-title-input").value.trim();
+      if (!title) return alert("Sub-Batch ka naam likhein!");
+
+      const subId = "sub_" + Date.now();
+      const payload = {
+        id: subId,
+        parentBatchId: currentSelectedBatch.id,
+        parentBatchTitle: currentSelectedBatch.title,
+        title: title,
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        await db.collection("sub_batches").doc(subId).set(payload);
+        alert(`✅ Naya Sub-Batch "${currentSelectedBatch.title} > ${title}" ban gaya!`);
+        closeCreateSubBatchModal();
+        await loadSubFoldersAndPapers();
+      } catch(e) {
+        alert("Error saving sub-batch: " + e.message);
+      }
+    }
+
+    // IN-BATCH UPLOAD TEST SHORTCUT
+    function openUploadTestInCurrentBatch() {
+      openAdminPaperModal();
+      document.getElementById("new-paper-cat").value = currentSelectedBatch.id;
+      onBatchSelectedInModal();
+      if (currentActiveSubBatch !== "all") {
+        document.getElementById("new-paper-subfolder").value = currentActiveSubBatch;
+      }
+    }
+
+    async function onBatchSelectedInModal() {
+      const batchId = document.getElementById("new-paper-cat").value;
+      const subSelect = document.getElementById("new-paper-subfolder");
+      subSelect.innerHTML = `<option value="general">General / Main Batch</option>`;
+
+      try {
+        const snap = await db.collection("sub_batches").where("parentBatchId", "==", batchId).get();
+        snap.forEach(doc => {
+          const sf = doc.data();
+          const opt = document.createElement("option");
+          opt.value = sf.id;
+          opt.innerText = sf.title;
+          subSelect.appendChild(opt);
+        });
+      } catch(e) {}
+    }
+
     // DEDICATED SEPARATE CHECKOUT SCREEN HANDLERS
     function openDedicatedCheckoutScreen() {
       hideAll();
@@ -925,7 +1078,6 @@
       document.getElementById("checkout-qr-img").src = paymentConfig.qrCodeUrl;
       document.getElementById("checkout-download-qr").href = paymentConfig.qrCodeUrl;
 
-      // Set Universal UPI Deep Link for App Buttons
       const upiLink = `upi://pay?pa=${encodeURIComponent(paymentConfig.upiId)}&pn=Sunil%20Kumar&am=${currentSelectedBatch.price}&cu=INR&tn=${encodeURIComponent(currentSelectedBatch.title)}`;
       document.getElementById("link-pay-phonepe").href = upiLink;
       document.getElementById("link-pay-gpay").href = upiLink;
@@ -934,11 +1086,6 @@
 
       backToCheckoutStep1();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function triggerAppPay() {
-      // Informs user and keeps prompt active
-      console.log("App redirect triggered");
     }
 
     function copyCheckoutUpiId() {
@@ -1039,7 +1186,7 @@
       }
     }
 
-    // ADMIN PAYMENT APPROVALS (SHOWS USER UID & DETAILS)
+    // ADMIN PAYMENT APPROVALS
     async function openAdminRequestsModal() {
       const container = document.getElementById("admin-reqs-list-container");
       container.innerHTML = `<p style="color:#94a3b8;">Loading requests...</p>`;
@@ -1479,6 +1626,7 @@
     function openAdminPaperModal() {
       document.getElementById("admin-modal").classList.remove("hidden");
       document.getElementById("user-dropdown-menu").classList.remove("show");
+      onBatchSelectedInModal();
     }
 
     function closeAdminPaperModal() {
@@ -1489,6 +1637,11 @@
       const batchId = document.getElementById("new-paper-cat").value;
       const catSelect = document.getElementById("new-paper-cat");
       const batchName = catSelect.options[catSelect.selectedIndex].text;
+      
+      const subFolderId = document.getElementById("new-paper-subfolder").value;
+      const subFolderSelect = document.getElementById("new-paper-subfolder");
+      const subFolderName = (subFolderId === "general") ? "" : subFolderSelect.options[subFolderSelect.selectedIndex].text;
+
       const title = document.getElementById("new-paper-title").value.trim();
       const time = parseInt(document.getElementById("new-paper-time").value) || 20;
 
@@ -1506,6 +1659,8 @@
       const newPaperPayload = {
         batchId: batchId,
         batchName: batchName,
+        subFolderId: subFolderId,
+        subFolderName: subFolderName,
         title: title,
         time: time,
         createdAt: new Date().toISOString(),
@@ -1526,6 +1681,10 @@
         document.getElementById("q-input-text").value = "";
         document.getElementById("q-opt-0").value = "";
         document.getElementById("q-opt-1").value = "";
+
+        if (currentSelectedBatch && currentSelectedBatch.id === batchId) {
+          await loadSubFoldersAndPapers();
+        }
       } catch (err) {
         alert("Error: " + err.message);
       }
