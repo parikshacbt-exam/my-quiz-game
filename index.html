@@ -29,7 +29,6 @@
       --gold: #ffb703;
     }
 
-    /* LIGHT THEME VARIABLES */
     [data-theme="light"] {
       --bg: #f1f5f9;
       --surface: #ffffff;
@@ -50,7 +49,6 @@
     body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
     .hidden { display: none !important; }
 
-    /* SPLASH SCREEN */
     #app-splash-screen {
       position: fixed; inset: 0; background: radial-gradient(circle at center, #111a3b 0%, #050811 100%);
       z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -65,7 +63,6 @@
     @keyframes splashPulse { 0% { transform: scale(0.95); } 100% { transform: scale(1.05); } }
     @keyframes splashLoad { 0% { width: 0%; } 100% { width: 100%; } }
 
-    /* HEADER */
     header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 22px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(14px); }
     .logo { font-size: 1.35rem; font-weight: 900; display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
     .nav-brand-logo-svg { width: 34px; height: 34px; filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.5)); }
@@ -87,7 +84,6 @@
     .container { max-width: 1080px; width: 100%; margin: 22px auto; padding: 0 16px; flex: 1; }
     .section-title { font-size: 1.25rem; font-weight: 800; color: var(--text); margin: 28px 0 16px; display: flex; align-items: center; gap: 10px; }
 
-    /* COURSE CARD */
     .exam-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
     .exam-card { 
       background: var(--card); border: 1.5px solid var(--border); border-radius: 20px; 
@@ -136,7 +132,7 @@
     .cbt-opt.selected { border-color: var(--primary); background: rgba(0, 242, 254, 0.15); font-weight: bold; }
     .cbt-nav { display: flex; justify-content: space-between; margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border); }
 
-    /* PODIUM LEADERBOARD STYLING */
+    /* PODIUM LEADERBOARD */
     .podium-container { display: flex; justify-content: center; align-items: flex-end; gap: 16px; margin: 25px 0 30px; }
     .podium-card { background: var(--sub-card); border: 1.5px solid var(--border); border-radius: 18px; padding: 18px 12px; text-align: center; width: 140px; position: relative; box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
     .podium-card.first { order: 2; border-color: #ffd700; transform: translateY(-16px); background: linear-gradient(180deg, rgba(255,215,0,0.15) 0%, var(--sub-card) 85%); }
@@ -157,8 +153,18 @@
     .avatar-edit-label { position: absolute; bottom: 0; right: 0; background: var(--primary); color: #000; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
     .modal-overlay { position: fixed; inset: 0; background: rgba(4, 7, 16, 0.88); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
-    .modal-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 22px; width: 100%; max-width: 650px; max-height: 90vh; overflow-y: auto; padding: 28px; position: relative; }
+    .modal-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 22px; width: 100%; max-width: 720px; max-height: 90vh; overflow-y: auto; padding: 28px; position: relative; }
     .form-input { width: 100%; padding: 12px; background: var(--input-bg); border: 1px solid var(--border); color: var(--text); border-radius: 10px; margin-bottom: 12px; font-size: 0.95rem; }
+
+    /* MULTI-QUESTION BLOCK */
+    .question-builder-block {
+      background: var(--sub-card); border: 1.5px solid var(--border); border-radius: 14px;
+      padding: 16px; margin-bottom: 16px; position: relative;
+    }
+    .q-block-header {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
+      border-bottom: 1px solid var(--border); padding-bottom: 8px;
+    }
   </style>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
@@ -208,10 +214,10 @@
     </div>
   </header>
 
-  <!-- MAIN APP CONTAINER -->
+  <!-- MAIN CONTAINER -->
   <div class="container hidden" id="main-content">
 
-    <!-- 1. DASHBOARD VIEW -->
+    <!-- 1. DASHBOARD -->
     <div id="screen-dashboard">
       <div style="display:flex; justify-content:space-between; align-items:center; margin: 28px 0 16px;">
         <div class="section-title" style="margin:0;"><i class="fa-solid fa-graduation-cap" style="color:var(--gold);"></i> All Batches & Online Test Series</div>
@@ -220,7 +226,7 @@
       <div class="exam-grid" id="dashboard-batches-grid"></div>
     </div>
 
-    <!-- 2. SERIES LISTING VIEW -->
+    <!-- 2. SERIES VIEW -->
     <div id="screen-series" class="hidden">
       <div style="background:var(--surface); border:1.5px solid var(--border); border-radius:18px; padding:20px; margin-bottom:20px;">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
@@ -250,14 +256,17 @@
       <div id="series-cards-container"></div>
     </div>
 
-    <!-- 3. CBT ENGINE SCREEN -->
+    <!-- 3. CBT TEST SCREEN (WITH REAL-TIME LANGUAGE SWITCHER) -->
     <div id="screen-cbt" class="cbt-container hidden">
       <div class="cbt-header">
         <div>
           <h3 id="exam-title">CBT Examination</h3>
           <p style="color:var(--text-muted); font-size:0.85rem;" id="exam-q-counter">Question 1</p>
         </div>
-        <div class="cbt-timer" id="timer-display"><i class="fa-regular fa-clock"></i> 20:00</div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <button class="lang-btn-nav" onclick="toggleLanguageInExam()" id="exam-lang-indicator">🌐 हिंदी</button>
+          <div class="cbt-timer" id="timer-display"><i class="fa-regular fa-clock"></i> 20:00</div>
+        </div>
       </div>
 
       <div class="q-text" id="cbt-question-text">Question loading...</div>
@@ -270,14 +279,11 @@
       </div>
     </div>
 
-    <!-- 4. REAL-TIME RANK & RESULT SCREEN (NO PASS/FAIL - LIVE RANK DISPLAY) -->
+    <!-- 4. REAL-TIME RANK & PODIUM RESULT SCREEN -->
     <div id="screen-result" class="cbt-container hidden" style="text-align:center;">
-      
-      <!-- TOP 3 PODIUM (1st, 2nd, 3rd) -->
       <h3 style="color:var(--gold); margin-bottom:10px;"><i class="fa-solid fa-crown"></i> Series Top 3 Rank Holders (Podium)</h3>
       <div class="podium-container" id="res-podium-box"></div>
 
-      <!-- CANDIDATE LIVE AIR RANK CARD -->
       <div style="background:var(--sub-card); border:2px solid var(--primary); border-radius:18px; padding:20px; margin:20px 0; display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:12px;">
         <div>
           <span style="font-size:0.8rem; color:var(--text-muted);">Your All India Rank</span>
@@ -297,7 +303,6 @@
         </div>
       </div>
 
-      <!-- FULL SERIES LEADERBOARD LIST -->
       <div style="text-align:left; margin-top:25px;">
         <h3 style="color:var(--primary); margin-bottom:10px;"><i class="fa-solid fa-list-ol"></i> Live Leaderboard & All Candidates Ranks</h3>
         <div style="overflow-x:auto;">
@@ -323,14 +328,12 @@
       <button class="btn-submit" style="margin-top:25px;" onclick="showDashboard()">Return to Dashboard</button>
     </div>
 
-    <!-- 5. USER PROFILE SCREEN -->
+    <!-- 5. USER PROFILE -->
     <div id="screen-profile" class="hidden">
       <div style="max-width:540px; margin:0 auto; background:var(--surface); border:1.5px solid var(--border); border-radius:22px; padding:30px; text-align:center;">
         <div class="profile-avatar-wrap">
           <img id="prof-avatar-lg" src="" alt="avatar">
-          <label for="avatar-file-input" class="avatar-edit-label" title="Change Avatar Photo">
-            <i class="fa-solid fa-camera"></i>
-          </label>
+          <label for="avatar-file-input" class="avatar-edit-label" title="Change Avatar Photo"><i class="fa-solid fa-camera"></i></label>
           <input type="file" id="avatar-file-input" accept="image/*" style="display:none;" onchange="handleAvatarUpload(event)">
         </div>
 
@@ -349,16 +352,16 @@
       </div>
     </div>
 
-    <!-- 6. MY ENROLLED BATCHES SCREEN -->
+    <!-- 6. MY ENROLLED BATCHES -->
     <div id="screen-enrolled-batches" class="hidden">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-        <h2><i class="fa-solid fa-box-open" style="color:var(--gold);"></i> My Enrolled Batches / Purchased Courses</h2>
+        <h2><i class="fa-solid fa-box-open" style="color:var(--gold);"></i> My Enrolled Batches / Courses</h2>
         <button class="btn-nav" onclick="showDashboard()"><i class="fa-solid fa-arrow-left"></i> Dashboard</button>
       </div>
       <div id="purchased-courses-container"></div>
     </div>
 
-    <!-- 7. BATCH TEST HISTORY SCREEN -->
+    <!-- 7. BATCH TEST HISTORY -->
     <div id="screen-history" class="hidden">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
         <h2><i class="fa-solid fa-clock-rotate-left" style="color:var(--primary);"></i> My Attempted Test History</h2>
@@ -367,7 +370,7 @@
       <div id="history-container"></div>
     </div>
 
-    <!-- 8. SETTINGS SCREEN (THEME DARK / LIGHT) -->
+    <!-- 8. SETTINGS -->
     <div id="screen-settings" class="hidden">
       <div style="max-width:540px; margin:0 auto; background:var(--surface); border:1.5px solid var(--border); border-radius:22px; padding:28px;">
         <h2 style="color:var(--primary); margin-bottom:16px;"><i class="fa-solid fa-gear"></i> App Settings</h2>
@@ -388,7 +391,7 @@
       </div>
     </div>
 
-    <!-- 9. DEDICATED CHECKOUT SCREEN -->
+    <!-- 9. CHECKOUT -->
     <div id="screen-checkout" class="hidden">
       <div style="max-width:580px; margin:0 auto; background:var(--surface); border:1.5px solid var(--border); border-radius:24px; padding:28px 22px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid var(--border); padding-bottom:12px;">
@@ -430,7 +433,7 @@
         </div>
 
         <div id="checkout-step-2" class="hidden">
-          <label style="font-size:0.85rem;">Aapki UPI ID (Payment Vali):</label>
+          <label style="font-size:0.85rem;">Aapki UPI ID:</label>
           <input type="text" id="chk-user-upi" class="form-input" placeholder="e.g. rahul@oksbi">
 
           <label style="font-size:0.85rem;">UTR / Transaction Ref Number (12 Digits):</label>
@@ -490,30 +493,23 @@
     <div class="modal-card" style="max-width:500px;">
       <button onclick="closeFeedbackModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
       <h2 style="color:var(--primary); margin-bottom:12px;"><i class="fa-solid fa-comment-dots"></i> App Feedback</h2>
-      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">Aapka anubhav kaisa raha? Humare sath share karein:</p>
-
-      <label style="font-size:0.85rem;">Rating:</label>
       <select id="feed-rating" class="form-input">
         <option value="5">⭐⭐⭐⭐⭐ Excellent (5/5)</option>
         <option value="4">⭐⭐⭐⭐ Good (4/5)</option>
         <option value="3">⭐⭐⭐ Average (3/5)</option>
-        <option value="2">⭐⭐ Needs Improvement (2/5)</option>
       </select>
-
-      <label style="font-size:0.85rem;">Feedback Message:</label>
-      <textarea id="feed-msg" class="form-input" rows="4" placeholder="Apna sujhav ya feedback likhein..."></textarea>
-
+      <textarea id="feed-msg" class="form-input" rows="4" placeholder="Apna feedback likhein..."></textarea>
       <button class="btn-submit" style="width:100%;" onclick="submitFeedback()">Send Feedback</button>
     </div>
   </div>
 
-  <!-- ADMIN MODALS (PAYMENT CONFIG, APPROVALS, BATCH, TEST) -->
+  <!-- ADMIN: PAYMENT SETTINGS -->
   <div id="admin-payment-settings-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <button onclick="closeAdminPaySettingsModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
       <h2 style="color:var(--primary); margin-bottom:12px;"><i class="fa-solid fa-qrcode"></i> Payment Settings (UPI & QR)</h2>
       <label style="font-size:0.85rem;">Admin UPI ID:</label>
-      <input type="text" id="admin-setting-upi" class="form-input" placeholder="e.g. sunil.official8094@ybl">
+      <input type="text" id="admin-setting-upi" class="form-input">
       <label style="font-size:0.85rem;">Upload QR Code Image:</label>
       <input type="file" id="admin-setting-qr-file" accept="image/*" class="form-input" onchange="previewAdminQR(event)">
       <div style="text-align:center; margin:15px 0;">
@@ -523,6 +519,7 @@
     </div>
   </div>
 
+  <!-- ADMIN: PAYMENT APPROVALS -->
   <div id="admin-requests-modal" class="modal-overlay hidden">
     <div class="modal-card" style="max-width:750px;">
       <button onclick="closeAdminRequestsModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -531,6 +528,7 @@
     </div>
   </div>
 
+  <!-- ADMIN: BATCH MODAL -->
   <div id="admin-batch-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <button onclick="closeAdminBatchModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -569,6 +567,7 @@
     </div>
   </div>
 
+  <!-- ADMIN: SUB-BATCH / FOLDER -->
   <div id="admin-subbatch-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <button onclick="closeCreateSubBatchModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -578,44 +577,55 @@
     </div>
   </div>
 
+  <!-- ADMIN: MULTI-QUESTION BILINGUAL TEST CREATOR -->
   <div id="admin-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <button onclick="closeAdminPaperModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
-      <h2 id="modal-test-action-heading" style="color:var(--primary); margin-bottom:12px;">Create Test Paper</h2>
+      <h2 id="modal-test-action-heading" style="color:var(--primary); margin-bottom:12px;"><i class="fa-solid fa-plus-circle"></i> Create Test Paper (Multi-Question & Bilingual)</h2>
       <input type="hidden" id="edit-test-id" value="">
-      <label style="font-size:0.85rem;">Batch:</label>
-      <select id="new-paper-cat" class="form-input" onchange="onBatchSelectedInModal()"></select>
-      <label style="font-size:0.85rem;">Folder:</label>
-      <select id="new-paper-subfolder" class="form-input"><option value="general">General / Main</option></select>
+      
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+        <div>
+          <label style="font-size:0.85rem;">Select Batch:</label>
+          <select id="new-paper-cat" class="form-input" onchange="onBatchSelectedInModal()"></select>
+        </div>
+        <div>
+          <label style="font-size:0.85rem;">Select Folder:</label>
+          <select id="new-paper-subfolder" class="form-input"><option value="general">General / Main</option></select>
+        </div>
+      </div>
+
       <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px;">
-        <div><label style="font-size:0.85rem;">Test Title:</label><input type="text" id="new-paper-title" class="form-input"></div>
+        <div><label style="font-size:0.85rem;">Test Title:</label><input type="text" id="new-paper-title" class="form-input" placeholder="e.g. Full Mock Test 1"></div>
         <div><label style="font-size:0.85rem;">Time (Min):</label><input type="number" id="new-paper-time" class="form-input" value="20"></div>
       </div>
-      <div style="background:var(--sub-card); border:1px solid var(--border); padding:12px; border-radius:10px; margin-bottom:14px;">
-        <label style="font-size:0.85rem; color:var(--gold); font-weight:bold;">Test Access Status:</label>
-        <select id="test-access-type" class="form-input">
-          <option value="free">🟢 Free Test (Open For All)</option>
-          <option value="paid">🔒 Locked / Paid Test</option>
+
+      <div style="background:var(--sub-card); border:1px solid var(--border); padding:10px 14px; border-radius:10px; margin-bottom:14px;">
+        <label style="font-size:0.85rem; color:var(--gold); font-weight:bold;">Test Access Type:</label>
+        <select id="test-access-type" class="form-input" style="margin-bottom:0;">
+          <option value="free">🟢 Free Test (Open For All Candidates)</option>
+          <option value="paid">🔒 Locked / Paid Test (Course Purchase Required)</option>
         </select>
       </div>
-      <input type="text" id="q-input-text" class="form-input" placeholder="Question">
-      <input type="text" id="q-opt-0" class="form-input" placeholder="Option A">
-      <input type="text" id="q-opt-1" class="form-input" placeholder="Option B">
-      <input type="text" id="q-opt-2" class="form-input" placeholder="Option C">
-      <input type="text" id="q-opt-3" class="form-input" placeholder="Option D">
-      <label style="font-size:0.85rem;">Correct Option:</label>
-      <select id="q-correct-idx" class="form-input">
-        <option value="0">Option A</option>
-        <option value="1">Option B</option>
-        <option value="2">Option C</option>
-        <option value="3">Option D</option>
-      </select>
-      <button class="btn-submit" style="width:100%;" onclick="saveAdminTestPaper()">Publish Test</button>
+
+      <!-- DYNAMIC QUESTION BUILDER CONTAINER -->
+      <div id="questions-builder-container"></div>
+
+      <!-- ADD QUESTION BUTTON -->
+      <div style="display:flex; gap:10px; margin-bottom:15px;">
+        <button type="button" class="btn-subfolder" style="flex:1;" onclick="addNewQuestionBlock()">
+          <i class="fa-solid fa-plus"></i> + Add Another Question (Naya Sawaal Jodein)
+        </button>
+      </div>
+
+      <button class="btn-submit" style="width:100%; padding:12px; font-size:1rem;" onclick="saveAdminTestPaper()">
+        <i class="fa-solid fa-cloud-arrow-up"></i> Publish Full Test Paper
+      </button>
     </div>
   </div>
 
   <script>
-    // THEME MANAGEMENT (DARK / WHITE)
+    // THEME MANAGEMENT
     let currentTheme = localStorage.getItem('pariksha_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', currentTheme);
 
@@ -635,7 +645,6 @@
       }
     }
 
-    // SPLASH SCREEN DISMISS
     window.addEventListener('load', () => {
       updateThemeButton();
       setTimeout(() => {
@@ -670,6 +679,8 @@
     let currentIndex = 0;
     let timerTotalSeconds = 0;
     let timerInterval = null;
+    
+    // LANGUAGE STATE ('hi' for Hindi, 'en' for English)
     let userLang = localStorage.getItem('user_cbt_lang') || 'hi';
 
     let paymentConfig = {
@@ -794,6 +805,8 @@
 
       if (isAdmin) document.getElementById("btn-dash-create-batch").classList.remove("hidden");
       else document.getElementById("btn-dash-create-batch").classList.add("hidden");
+
+      document.getElementById("btn-active-lang").innerText = (userLang === 'hi') ? "🌐 हिंदी" : "🌐 English";
 
       fetchPaymentConfig();
       buildDropdownMenu();
@@ -947,7 +960,7 @@
       if (b) { currentSelectedBatch = b; openDedicatedCheckoutScreen(); }
     }
 
-    // SERIES LISTING
+    // SERIES & SUB-BATCHES
     async function openSeriesListing(batchObj) {
       currentSelectedBatch = batchObj;
       currentActiveSubBatch = "all";
@@ -1095,7 +1108,254 @@
       window.activeCategoryPapers = papers;
     }
 
-    // CBT ENGINE
+    // ==========================================
+    // MULTI-QUESTION BUILDER IN ADMIN MODAL
+    // ==========================================
+    let currentQuestionsList = [];
+
+    function renderQuestionBuilderBlocks() {
+      const box = document.getElementById("questions-builder-container");
+      box.innerHTML = "";
+
+      currentQuestionsList.forEach((qItem, qIdx) => {
+        const div = document.createElement("div");
+        div.className = "question-builder-block";
+        div.innerHTML = `
+          <div class="q-block-header">
+            <span style="font-weight:bold; color:var(--gold);">Question #${qIdx + 1}</span>
+            <button type="button" class="btn-sm" style="background:var(--red); color:#fff;" onclick="removeQuestionBlock(${qIdx})">
+              <i class="fa-solid fa-trash"></i> Remove
+            </button>
+          </div>
+
+          <div style="margin-bottom:8px;">
+            <label style="font-size:0.82rem; color:var(--primary); font-weight:bold;">🇮🇳 Hindi Version (Question):</label>
+            <input type="text" class="form-input q-hi-input" placeholder="हिंदी में सवाल (e.g. दिए गए विकल्पों में से संबंधित शब्द का चयन करें:)" value="${qItem.q_hi || ''}">
+          </div>
+
+          <div style="margin-bottom:12px;">
+            <label style="font-size:0.82rem; color:var(--green); font-weight:bold;">🇬🇧 English Version (Question):</label>
+            <input type="text" class="form-input q-en-input" placeholder="English Question (e.g. Select the related word from the given alternatives:)" value="${qItem.q_en || ''}">
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div>
+              <label style="font-size:0.8rem; color:var(--text-muted);">Option A (Hindi):</label>
+              <input type="text" class="form-input opt-hi-0" placeholder="विकल्प A" value="${qItem.opts_hi ? qItem.opts_hi[0] : ''}">
+            </div>
+            <div>
+              <label style="font-size:0.8rem; color:var(--text-muted);">Option A (English / Reasoning Code):</label>
+              <input type="text" class="form-input opt-en-0" placeholder="Option A (e.g. OWN)" value="${qItem.opts_en ? qItem.opts_en[0] : ''}">
+            </div>
+
+            <div>
+              <label style="font-size:0.8rem; color:var(--text-muted);">Option B (Hindi):</label>
+              <input type="text" class="form-input opt-hi-1" placeholder="विकल्प B" value="${qItem.opts_hi ? qItem.opts_hi[1] : ''}">
+            </div>
+            <div>
+              <label style="font-size:0.8rem; color:var(--text-muted);">Option B (English / Reasoning Code):</label>
+              <input type="text" class="form-input opt-en-1" placeholder="Option B (e.g. PSM)" value="${qItem.opts_en ? qItem.opts_en[1] : ''}">
+            </div>
+
+            <div>
+              <label style="font-size:0.8rem; color:var(--text-muted);">Option C (Hindi):</label>
+              <input type="text" class="form-input opt-hi-2" placeholder="विकल्प C" value="${qItem.opts_hi ? qItem.opts_hi[2] : ''}">
+            </div>
+            <div>
+              <label style="font-size:0.8rem; color:var(--text-muted);">Option C (English / Code):</label>
+              <input type="text" class="form-input opt-en-2" placeholder="Option C" value="${qItem.opts_en ? qItem.opts_en[2] : ''}">
+            </div>
+
+            <div>
+              <label style="font-size:0.8rem; color:var(--text-muted);">Option D (Hindi):</label>
+              <input type="text" class="form-input opt-hi-3" placeholder="विकल्प D" value="${qItem.opts_hi ? qItem.opts_hi[3] : ''}">
+            </div>
+            <div>
+              <label style="font-size:0.8rem; color:var(--text-muted);">Option D (English / Code):</label>
+              <input type="text" class="form-input opt-en-3" placeholder="Option D" value="${qItem.opts_en ? qItem.opts_en[3] : ''}">
+            </div>
+          </div>
+
+          <div style="margin-top:8px;">
+            <label style="font-size:0.82rem; color:var(--gold); font-weight:bold;">Correct Option (Sahi Uttar):</label>
+            <select class="form-input opt-correct-select">
+              <option value="0" ${qItem.a === 0 ? 'selected' : ''}>Option A</option>
+              <option value="1" ${qItem.a === 1 ? 'selected' : ''}>Option B</option>
+              <option value="2" ${qItem.a === 2 ? 'selected' : ''}>Option C</option>
+              <option value="3" ${qItem.a === 3 ? 'selected' : ''}>Option D</option>
+            </select>
+          </div>
+        `;
+        box.appendChild(div);
+      });
+    }
+
+    function syncCurrentQuestionsFromDOM() {
+      const blocks = document.querySelectorAll(".question-builder-block");
+      const updated = [];
+      blocks.forEach(b => {
+        const q_hi = b.querySelector(".q-hi-input").value.trim();
+        const q_en = b.querySelector(".q-en-input").value.trim();
+
+        const opt_hi_0 = b.querySelector(".opt-hi-0").value.trim();
+        const opt_en_0 = b.querySelector(".opt-en-0").value.trim();
+
+        const opt_hi_1 = b.querySelector(".opt-hi-1").value.trim();
+        const opt_en_1 = b.querySelector(".opt-en-1").value.trim();
+
+        const opt_hi_2 = b.querySelector(".opt-hi-2").value.trim();
+        const opt_en_2 = b.querySelector(".opt-en-2").value.trim();
+
+        const opt_hi_3 = b.querySelector(".opt-hi-3").value.trim();
+        const opt_en_3 = b.querySelector(".opt-en-3").value.trim();
+
+        const correctIdx = parseInt(b.querySelector(".opt-correct-select").value);
+
+        updated.push({
+          q_hi: q_hi || q_en,
+          q_en: q_en || q_hi,
+          opts_hi: [
+            opt_hi_0 || opt_en_0,
+            opt_hi_1 || opt_en_1,
+            opt_hi_2 || opt_en_2 || "इनमें से कोई नहीं",
+            opt_hi_3 || opt_en_3 || "उपरोक्त सभी"
+          ],
+          opts_en: [
+            opt_en_0 || opt_hi_0,
+            opt_en_1 || opt_hi_1,
+            opt_en_2 || opt_hi_2 || "None of these",
+            opt_en_3 || opt_hi_3 || "All of the above"
+          ],
+          a: correctIdx
+        });
+      });
+      currentQuestionsList = updated;
+    }
+
+    function addNewQuestionBlock() {
+      syncCurrentQuestionsFromDOM();
+      currentQuestionsList.push({
+        q_hi: "",
+        q_en: "",
+        opts_hi: ["", "", "", ""],
+        opts_en: ["", "", "", ""],
+        a: 0
+      });
+      renderQuestionBuilderBlocks();
+    }
+
+    function removeQuestionBlock(index) {
+      syncCurrentQuestionsFromDOM();
+      if (currentQuestionsList.length <= 1) return alert("Kam se kam ek question hona zaroori hai!");
+      currentQuestionsList.splice(index, 1);
+      renderQuestionBuilderBlocks();
+    }
+
+    function openUploadTestInCurrentBatch() {
+      openAdminPaperModal();
+      document.getElementById("new-paper-cat").value = currentSelectedBatch.id;
+      onBatchSelectedInModal();
+      if (currentActiveSubBatch !== "all") document.getElementById("new-paper-subfolder").value = currentActiveSubBatch;
+    }
+
+    function openAdminPaperModal() {
+      document.getElementById("modal-test-action-heading").innerHTML = `Create Test Paper (Multi-Question)`;
+      document.getElementById("edit-test-id").value = "";
+      document.getElementById("new-paper-title").value = "";
+      document.getElementById("test-access-type").value = "free";
+
+      currentQuestionsList = [{
+        q_hi: "",
+        q_en: "",
+        opts_hi: ["", "", "", ""],
+        opts_en: ["", "", "", ""],
+        a: 0
+      }];
+      renderQuestionBuilderBlocks();
+      document.getElementById("admin-modal").classList.remove("hidden");
+    }
+
+    function closeAdminPaperModal() { document.getElementById("admin-modal").classList.add("hidden"); }
+
+    async function onBatchSelectedInModal() {
+      const batchId = document.getElementById("new-paper-cat").value;
+      const subSelect = document.getElementById("new-paper-subfolder");
+      subSelect.innerHTML = `<option value="general">General / Main</option>`;
+      try {
+        const snap = await db.collection("sub_batches").where("parentBatchId", "==", batchId).get();
+        snap.forEach(doc => {
+          const sf = doc.data();
+          const opt = document.createElement("option"); opt.value = sf.id; opt.innerText = sf.title; subSelect.appendChild(opt);
+        });
+      } catch(e) {}
+    }
+
+    async function saveAdminTestPaper() {
+      syncCurrentQuestionsFromDOM();
+      const editDocId = document.getElementById("edit-test-id").value;
+      const batchId = document.getElementById("new-paper-cat").value;
+      const catSelect = document.getElementById("new-paper-cat");
+      const batchName = catSelect.options[catSelect.selectedIndex].text;
+      const subFolderId = document.getElementById("new-paper-subfolder").value;
+      const subFolderSelect = document.getElementById("new-paper-subfolder");
+      const subFolderName = (subFolderId === "general") ? "" : subFolderSelect.options[subFolderSelect.selectedIndex].text;
+      const title = document.getElementById("new-paper-title").value.trim();
+      const time = parseInt(document.getElementById("new-paper-time").value) || 20;
+      const accessType = document.getElementById("test-access-type").value;
+
+      if (!title) return alert("Test ka Title bharein!");
+      if (currentQuestionsList.length === 0) return alert("Kam se kam ek question add karein!");
+
+      const payload = {
+        batchId, batchName, subFolderId, subFolderName, title, time, accessType,
+        questions: currentQuestionsList
+      };
+
+      try {
+        if (editDocId) await db.collection("custom_tests").doc(editDocId).update(payload);
+        else await db.collection("custom_tests").add(payload);
+        alert(`✅ Test "${title}" (${currentQuestionsList.length} Questions) safaltapoorvak save ho gaya!`);
+        closeAdminPaperModal();
+        if (currentSelectedBatch && currentSelectedBatch.id === batchId) await loadSubFoldersAndPapers();
+      } catch(e) { alert(e.message); }
+    }
+
+    function openEditTestModal(docId) {
+      const test = currentBatchAllPapers.find(p => p.docId === docId);
+      if (!test) return;
+      document.getElementById("modal-test-action-heading").innerHTML = `Edit Test Settings & Questions`;
+      document.getElementById("edit-test-id").value = docId;
+      document.getElementById("new-paper-cat").value = test.batchId;
+      onBatchSelectedInModal();
+      document.getElementById("new-paper-title").value = test.title;
+      document.getElementById("new-paper-time").value = test.time;
+      document.getElementById("test-access-type").value = test.accessType || "free";
+
+      currentQuestionsList = (test.questions || []).map(q => {
+        return {
+          q_hi: q.q_hi || q.q || "",
+          q_en: q.q_en || q.q || "",
+          opts_hi: q.opts_hi || q.opts || ["", "", "", ""],
+          opts_en: q.opts_en || q.opts || ["", "", "", ""],
+          a: q.a || 0
+        };
+      });
+
+      renderQuestionBuilderBlocks();
+      document.getElementById("admin-modal").classList.remove("hidden");
+    }
+
+    async function deleteTestPaper(docId) {
+      if (!confirm("Is test paper ko delete karna chahte hain?")) return;
+      try {
+        await db.collection("custom_tests").doc(docId).delete();
+        await loadSubFoldersAndPapers();
+      } catch(e) { alert(e.message); }
+    }
+
+    // ==========================================
+    // CBT TEST RUNTIME (BILINGUAL)
+    // ==========================================
     function startSpecificTest(paperIndex) {
       currentActiveTest = window.activeCategoryPapers[paperIndex];
       userAnswers = {};
@@ -1108,19 +1368,37 @@
       startTimer();
     }
 
+    function toggleLanguageInExam() {
+      userLang = (userLang === 'hi') ? 'en' : 'hi';
+      localStorage.setItem('user_cbt_lang', userLang);
+      document.getElementById("btn-active-lang").innerText = (userLang === 'hi') ? "🌐 हिंदी" : "🌐 English";
+      renderQuestion();
+    }
+
     function renderQuestion() {
       const q = currentActiveTest.questions[currentIndex];
       document.getElementById("exam-q-counter").innerText = `Question ${currentIndex + 1} / ${currentActiveTest.questions.length}`;
-      document.getElementById("cbt-question-text").innerText = `${currentIndex + 1}. ${q.q}`;
+      document.getElementById("exam-lang-indicator").innerText = (userLang === 'hi') ? "🌐 हिंदी" : "🌐 English";
+
+      // Select Language Font/Text
+      let questionText = (userLang === 'hi') 
+        ? (q.q_hi || q.q || "सवाल उपलब्ध नहीं")
+        : (q.q_en || q.q || "Question not available");
+
+      document.getElementById("cbt-question-text").innerText = `${currentIndex + 1}. ${questionText}`;
       const box = document.getElementById("cbt-options-box");
       box.innerHTML = "";
-      q.opts.forEach((opt, idx) => {
+
+      let optionsList = (userLang === 'hi') ? (q.opts_hi || q.opts || []) : (q.opts_en || q.opts || []);
+
+      optionsList.forEach((opt, idx) => {
         const btn = document.createElement("button");
         btn.className = "cbt-opt" + (userAnswers[currentIndex] === idx ? " selected" : "");
         btn.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
         btn.onclick = () => { userAnswers[currentIndex] = idx; renderQuestion(); };
         box.appendChild(btn);
       });
+
       document.getElementById("btn-prev").disabled = currentIndex === 0;
       document.getElementById("btn-next").style.display = (currentIndex === currentActiveTest.questions.length - 1) ? "none" : "inline-block";
     }
@@ -1139,7 +1417,7 @@
       }, 1000);
     }
 
-    // SUBMIT EXAM & DYNAMIC LIVE RANKING CALCULATION
+    // SUBMIT & RANKING
     async function submitExam() {
       clearInterval(timerInterval);
       let correct = 0;
@@ -1187,7 +1465,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // PODIUM & LEADERBOARD RENDERING
     async function calculateAndDisplayLiveRankings() {
       let candidatesList = [];
       try {
@@ -1197,14 +1474,12 @@
         candidatesList.push(currentUser);
       }
 
-      // Ensure current user is in list
       const userIdx = candidatesList.findIndex(c => c.uid === currentUser.uid);
       let userRank = userIdx >= 0 ? (userIdx + 1) : candidatesList.length + 1;
       
       document.getElementById("res-user-air").innerText = `#${userRank}`;
       document.getElementById("res-total-students").innerText = `${Math.max(candidatesList.length, 50)}+`;
 
-      // TOP 3 PODIUM
       const podiumBox = document.getElementById("res-podium-box");
       podiumBox.innerHTML = "";
 
@@ -1233,7 +1508,6 @@
         </div>
       `;
 
-      // FULL LEADERBOARD TABLE
       const tbody = document.getElementById("res-leaderboard-tbody");
       tbody.innerHTML = "";
       candidatesList.forEach((c, idx) => {
@@ -1270,20 +1544,23 @@
         card.className = "series-item";
         card.style.borderLeft = isCorr ? "5px solid var(--green)" : "5px solid var(--red)";
 
+        const qTitle = (userLang === 'hi') ? (item.q_hi || item.q) : (item.q_en || item.q);
+        const currentOpts = (userLang === 'hi') ? (item.opts_hi || item.opts) : (item.opts_en || item.opts);
+
         let optHtml = "";
-        item.opts.forEach((opt, oIdx) => {
+        currentOpts.forEach((opt, oIdx) => {
           let style = "padding:8px 12px; margin-top:6px; border-radius:8px; font-size:0.9rem; background:var(--sub-card);";
           if (oIdx === correctChoice) style += " color:var(--green); font-weight:bold; border:1px solid var(--green);";
           if (userChoice === oIdx && !isCorr) style += " color:var(--red); font-weight:bold; border:1px solid var(--red);";
           optHtml += `<div style="${style}">${String.fromCharCode(65 + oIdx)}. ${opt}</div>`;
         });
 
-        card.innerHTML = `<div style="width:100%;"><h4 style="color:var(--text);">${idx + 1}. ${item.q}</h4><div>${optHtml}</div></div>`;
+        card.innerHTML = `<div style="width:100%;"><h4 style="color:var(--text);">${idx + 1}. ${qTitle}</h4><div>${optHtml}</div></div>`;
         container.appendChild(card);
       });
     }
 
-    // USER PROFILE VIEW & EDIT
+    // USER PROFILE
     function openProfileView() {
       hideAll();
       document.getElementById("screen-profile").classList.remove("hidden");
@@ -1317,7 +1594,7 @@
       reader.readAsDataURL(file);
     }
 
-    // ENROLLED BATCHES & TEST HISTORY
+    // ENROLLED BATCHES & HISTORY
     function openEnrolledBatchesView() {
       hideAll();
       document.getElementById("screen-enrolled-batches").classList.remove("hidden");
@@ -1368,14 +1645,13 @@
       });
     }
 
-    // SETTINGS VIEW
     function openSettingsView() {
       hideAll();
       document.getElementById("screen-settings").classList.remove("hidden");
       updateThemeButton();
     }
 
-    // FEEDBACK SYSTEM
+    // FEEDBACK
     function openFeedbackModal() { document.getElementById("feedback-modal").classList.remove("hidden"); document.getElementById("user-dropdown-menu").classList.remove("show"); }
     function closeFeedbackModal() { document.getElementById("feedback-modal").classList.add("hidden"); }
 
@@ -1399,7 +1675,7 @@
       } catch(e) { alert("Error: " + e.message); }
     }
 
-    // CHECKOUT FUNCTIONS
+    // CHECKOUT
     function openDedicatedCheckoutScreen() {
       hideAll();
       document.getElementById("screen-checkout").classList.remove("hidden");
@@ -1598,102 +1874,10 @@
       } catch(e) { alert(e.message); }
     }
 
-    function openUploadTestInCurrentBatch() {
-      openAdminPaperModal();
-      document.getElementById("new-paper-cat").value = currentSelectedBatch.id;
-      onBatchSelectedInModal();
-      if (currentActiveSubBatch !== "all") document.getElementById("new-paper-subfolder").value = currentActiveSubBatch;
-    }
-    function openAdminPaperModal() {
-      document.getElementById("modal-test-action-heading").innerHTML = `Create Test Paper`;
-      document.getElementById("edit-test-id").value = "";
-      document.getElementById("new-paper-title").value = "";
-      document.getElementById("test-access-type").value = "free";
-      document.getElementById("q-input-text").value = "";
-      document.getElementById("q-opt-0").value = "";
-      document.getElementById("q-opt-1").value = "";
-      document.getElementById("admin-modal").classList.remove("hidden");
-    }
-    function closeAdminPaperModal() { document.getElementById("admin-modal").classList.add("hidden"); }
-
-    async function onBatchSelectedInModal() {
-      const batchId = document.getElementById("new-paper-cat").value;
-      const subSelect = document.getElementById("new-paper-subfolder");
-      subSelect.innerHTML = `<option value="general">General / Main</option>`;
-      try {
-        const snap = await db.collection("sub_batches").where("parentBatchId", "==", batchId).get();
-        snap.forEach(doc => {
-          const sf = doc.data();
-          const opt = document.createElement("option"); opt.value = sf.id; opt.innerText = sf.title; subSelect.appendChild(opt);
-        });
-      } catch(e) {}
-    }
-
-    async function saveAdminTestPaper() {
-      const editDocId = document.getElementById("edit-test-id").value;
-      const batchId = document.getElementById("new-paper-cat").value;
-      const catSelect = document.getElementById("new-paper-cat");
-      const batchName = catSelect.options[catSelect.selectedIndex].text;
-      const subFolderId = document.getElementById("new-paper-subfolder").value;
-      const subFolderSelect = document.getElementById("new-paper-subfolder");
-      const subFolderName = (subFolderId === "general") ? "" : subFolderSelect.options[subFolderSelect.selectedIndex].text;
-      const title = document.getElementById("new-paper-title").value.trim();
-      const time = parseInt(document.getElementById("new-paper-time").value) || 20;
-      const accessType = document.getElementById("test-access-type").value;
-      const qText = document.getElementById("q-input-text").value.trim();
-      const o0 = document.getElementById("q-opt-0").value.trim();
-      const o1 = document.getElementById("q-opt-1").value.trim();
-      const o2 = document.getElementById("q-opt-2").value.trim();
-      const o3 = document.getElementById("q-opt-3").value.trim();
-      const correctIdx = parseInt(document.getElementById("q-correct-idx").value);
-      if (!title || !qText || !o0 || !o1) return alert("Title aur questions bharein!");
-
-      const payload = {
-        batchId, batchName, subFolderId, subFolderName, title, time, accessType,
-        questions: [{ q: qText, opts: [o0, o1, o2 || "None", o3 || "All"], a: correctIdx }]
-      };
-      try {
-        if (editDocId) await db.collection("custom_tests").doc(editDocId).update(payload);
-        else await db.collection("custom_tests").add(payload);
-        alert(`✅ Test "${title}" saved!`);
-        closeAdminPaperModal();
-        if (currentSelectedBatch && currentSelectedBatch.id === batchId) await loadSubFoldersAndPapers();
-      } catch(e) { alert(e.message); }
-    }
-
-    function openEditTestModal(docId) {
-      const test = currentBatchAllPapers.find(p => p.docId === docId);
-      if (!test) return;
-      document.getElementById("modal-test-action-heading").innerHTML = `Edit Test Settings`;
-      document.getElementById("edit-test-id").value = docId;
-      document.getElementById("new-paper-cat").value = test.batchId;
-      onBatchSelectedInModal();
-      document.getElementById("new-paper-title").value = test.title;
-      document.getElementById("new-paper-time").value = test.time;
-      document.getElementById("test-access-type").value = test.accessType || "free";
-      if (test.questions && test.questions[0]) {
-        document.getElementById("q-input-text").value = test.questions[0].q;
-        document.getElementById("q-opt-0").value = test.questions[0].opts[0] || "";
-        document.getElementById("q-opt-1").value = test.questions[0].opts[1] || "";
-        document.getElementById("q-opt-2").value = test.questions[0].opts[2] || "";
-        document.getElementById("q-opt-3").value = test.questions[0].opts[3] || "";
-        document.getElementById("q-correct-idx").value = test.questions[0].a || 0;
-      }
-      document.getElementById("admin-modal").classList.remove("hidden");
-    }
-
-    async function deleteTestPaper(docId) {
-      if (!confirm("Is test paper ko delete karna chahte hain?")) return;
-      try {
-        await db.collection("custom_tests").doc(docId).delete();
-        await loadSubFoldersAndPapers();
-      } catch(e) { alert(e.message); }
-    }
-
     function toggleLanguage() {
       userLang = (userLang === 'hi') ? 'en' : 'hi';
       localStorage.setItem('user_cbt_lang', userLang);
-      document.getElementById("btn-active-lang").innerText = userLang === 'hi' ? "🌐 हिंदी" : "🌐 English";
+      document.getElementById("btn-active-lang").innerText = (userLang === 'hi') ? "🌐 हिंदी" : "🌐 English";
     }
 
     function triggerPwaInstall() {
