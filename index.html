@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PARIKSHA CBT - Complete Student & Admin Portal</title>
+  <title>PARIKSHA CBT - Dynamic Batch & Test Management</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -32,7 +32,7 @@
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
       display: flex; align-items: center; gap: 10px; cursor: pointer; 
     }
-    .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .nav-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .lang-btn-nav { background: rgba(0, 242, 254, 0.1); border: 1.5px solid var(--primary); color: #fff; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
     .profile-pill { display: flex; align-items: center; gap: 10px; background: rgba(31, 43, 72, 0.6); padding: 5px 14px; border-radius: 30px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
     .profile-pill img { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--primary); object-fit: cover; }
@@ -42,12 +42,11 @@
     .admin-indicator {
       background: linear-gradient(90deg, #9d4edd, #ff3366);
       padding: 12px 20px; border-radius: 12px; font-weight: bold; font-size: 0.88rem;
-      display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 10px; flex-wrap: wrap;
     }
 
     .section-title { font-size: 1.25rem; font-weight: 800; color: #fff; margin: 28px 0 16px; display: flex; align-items: center; gap: 10px; }
 
-    /* Cards */
     .exam-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
     .exam-card { 
       background: var(--card); backdrop-filter: blur(10px);
@@ -64,12 +63,11 @@
     }
     .series-item:hover { border-color: var(--primary); background: #131c33; }
 
-    /* Buttons */
-    .btn-submit { background: linear-gradient(90deg, #00f59b, #00b4d8); color: #000; font-weight: 800; border: none; padding: 10px 22px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; }
+    .btn-submit { background: linear-gradient(90deg, #00f59b, #00b4d8); color: #000; font-weight: 800; border: none; padding: 9px 20px; border-radius: 10px; cursor: pointer; font-size: 0.88rem; }
+    .btn-batch { background: linear-gradient(90deg, #ffb703, #fb8500); color: #000; font-weight: 800; border: none; padding: 9px 20px; border-radius: 10px; cursor: pointer; font-size: 0.88rem; }
     .btn-nav { background: #263558; border: none; color: #fff; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 700; }
     .btn-sm { padding: 6px 14px; font-size: 0.8rem; border-radius: 6px; cursor: pointer; font-weight: bold; border: none; }
 
-    /* CBT Screen */
     .cbt-container { background: var(--surface); border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 20px; padding: 25px; }
     .cbt-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #23355d; padding-bottom: 16px; margin-bottom: 22px; }
     .cbt-timer { font-size: 1.35rem; font-weight: 900; color: var(--gold); background: #221808; border: 1px solid rgba(255,183,3,0.3); padding: 6px 18px; border-radius: 25px; }
@@ -80,7 +78,6 @@
     .cbt-opt.selected { border-color: var(--primary); background: rgba(0, 242, 254, 0.15); font-weight: bold; }
     .cbt-nav { display: flex; justify-content: space-between; margin-top: 25px; padding-top: 20px; border-top: 1px solid #23355d; }
 
-    /* Review Styles */
     .review-card { background: rgba(13, 20, 38, 0.95); border: 1.5px solid #23355d; border-radius: 16px; padding: 20px; margin-bottom: 18px; }
     .review-card.correct-card { border-left: 6px solid var(--green); }
     .review-card.wrong-card { border-left: 6px solid var(--red); }
@@ -93,22 +90,18 @@
     .status-pill.fail { background: rgba(255, 51, 102, 0.15); color: var(--red); }
     .status-pill.skipped { background: rgba(255, 183, 3, 0.15); color: var(--gold); }
 
-    /* Profile Specific */
     .profile-avatar-wrap { position: relative; width: 100px; height: 100px; margin: 0 auto 15px; }
     .profile-avatar-wrap img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; }
     .avatar-edit-label { position: absolute; bottom: 0; right: 0; background: var(--primary); color: #000; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
     .batch-badge { background: rgba(157, 78, 221, 0.2); border: 1px solid var(--accent); color: #e879f9; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; display: inline-block; margin: 4px; }
 
-    /* History */
     .history-card { background: rgba(13, 20, 38, 0.9); border: 1px solid #23355d; border-radius: 14px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
 
-    /* Footer */
     footer { background: #060a16; border-top: 1px solid #1e293b; padding: 24px 16px; margin-top: 40px; text-align: center; }
     .footer-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 12px; }
     .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; cursor: pointer; }
     .footer-links a:hover { color: var(--primary); }
 
-    /* Modals & Inputs */
     .modal-overlay { position: fixed; inset: 0; background: rgba(4, 7, 16, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
     .modal-card { background: #0f162a; border: 1.5px solid rgba(0, 242, 254, 0.3); border-radius: 22px; width: 100%; max-width: 650px; max-height: 90vh; overflow-y: auto; padding: 28px; position: relative; }
     .form-input { width: 100%; padding: 12px; background: #070a13; border: 1px solid #23355d; color: #fff; border-radius: 10px; margin-bottom: 12px; font-size: 0.95rem; }
@@ -126,6 +119,7 @@
     <div class="logo" onclick="showDashboard()"><i class="fa-solid fa-graduation-cap"></i> <span id="txt-logo-title">PARIKSHA CBT</span></div>
     <div class="nav-actions">
       <button class="lang-btn-nav" onclick="toggleLanguage()" id="btn-active-lang">🌐 हिंदी</button>
+      <button id="admin-batch-btn" class="btn-batch hidden" onclick="openAdminBatchModal()"><i class="fa-solid fa-folder-plus"></i> Create New Batch</button>
       <button id="admin-action-btn" class="btn-submit hidden" onclick="openAdminPaperModal()"><i class="fa-solid fa-plus"></i> Add Test Paper</button>
       <div id="nav-profile-pill" class="profile-pill hidden" onclick="openProfileView()">
         <img id="header-avatar" src="" alt="avatar">
@@ -140,67 +134,27 @@
 
     <!-- Admin Notification Indicator -->
     <div id="admin-banner" class="admin-indicator hidden">
-      <span><i class="fa-solid fa-shield-halved"></i> <b>Sunil Kumar (Admin Mode Active)</b> - Naye Question Papers upload karein.</span>
-      <button class="btn-submit" style="background:#fff; color:#000; padding:4px 12px; font-size:0.8rem;" onclick="openAdminPaperModal()">Create Test Paper</button>
+      <span><i class="fa-solid fa-shield-halved"></i> <b>Sunil Kumar (Admin Mode Active)</b> - Naye Batches & Tests create karein.</span>
+      <div style="display:flex; gap:8px;">
+        <button class="btn-batch" onclick="openAdminBatchModal()">➕ New Batch</button>
+        <button class="btn-submit" onclick="openAdminPaperModal()">➕ New Test Paper</button>
+      </div>
     </div>
 
-    <!-- 1. DASHBOARD VIEW -->
+    <!-- 1. DASHBOARD VIEW (ALL ACTIVE BATCHES) -->
     <div id="screen-dashboard">
-      <div class="section-title"><i class="fa-solid fa-file-signature" style="color:var(--gold);"></i> Full Competition Batches (Test 1, Test 2 Series)</div>
-      <div class="exam-grid">
-        <div class="exam-card" onclick="openSeriesListing('ssc_cgl', 'SSC CGL Tier-1 Examination')">
-          <div class="exam-icon" style="color:#00f2fe;"><i class="fa-solid fa-building-columns"></i></div>
-          <h3>SSC CGL Mock Series</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Test 1, Test 2, Test 3 & Model Papers</p>
-        </div>
-
-        <div class="exam-card" onclick="openSeriesListing('police_si', 'Police Sub-Inspector (SI) Exam')">
-          <div class="exam-icon" style="color:#ffb703;"><i class="fa-solid fa-shield-cat"></i></div>
-          <h3>Police SI Exam Series</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Moolvidhi, Sanvidhan, CrPC & Samanya Hindi</p>
-        </div>
-
-        <div class="exam-card" onclick="openSeriesListing('rrb_ntpc', 'Railway RRB NTPC Stage-1')">
-          <div class="exam-icon" style="color:#00f59b;"><i class="fa-solid fa-train"></i></div>
-          <h3>Railway RRB NTPC Series</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">General Science, Railways & Numerical Aptitude</p>
-        </div>
-      </div>
-
-      <div class="section-title"><i class="fa-solid fa-book-open-reader" style="color:var(--green);"></i> Subject-Wise Batches (Test Series Inside)</div>
-      <div class="exam-grid">
-        <div class="exam-card" onclick="openSeriesListing('raj_gk', 'Rajasthan GK (41 Zile & 7 Sambhag)')">
-          <div class="exam-icon" style="color:#ffb703;"><i class="fa-solid fa-shield-halved"></i></div>
-          <h3>Rajasthan GK Tests</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">41 Districts, Sambhag, Itihas & Geography</p>
-        </div>
-
-        <div class="exam-card" onclick="openSeriesListing('india_gk', 'India GK (National & Polity)')">
-          <div class="exam-icon" style="color:#ff9933;"><i class="fa-solid fa-monument"></i></div>
-          <h3>India GK Tests</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Updated Borders, Sansad & Constitution</p>
-        </div>
-
-        <div class="exam-card" onclick="openSeriesListing('hindi', 'Samanya Hindi (सामान्य हिंदी)')">
-          <div class="exam-icon" style="color:#ff4d4d;"><i class="fa-solid fa-language"></i></div>
-          <h3>Samanya Hindi Tests</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">संधि, समास, मुहावरे, शुद्ध वर्तनी</p>
-        </div>
-
-        <div class="exam-card" onclick="openSeriesListing('math', 'Quantitative Aptitude (Maths)')">
-          <div class="exam-icon" style="color:#ff3366;"><i class="fa-solid fa-calculator"></i></div>
-          <h3>Quantitative Math Tests</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Profit/Loss, Time-Work & Formulas</p>
-        </div>
+      <div class="section-title"><i class="fa-solid fa-graduation-cap" style="color:var(--gold);"></i> All Batches (Select to View Tests)</div>
+      <div class="exam-grid" id="dashboard-batches-grid">
+        <!-- Batches will load dynamically from Firestore -->
       </div>
     </div>
 
-    <!-- 2. SERIES LISTING VIEW (TEST 1, TEST 2, TEST 3...) -->
+    <!-- 2. SERIES LISTING VIEW (TEST 1, TEST 2... FOR SELECTED BATCH) -->
     <div id="screen-series" class="hidden">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
         <div>
-          <h2 id="series-header-title" style="color:var(--primary);">Category Tests</h2>
-          <p style="color:var(--text-muted); font-size:0.85rem;">Apni pasand ka test select karein aur attempt karein:</p>
+          <h2 id="series-header-title" style="color:var(--primary);">Batch Tests</h2>
+          <p style="color:var(--text-muted); font-size:0.85rem;">Is batch ke tests ki list:</p>
         </div>
         <button class="btn-nav" onclick="showDashboard()"><i class="fa-solid fa-arrow-left"></i> Back</button>
       </div>
@@ -213,7 +167,7 @@
       <div class="cbt-header">
         <div>
           <h3 id="exam-title">CBT Examination</h3>
-          <p style="color:var(--text-muted); font-size:0.85rem;" id="exam-q-counter">Question 1 of 20</p>
+          <p style="color:var(--text-muted); font-size:0.85rem;" id="exam-q-counter">Question 1</p>
         </div>
         <div class="cbt-timer" id="timer-display"><i class="fa-regular fa-clock"></i> 20:00</div>
       </div>
@@ -253,7 +207,7 @@
       <button class="btn-submit" style="margin-top:25px;" onclick="showDashboard()">Return to Dashboard</button>
     </div>
 
-    <!-- 5. CANDIDATE PROFILE (BATCHES & BATCH-WISE TEST HISTORY) -->
+    <!-- 5. CANDIDATE PROFILE -->
     <div id="screen-profile" class="hidden">
       <div style="background:var(--surface); border:1.5px solid rgba(0,242,254,0.25); border-radius:20px; padding:30px; text-align:center; margin-bottom:25px;">
         <div class="profile-avatar-wrap">
@@ -270,7 +224,6 @@
         </div>
         <p id="prof-email" style="color:var(--text-muted); font-size:0.9rem;"></p>
 
-        <!-- Profile Language Chooser -->
         <div style="margin-top:16px; display:inline-flex; align-items:center; gap:10px; background:#070d1e; padding:6px 14px; border-radius:20px; border:1px solid #23355d;">
           <span style="font-size:0.85rem; color:#cbd5e1;">Medium / भाषा:</span>
           <button onclick="setUserLanguageFromProfile('hi')" class="btn-sm" id="btn-prof-hi">हिंदी</button>
@@ -284,64 +237,48 @@
           <div style="background:#0c1221; padding:14px; border-radius:12px; border:1px solid #1e293b;">Failed<span style="font-size:1.5rem; font-weight:bold; color:var(--red); display:block;" id="prof-lost">0</span></div>
         </div>
 
-        <!-- My Enrolled Batches Section -->
         <div style="margin-top:25px; text-align:left; background:#0c1221; padding:18px; border-radius:14px; border:1px solid #1e293b;">
           <h4 style="color:var(--gold); margin-bottom:8px;"><i class="fa-solid fa-graduation-cap"></i> My Enrolled Batches:</h4>
-          <div id="prof-batches-list">
-            <span class="batch-badge">SSC CGL 2026 Batch</span>
-            <span class="batch-badge">Rajasthan GK 41-Zile Batch</span>
-            <span class="batch-badge">Police SI Moolvidhi Batch</span>
-          </div>
+          <div id="prof-batches-list"></div>
         </div>
 
         <button class="btn-nav" style="margin-top:24px;" onclick="showDashboard()">Back to Dashboard</button>
       </div>
 
-      <!-- Batch-Wise Past Exam History Section -->
       <div style="background:var(--surface); border:1.5px solid rgba(0,242,254,0.25); border-radius:20px; padding:25px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
           <h3 style="color:var(--primary); display:flex; align-items:center; gap:8px;">
             <i class="fa-solid fa-clock-rotate-left"></i> Batch-Wise Test History & Solutions
           </h3>
-          <!-- Batch Filter Dropdown -->
-          <select id="history-batch-filter" class="form-input" style="max-width:220px; margin-bottom:0;" onchange="filterHistoryByBatch()">
+          <select id="history-batch-filter" class="form-input" style="max-width:240px; margin-bottom:0;" onchange="filterHistoryByBatch()">
             <option value="all">All Batches History</option>
-            <option value="ssc_cgl">SSC CGL Batch</option>
-            <option value="police_si">Police SI Batch</option>
-            <option value="rrb_ntpc">RRB NTPC Batch</option>
-            <option value="raj_gk">Rajasthan GK Batch</option>
-            <option value="india_gk">India GK Batch</option>
-            <option value="hindi">Samanya Hindi Batch</option>
-            <option value="math">Quantitative Math Batch</option>
           </select>
         </div>
         <div id="history-container">
-          <p style="color:var(--text-muted); font-size:0.9rem;">No tests attempted yet. Attempt test series to track your records.</p>
+          <p style="color:var(--text-muted); font-size:0.9rem;">No tests attempted yet.</p>
         </div>
       </div>
     </div>
 
   </div>
 
-  <!-- AUTH SCREEN (GOOGLE LOGIN, EMAIL SIGNUP/SIGNIN & ADMIN SECRET) -->
+  <!-- AUTH SCREEN -->
   <div id="screen-auth" style="max-width:440px; margin:40px auto; padding:0 15px;">
     <div style="background:var(--surface); border:1.5px solid rgba(0,242,254,0.3); border-radius:24px; padding:32px 24px; text-align:center;">
       <h2 style="font-size:1.6rem; font-weight:800; color:#fff;">Student CBT Portal</h2>
-      <p style="color:var(--text-muted); font-size:0.85rem; margin-top:5px;">Sign in to access your batches & test series</p>
+      <p style="color:var(--text-muted); font-size:0.85rem; margin-top:5px;">Sign in to access your batches & tests</p>
 
       <div style="display:flex; background:#070a13; border-radius:10px; padding:4px; margin:20px 0; border:1px solid #1e293b;">
         <button id="tab-login" style="flex:1; padding:10px; border:none; background:var(--primary); color:#000; font-weight:bold; border-radius:8px; cursor:pointer;" onclick="setAuthTab('login')">Existing Login</button>
         <button id="tab-signup" style="flex:1; padding:10px; border:none; background:transparent; color:#94a3b8; font-weight:bold; border-radius:8px; cursor:pointer;" onclick="setAuthTab('signup')">Create Account</button>
       </div>
 
-      <!-- Login Tab -->
       <div id="auth-login-box">
         <input type="email" id="login-email" class="form-input" placeholder="Email Address">
         <input type="password" id="login-pass" class="form-input" placeholder="Password">
         <button class="btn-submit" style="width:100%;" onclick="handleEmailLogin()">Sign In</button>
       </div>
 
-      <!-- Signup Tab -->
       <div id="auth-signup-box" class="hidden">
         <input type="text" id="signup-name" class="form-input" placeholder="Candidate Full Name">
         <input type="email" id="signup-email" class="form-input" placeholder="Email Address">
@@ -354,14 +291,13 @@
         <img width="18" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> Continue with Google
       </button>
 
-      <!-- Secret Admin PIN Login -->
       <div style="margin-top:22px; padding-top:14px; border-top:1px dashed #23355d;">
         <button onclick="promptSecretAdmin()" style="background:transparent; border:none; color:#64748b; font-size:0.8rem; cursor:pointer; font-weight:bold;">
           🔒 Admin Secret Testing Login (PIN Protected)
         </button>
         <div id="guest-access-panel" class="hidden" style="margin-top:12px; display:grid; gap:8px;">
           <button onclick="loginAsAdminMaster()" style="background:#1c1333; border:1px solid #9d4edd; color:#00f2fe; padding:10px; border-radius:8px; font-weight:bold; text-align:left; cursor:pointer;">
-            👑 <b>Admin:</b> Sunil Kumar (Test Upload Rights)
+            👑 <b>Admin:</b> Sunil Kumar (Create Batches & Upload Tests)
           </button>
           <button onclick="loginAsTestingGuest('guest_01', 'Candidate Tester 1')" style="background:#131c30; border:1px solid #23355d; color:#38bdf8; padding:10px; border-radius:8px; font-weight:bold; text-align:left; cursor:pointer;">
             👤 <b>Guest ID 1:</b> Testing Student 1
@@ -374,26 +310,45 @@
     </div>
   </div>
 
+  <!-- ADMIN: CREATE NEW BATCH MODAL -->
+  <div id="admin-batch-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <button onclick="closeAdminBatchModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+      <h2 style="color:var(--gold); margin-bottom:12px;"><i class="fa-solid fa-folder-plus"></i> Create New Batch</h2>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">Naya Exam/Subject Batch add karein:</p>
+
+      <label style="font-size:0.85rem; color:#cbd5e1;">Batch Title / Name:</label>
+      <input type="text" id="batch-title-input" class="form-input" placeholder="e.g. UPSC Prelims 2026 Batch">
+
+      <label style="font-size:0.85rem; color:#cbd5e1;">Batch Description / Details:</label>
+      <input type="text" id="batch-desc-input" class="form-input" placeholder="e.g. GS-1, CSAT, Mock Tests & Detailed Solutions">
+
+      <label style="font-size:0.85rem; color:#cbd5e1;">Batch Theme Icon:</label>
+      <select id="batch-icon-select" class="form-input">
+        <option value="fa-building-columns">🏛️ Commission / Civil (Icon)</option>
+        <option value="fa-shield-halved">🛡️ Police & Defense (Icon)</option>
+        <option value="fa-train">🚆 Railway Exam (Icon)</option>
+        <option value="fa-book-open">📖 General Subject (Icon)</option>
+        <option value="fa-calculator">🔢 Mathematics (Icon)</option>
+        <option value="fa-landmark">🌍 General Knowledge (Icon)</option>
+      </select>
+
+      <button class="btn-batch" style="width:100%; margin-top:10px;" onclick="saveAdminBatch()">Publish New Batch Live</button>
+    </div>
+  </div>
+
   <!-- ADMIN: ADD TEST PAPER MODAL -->
   <div id="admin-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <button onclick="closeAdminPaperModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
       <h2 style="color:var(--primary); margin-bottom:12px;"><i class="fa-solid fa-plus-circle"></i> Create New Test Paper</h2>
-      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">Test Paper Create Karein (Test 1, Test 2...):</p>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">Select batch and add Test (Test 1, Test 2...):</p>
 
-      <label style="font-size:0.85rem; color:#cbd5e1;">Select Batch / Exam Category:</label>
-      <select id="new-paper-cat" class="form-input">
-        <option value="ssc_cgl">SSC CGL Tier-1 Batch</option>
-        <option value="police_si">Police SI (Sub-Inspector) Batch</option>
-        <option value="rrb_ntpc">Railway RRB NTPC Batch</option>
-        <option value="raj_gk">Rajasthan GK (41 Zile) Batch</option>
-        <option value="india_gk">India GK (National) Batch</option>
-        <option value="hindi">Samanya Hindi Batch</option>
-        <option value="math">Quantitative Math Batch</option>
-      </select>
+      <label style="font-size:0.85rem; color:#cbd5e1;">Select Batch:</label>
+      <select id="new-paper-cat" class="form-input"></select>
 
       <label style="font-size:0.85rem; color:#cbd5e1;">Test Paper Title:</label>
-      <input type="text" id="new-paper-title" class="form-input" placeholder="e.g. Test 2 (Official Pattern)">
+      <input type="text" id="new-paper-title" class="form-input" placeholder="e.g. Test 1 (Full Model Test)">
 
       <label style="font-size:0.85rem; color:#cbd5e1;">Exam Time (Minutes):</label>
       <input type="number" id="new-paper-time" class="form-input" value="20">
@@ -418,7 +373,7 @@
     </div>
   </div>
 
-  <!-- POLICY MODAL (ADSENSE READY) -->
+  <!-- POLICY MODAL -->
   <div id="policy-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <button onclick="closePolicyModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -457,7 +412,8 @@
 
     let currentUser = null;
     let isAdmin = false;
-    let currentSelectedCategory = '';
+    let allBatches = [];
+    let currentSelectedBatch = null;
     let currentActiveTest = null;
     let userAnswers = {};
     let currentIndex = 0;
@@ -465,158 +421,14 @@
     let timerInterval = null;
     let userLang = localStorage.getItem('user_cbt_lang') || 'hi';
 
-    // PRELOADED TEST SERIES (TEST 1, TEST 2..)
-    const localPreloadedPapers = {
-      ssc_cgl: [
-        {
-          id: "ssc_t1",
-          batch: "ssc_cgl",
-          batchName: "SSC CGL Tier-1 Batch",
-          title: "SSC CGL (Test 1 - Model Paper)",
-          time: 20,
-          questions: [
-            {
-              q: "भारतीय संविधान का कौन सा अनुच्छेद 'विधि के समक्ष समता' (Equality before Law) की गारंटी देता है?",
-              opts: ["अनुच्छेद 14", "अनुच्छेद 19", "अनुच्छेद 21", "अनुच्छेद 32"],
-              a: 0
-            },
-            {
-              q: "भारत के नियंत्रक एवं महालेखापरीक्षक (CAG) की नियुक्ति किस अनुच्छेद के तहत की जाती है?",
-              opts: ["अनुच्छेद 148", "अनुच्छेद 280", "अनुच्छेद 324", "अनुच्छेद 110"],
-              a: 0
-            }
-          ]
-        },
-        {
-          id: "ssc_t2",
-          batch: "ssc_cgl",
-          batchName: "SSC CGL Tier-1 Batch",
-          title: "SSC CGL (Test 2 - Tier-1 Speed Test)",
-          time: 20,
-          questions: [
-            {
-              q: "सिंधु घाटी सभ्यता का प्रसिद्ध बंदरगाह नगर (Port City) कौन सा था?",
-              opts: ["लोथल (Lothal)", "हड़प्पा", "मोहनजोदड़ो", "कालीबंगा"],
-              a: 0
-            }
-          ]
-        }
-      ],
+    // DEFAULT SYSTEM BATCHES
+    const defaultBatches = [
+      { id: "batch_ssc_cgl", title: "SSC CGL 2026 Mock Batch", desc: "Tier-1 Pattern, Static GK & Reasoning", icon: "fa-building-columns" },
+      { id: "batch_police_si", title: "Police SI (Sub-Inspector) Batch", desc: "Moolvidhi, Sanvidhan, Law & Samanya Hindi", icon: "fa-shield-halved" },
+      { id: "batch_raj_gk", title: "Rajasthan GK (41 Zile & 7 Sambhag)", desc: "Reorganized Districts, Geography & History", icon: "fa-landmark" },
+      { id: "batch_rrb_ntpc", title: "Railway RRB NTPC CBT Batch", desc: "General Science, Aptitude & Past Papers", icon: "fa-train" }
+    ];
 
-      police_si: [
-        {
-          id: "si_t1",
-          batch: "police_si",
-          batchName: "Police SI Batch",
-          title: "Police SI (Test 1 - Moolvidhi & Police Law)",
-          time: 20,
-          questions: [
-            {
-              q: "[Police SI] किसी संज्ञेय अपराध (Cognizable Offense) की FIR किस प्रक्रिया धारा में दर्ज की जाती है?",
-              opts: ["धारा 154 CrPC (BNSS 173)", "धारा 161 CrPC", "धारा 100 CrPC", "धारा 41 CrPC"],
-              a: 0
-            },
-            {
-              q: "[Police SI] पुलिस अधिकारी बिना वारंट के किसी संदिग्ध व्यक्ति को किस परिस्थिति में सीधे गिरफ्तार कर सकता है?",
-              opts: ["संज्ञेय अपराध घटित होने या संदेह पर", "केवल दीवानी मामलों में", "असंज्ञेय अपराध में बिना मजिस्ट्रेट आदेश", "जमानती मामलों में"],
-              a: 0
-            }
-          ]
-        }
-      ],
-
-      raj_gk: [
-        {
-          id: "raj_t1",
-          batch: "raj_gk",
-          batchName: "Rajasthan GK Batch",
-          title: "Rajasthan GK (Test 1 - 41 Zile & 7 Sambhag)",
-          time: 25,
-          questions: [
-            {
-              q: "वर्तमान प्रशासनिक पुनर्गठन के अनुसार राजस्थान में कुल कितने जिले और संभाग हैं?",
-              opts: ["41 जिले और 7 संभाग", "50 जिले और 10 संभाग", "33 जिले और 7 संभाग", "45 जिले और 8 संभाग"],
-              a: 0
-            },
-            {
-              q: "वर्तमान में राजस्थान का क्षेत्रफल की दृष्टि से सबसे छोटा जिला कौन सा है?",
-              opts: ["धौलपुर (Dholpur)", "दूदू", "सलूम्बर", "दौसा"],
-              a: 0
-            }
-          ]
-        }
-      ],
-
-      india_gk: [
-        {
-          id: "ind_t1",
-          batch: "india_gk",
-          batchName: "India GK Batch",
-          title: "India GK (Test 1 - National Polity & Map)",
-          time: 20,
-          questions: [
-            {
-              q: "वर्तमान में भारत में कुल कितने राज्य और केंद्र शासित प्रदेश (UTs) विद्यमान हैं?",
-              opts: ["28 राज्य और 8 UTs", "29 राज्य और 7 UTs", "28 राज्य और 9 UTs", "29 राज्य और 8 UTs"],
-              a: 0
-            }
-          ]
-        }
-      ],
-
-      hindi: [
-        {
-          id: "hin_t1",
-          batch: "hindi",
-          batchName: "Samanya Hindi Batch",
-          title: "Samanya Hindi (Test 1 - Sandhi & Vyakaran)",
-          time: 20,
-          questions: [
-            {
-              q: "'परोपकार' शब्द में व्याकरण की दृष्टि से कौन सी संधि है?",
-              opts: ["गुण संधि", "वृद्धि संधि", "दीर्घ संधि", "यण संधि"],
-              a: 0
-            }
-          ]
-        }
-      ],
-
-      math: [
-        {
-          id: "math_t1",
-          batch: "math",
-          batchName: "Quantitative Math Batch",
-          title: "Quantitative Math (Test 1 - Arithmetic)",
-          time: 20,
-          questions: [
-            {
-              q: "यदि किसी वस्तु का क्रय-मूल्य ₹500 है और इसे 20% लाभ पर बेचा जाए, तो विक्रय-मूल्य क्या होगा?",
-              opts: ["₹600", "₹550", "₹650", "₹700"],
-              a: 0
-            }
-          ]
-        }
-      ],
-
-      rrb_ntpc: [
-        {
-          id: "ntpc_t1",
-          batch: "rrb_ntpc",
-          batchName: "RRB NTPC Batch",
-          title: "RRB NTPC (Test 1 - Stage-1 CBT)",
-          time: 20,
-          questions: [
-            {
-              q: "भारत में पहली रेलगाड़ी 1853 में बोरीबंदर (मुंबई) से कहाँ तक चलाई गई थी?",
-              opts: ["ठाणे (Thane)", "कल्याण", "पुणे", "सूरत"],
-              a: 0
-            }
-          ]
-        }
-      ]
-    };
-
-    // AUTH TAB SWITCHER
     function setAuthTab(mode) {
       if (mode === 'login') {
         document.getElementById("tab-login").style.background = "var(--primary)";
@@ -659,7 +471,7 @@
           totalTests: 0, 
           cleared: 0, 
           failed: 0,
-          batches: ["SSC CGL 2026 Batch", "Rajasthan GK 41-Zile Batch", "Police SI Moolvidhi Batch"],
+          batches: ["SSC CGL 2026 Mock Batch", "Police SI (Sub-Inspector) Batch"],
           testHistory: []
         };
         await db.collection("candidates").doc(cred.user.uid).set(u);
@@ -711,11 +523,11 @@
         displayName: name,
         email: `${id}@test.com`,
         photoURL: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=00f59b&color=000`,
-        scorePoints: 240,
-        totalTests: 8,
-        cleared: 6,
-        failed: 2,
-        batches: ["SSC CGL 2026 Batch", "Police SI Moolvidhi Batch"],
+        scorePoints: 0,
+        totalTests: 0,
+        cleared: 0,
+        failed: 0,
+        batches: ["SSC CGL 2026 Mock Batch"],
         testHistory: []
       };
       isAdmin = false;
@@ -742,7 +554,7 @@
             totalTests: 0, 
             cleared: 0, 
             failed: 0,
-            batches: ["SSC CGL 2026 Batch", "Rajasthan GK 41-Zile Batch", "Police SI Moolvidhi Batch"],
+            batches: ["SSC CGL 2026 Mock Batch"],
             testHistory: []
           };
           await db.collection("candidates").doc(user.uid).set(currentUser);
@@ -766,10 +578,13 @@
       if (isAdmin) {
         document.getElementById("admin-banner").classList.remove("hidden");
         document.getElementById("admin-action-btn").classList.remove("hidden");
+        document.getElementById("admin-batch-btn").classList.remove("hidden");
       } else {
         document.getElementById("admin-banner").classList.add("hidden");
         document.getElementById("admin-action-btn").classList.add("hidden");
+        document.getElementById("admin-batch-btn").classList.add("hidden");
       }
+      loadAllBatches();
       showDashboard();
     }
 
@@ -779,7 +594,6 @@
       location.reload();
     }
 
-    // NAVIGATION
     function hideAll() {
       ["screen-dashboard", "screen-series", "screen-cbt", "screen-result", "screen-profile"].forEach(id => {
         document.getElementById(id).classList.add("hidden");
@@ -791,103 +605,104 @@
       document.getElementById("screen-dashboard").classList.remove("hidden");
     }
 
-    function openProfileView() {
-      hideAll();
-      document.getElementById("screen-profile").classList.remove("hidden");
-      document.getElementById("prof-display-name").innerText = currentUser.displayName;
-      document.getElementById("prof-email").innerText = currentUser.email;
-      document.getElementById("prof-avatar-lg").src = currentUser.photoURL;
-      document.getElementById("prof-score-points").innerText = currentUser.scorePoints || 0;
-      document.getElementById("prof-total").innerText = currentUser.totalTests || 0;
-      document.getElementById("prof-won").innerText = currentUser.cleared || 0;
-      document.getElementById("prof-lost").innerText = currentUser.failed || 0;
+    // BATCH MANAGEMENT (LOAD & RENDER)
+    async function loadAllBatches() {
+      allBatches = [...defaultBatches];
+      try {
+        const snap = await db.collection("custom_batches").get();
+        snap.forEach(doc => {
+          allBatches.push(doc.data());
+        });
+      } catch(e) {
+        console.error("Firestore batch read error:", e);
+      }
 
-      // Render Batches
-      const batchBox = document.getElementById("prof-batches-list");
-      batchBox.innerHTML = "";
-      (currentUser.batches || ["SSC CGL 2026 Batch", "Rajasthan GK Batch"]).forEach(b => {
-        const span = document.createElement("span");
-        span.className = "batch-badge";
-        span.innerText = b;
-        batchBox.appendChild(span);
+      // Render Batches to Dashboard
+      const grid = document.getElementById("dashboard-batches-grid");
+      grid.innerHTML = "";
+      allBatches.forEach(b => {
+        const card = document.createElement("div");
+        card.className = "exam-card";
+        card.onclick = () => openSeriesListing(b);
+        card.innerHTML = `
+          <div class="exam-icon" style="color:var(--primary);"><i class="fa-solid ${b.icon || 'fa-graduation-cap'}"></i></div>
+          <h3>${b.title}</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">${b.desc || 'Click to view all test papers'}</p>
+        `;
+        grid.appendChild(card);
       });
 
-      updateProfileLangButtons();
-      renderHistoryList('all');
+      // Update dropdown for Add Test Paper modal
+      const sel = document.getElementById("new-paper-cat");
+      sel.innerHTML = "";
+      allBatches.forEach(b => {
+        const opt = document.createElement("option");
+        opt.value = b.id;
+        opt.innerText = b.title;
+        sel.appendChild(opt);
+      });
+
+      // Update Profile Filter dropdown
+      const filterSel = document.getElementById("history-batch-filter");
+      filterSel.innerHTML = `<option value="all">All Batches History</option>`;
+      allBatches.forEach(b => {
+        const opt = document.createElement("option");
+        opt.value = b.id;
+        opt.innerText = b.title;
+        filterSel.appendChild(opt);
+      });
     }
 
-    // PROFILE EDIT & AVATAR UPLOAD
-    async function editDisplayName() {
-      const newName = prompt("Naya Display Name daalein:", currentUser.displayName);
-      if (newName && newName.trim().length > 0) {
-        currentUser.displayName = newName.trim();
-        document.getElementById("prof-display-name").innerText = currentUser.displayName;
-        document.getElementById("header-name").innerText = currentUser.displayName.split(" ")[0];
-        try {
-          await db.collection("candidates").doc(currentUser.uid).update({ displayName: currentUser.displayName });
-        } catch(e) {}
-      }
+    // CREATE NEW BATCH (ADMIN MODAL)
+    function openAdminBatchModal() {
+      document.getElementById("admin-batch-modal").classList.remove("hidden");
     }
 
-    function handleAvatarUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+    function closeAdminBatchModal() {
+      document.getElementById("admin-batch-modal").classList.add("hidden");
+    }
 
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const base64Img = e.target.result;
-        currentUser.photoURL = base64Img;
-        document.getElementById("prof-avatar-lg").src = base64Img;
-        document.getElementById("header-avatar").src = base64Img;
+    async function saveAdminBatch() {
+      const title = document.getElementById("batch-title-input").value.trim();
+      const desc = document.getElementById("batch-desc-input").value.trim();
+      const icon = document.getElementById("batch-icon-select").value;
 
-        try {
-          await db.collection("candidates").doc(currentUser.uid).update({ photoURL: base64Img });
-          alert("Profile picture update ho gayi!");
-        } catch (err) {
-          console.error("Avatar save error:", err);
-        }
+      if (!title) return alert("Kripya Batch Title darz karein!");
+
+      const batchId = "batch_" + Date.now();
+      const batchPayload = {
+        id: batchId,
+        title: title,
+        desc: desc || "Exclusive CBT Practice Series",
+        icon: icon,
+        createdAt: new Date().toISOString()
       };
-      reader.readAsDataURL(file);
-    }
 
-    async function setUserLanguageFromProfile(lang) {
-      userLang = lang;
-      localStorage.setItem('user_cbt_lang', lang);
-      document.getElementById("btn-active-lang").innerText = userLang === 'hi' ? "🌐 हिंदी" : "🌐 English";
-      updateProfileLangButtons();
       try {
-        await db.collection("candidates").doc(currentUser.uid).update({ preferredLang: lang });
-      } catch(e) {}
-    }
-
-    function updateProfileLangButtons() {
-      if (userLang === 'hi') {
-        document.getElementById("btn-prof-hi").style.background = "var(--primary)";
-        document.getElementById("btn-prof-hi").style.color = "#000";
-        document.getElementById("btn-prof-en").style.background = "#263558";
-        document.getElementById("btn-prof-en").style.color = "#fff";
-      } else {
-        document.getElementById("btn-prof-en").style.background = "var(--primary)";
-        document.getElementById("btn-prof-en").style.color = "#000";
-        document.getElementById("btn-prof-hi").style.background = "#263558";
-        document.getElementById("btn-prof-hi").style.color = "#fff";
+        await db.collection("custom_batches").doc(batchId).set(batchPayload);
+        alert(`✅ Naya Batch "${title}" safaltapoorvak ban gaya!`);
+        closeAdminBatchModal();
+        document.getElementById("batch-title-input").value = "";
+        document.getElementById("batch-desc-input").value = "";
+        loadAllBatches();
+      } catch (err) {
+        alert("Batch save error: " + err.message);
       }
     }
 
-    // SERIES LISTING (TEST 1, TEST 2..)
-    async function openSeriesListing(catKey, catTitle) {
-      currentSelectedCategory = catKey;
-      document.getElementById("series-header-title").innerText = `${catTitle} - Test Series`;
+    // SERIES LISTING (TEST 1, TEST 2... INSIDE BATCH)
+    async function openSeriesListing(batchObj) {
+      currentSelectedBatch = batchObj;
+      document.getElementById("series-header-title").innerText = `${batchObj.title} - Tests`;
       
       const container = document.getElementById("series-cards-container");
-      container.innerHTML = `<p style="color:#94a3b8;">Loading available tests...</p>`;
+      container.innerHTML = `<p style="color:#94a3b8; padding:15px;">Loading tests...</p>`;
       hideAll();
       document.getElementById("screen-series").classList.remove("hidden");
 
-      let papers = localPreloadedPapers[catKey] ? [...localPreloadedPapers[catKey]] : [];
-
+      let papers = [];
       try {
-        const snap = await db.collection("custom_tests").where("category", "==", catKey).get();
+        const snap = await db.collection("custom_tests").where("batchId", "==", batchObj.id).get();
         snap.forEach(doc => {
           papers.push(doc.data());
         });
@@ -897,7 +712,13 @@
 
       container.innerHTML = "";
       if (papers.length === 0) {
-        container.innerHTML = `<p style="color:#94a3b8;">Is batch me abhi koi paper uplabdh nahi hai. Admin jald hi add karenge.</p>`;
+        container.innerHTML = `
+          <div style="background:#0c1221; padding:30px; border-radius:14px; text-align:center; border:1px dashed #23355d;">
+            <i class="fa-solid fa-folder-open" style="font-size:2.5rem; color:var(--text-muted); margin-bottom:12px;"></i>
+            <h3 style="color:#cbd5e1; margin-bottom:6px;">Is Batch me abhi koi test uplabdh nahi hai.</h3>
+            <p style="color:var(--text-muted); font-size:0.85rem;">Admin 'Add Test Paper' button se naye papers (Test 1, Test 2...) upload karenge.</p>
+          </div>
+        `;
         return;
       }
 
@@ -910,7 +731,7 @@
               <i class="fa-solid fa-file-lines" style="color:var(--primary);"></i> ${test.title}
             </h3>
             <p style="color:var(--text-muted); font-size:0.85rem; margin-top:4px;">
-              Batch: <b>${test.batchName || catTitle}</b> | <i class="fa-regular fa-circle-question"></i> ${test.questions.length} Questions | <i class="fa-regular fa-clock"></i> ${test.time} Minutes
+              Batch: <b>${batchObj.title}</b> | <i class="fa-regular fa-circle-question"></i> ${test.questions.length} Questions | <i class="fa-regular fa-clock"></i> ${test.time} Minutes
             </p>
           </div>
           <div>
@@ -923,7 +744,6 @@
       window.activeCategoryPapers = papers;
     }
 
-    // CBT ENGINE
     function startSpecificTest(paperIndex) {
       currentActiveTest = window.activeCategoryPapers[paperIndex];
       userAnswers = {};
@@ -982,7 +802,6 @@
       }, 1000);
     }
 
-    // SUBMIT EXAM & SAVE TO BATCH-WISE HISTORY
     async function submitExam() {
       clearInterval(timerInterval);
       let correct = 0;
@@ -1004,10 +823,9 @@
       if (passed) currentUser.cleared = (currentUser.cleared || 0) + 1;
       else currentUser.failed = (currentUser.failed || 0) + 1;
 
-      // Save History Record
       const testRecord = {
-        batchKey: currentActiveTest.batch || currentSelectedCategory,
-        batchName: currentActiveTest.batchName || "Special Batch",
+        batchId: currentActiveTest.batchId || (currentSelectedBatch ? currentSelectedBatch.id : 'general'),
+        batchName: currentActiveTest.batchName || (currentSelectedBatch ? currentSelectedBatch.title : 'General Batch'),
         examTitle: currentActiveTest.title,
         date: new Date().toLocaleDateString('en-GB'),
         total: total,
@@ -1091,7 +909,88 @@
       });
     }
 
-    // BATCH-WISE HISTORY FILTER
+    // PROFILE VIEW & HISTORY
+    function openProfileView() {
+      hideAll();
+      document.getElementById("screen-profile").classList.remove("hidden");
+      document.getElementById("prof-display-name").innerText = currentUser.displayName;
+      document.getElementById("prof-email").innerText = currentUser.email;
+      document.getElementById("prof-avatar-lg").src = currentUser.photoURL;
+      document.getElementById("prof-score-points").innerText = currentUser.scorePoints || 0;
+      document.getElementById("prof-total").innerText = currentUser.totalTests || 0;
+      document.getElementById("prof-won").innerText = currentUser.cleared || 0;
+      document.getElementById("prof-lost").innerText = currentUser.failed || 0;
+
+      const batchBox = document.getElementById("prof-batches-list");
+      batchBox.innerHTML = "";
+      (currentUser.batches || ["SSC CGL 2026 Mock Batch"]).forEach(b => {
+        const span = document.createElement("span");
+        span.className = "batch-badge";
+        span.innerText = b;
+        batchBox.appendChild(span);
+      });
+
+      updateProfileLangButtons();
+      renderHistoryList('all');
+    }
+
+    async function editDisplayName() {
+      const newName = prompt("Naya Display Name daalein:", currentUser.displayName);
+      if (newName && newName.trim().length > 0) {
+        currentUser.displayName = newName.trim();
+        document.getElementById("prof-display-name").innerText = currentUser.displayName;
+        document.getElementById("header-name").innerText = currentUser.displayName.split(" ")[0];
+        try {
+          await db.collection("candidates").doc(currentUser.uid).update({ displayName: currentUser.displayName });
+        } catch(e) {}
+      }
+    }
+
+    function handleAvatarUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const base64Img = e.target.result;
+        currentUser.photoURL = base64Img;
+        document.getElementById("prof-avatar-lg").src = base64Img;
+        document.getElementById("header-avatar").src = base64Img;
+
+        try {
+          await db.collection("candidates").doc(currentUser.uid).update({ photoURL: base64Img });
+          alert("Profile picture update ho gayi!");
+        } catch (err) {
+          console.error("Avatar save error:", err);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function setUserLanguageFromProfile(lang) {
+      userLang = lang;
+      localStorage.setItem('user_cbt_lang', lang);
+      document.getElementById("btn-active-lang").innerText = userLang === 'hi' ? "🌐 हिंदी" : "🌐 English";
+      updateProfileLangButtons();
+      try {
+        await db.collection("candidates").doc(currentUser.uid).update({ preferredLang: lang });
+      } catch(e) {}
+    }
+
+    function updateProfileLangButtons() {
+      if (userLang === 'hi') {
+        document.getElementById("btn-prof-hi").style.background = "var(--primary)";
+        document.getElementById("btn-prof-hi").style.color = "#000";
+        document.getElementById("btn-prof-en").style.background = "#263558";
+        document.getElementById("btn-prof-en").style.color = "#fff";
+      } else {
+        document.getElementById("btn-prof-en").style.background = "var(--primary)";
+        document.getElementById("btn-prof-en").style.color = "#000";
+        document.getElementById("btn-prof-hi").style.background = "#263558";
+        document.getElementById("btn-prof-hi").style.color = "#fff";
+      }
+    }
+
     function filterHistoryByBatch() {
       const filter = document.getElementById("history-batch-filter").value;
       renderHistoryList(filter);
@@ -1108,11 +1007,11 @@
 
       let filtered = currentUser.testHistory;
       if (filterBatch !== 'all') {
-        filtered = currentUser.testHistory.filter(h => h.batchKey === filterBatch);
+        filtered = currentUser.testHistory.filter(h => h.batchId === filterBatch);
       }
 
       if (filtered.length === 0) {
-        box.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">Is batch me abhi tak koi test attempt nahi kiya hai.</p>`;
+        box.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">Is batch me abhi koi test attempt nahi kiya gaya hai.</p>`;
         return;
       }
 
@@ -1154,7 +1053,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // ADMIN ACTIONS: CREATE AND UPLOAD QUESTIONS
+    // ADMIN: ADD TEST PAPER
     function openAdminPaperModal() {
       document.getElementById("admin-modal").classList.remove("hidden");
     }
@@ -1164,7 +1063,7 @@
     }
 
     async function saveAdminTestPaper() {
-      const cat = document.getElementById("new-paper-cat").value;
+      const batchId = document.getElementById("new-paper-cat").value;
       const catSelect = document.getElementById("new-paper-cat");
       const batchName = catSelect.options[catSelect.selectedIndex].text;
       const title = document.getElementById("new-paper-title").value.trim();
@@ -1182,8 +1081,7 @@
       }
 
       const newPaperPayload = {
-        category: cat,
-        batch: cat,
+        batchId: batchId,
         batchName: batchName,
         title: title,
         time: time,
@@ -1199,7 +1097,7 @@
 
       try {
         await db.collection("custom_tests").add(newPaperPayload);
-        alert(`✅ Test Paper "${title}" safaltapoorvak publish ho gaya! Ab sabhi candidates ise de sakte hain.`);
+        alert(`✅ Test Paper "${title}" safaltapoorvak publish ho gaya!`);
         closeAdminPaperModal();
         document.getElementById("new-paper-title").value = "";
         document.getElementById("q-input-text").value = "";
