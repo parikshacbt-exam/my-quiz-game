@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PARIKSHA CBT - Real Competition & Candidate Portal (41 Districts Updated)</title>
+  <title>PARIKSHA CBT - Dynamic Mock Test Series & Admin Engine</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
       --bg: #060913;
-      --surface: rgba(16, 24, 44, 0.85);
-      --card: rgba(23, 33, 58, 0.7);
+      --surface: rgba(16, 24, 44, 0.9);
+      --card: rgba(23, 33, 58, 0.75);
       --primary: #00f2fe;
       --accent: #9d4edd;
       --green: #00f59b;
@@ -18,15 +18,11 @@
       --text-muted: #94a3b8;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
-    body { 
-      background: radial-gradient(circle at top, #111a36 0%, #060913 75%); 
-      color: #fff; min-height: 100vh; display: flex; flex-direction: column; 
-    }
+    body { background: radial-gradient(circle at top, #111a36 0%, #060913 75%); color: #fff; min-height: 100vh; display: flex; flex-direction: column; }
     .hidden { display: none !important; }
 
-    /* Header */
     header { 
-      background: rgba(10, 16, 32, 0.9); backdrop-filter: blur(14px);
+      background: rgba(10, 16, 32, 0.95); backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(0, 242, 254, 0.2); 
       padding: 14px 22px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; 
     }
@@ -37,55 +33,47 @@
       display: flex; align-items: center; gap: 10px; cursor: pointer; 
     }
     .nav-actions { display: flex; align-items: center; gap: 12px; }
-    .lang-btn-nav { 
-      background: rgba(0, 242, 254, 0.1); border: 1.5px solid var(--primary); 
-      color: #fff; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; 
-    }
+    .lang-btn-nav { background: rgba(0, 242, 254, 0.1); border: 1.5px solid var(--primary); color: #fff; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
     .profile-pill { display: flex; align-items: center; gap: 10px; background: rgba(31, 43, 72, 0.6); padding: 5px 14px; border-radius: 30px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
     .profile-pill img { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--primary); object-fit: cover; }
 
     .container { max-width: 1060px; width: 100%; margin: 22px auto; padding: 0 16px; flex: 1; }
 
-    /* Crash Course Bar */
-    .crash-course-bar {
-      background: linear-gradient(90deg, rgba(157, 78, 221, 0.3), rgba(0, 242, 254, 0.25));
-      border: 1.5px solid rgba(0, 242, 254, 0.3); border-radius: 16px; padding: 16px 20px; margin-bottom: 22px;
-      display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap;
+    /* Admin Bar */
+    .admin-indicator {
+      background: linear-gradient(90deg, #9d4edd, #ff3366);
+      padding: 10px 18px; border-radius: 12px; font-weight: bold; font-size: 0.88rem;
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
     }
 
-    /* Hero Banner */
-    .hero-banner {
-      background: linear-gradient(135deg, rgba(16, 32, 66, 0.85), rgba(28, 16, 54, 0.85));
-      backdrop-filter: blur(12px); border: 1.5px solid rgba(0, 242, 254, 0.25);
-      border-radius: 20px; padding: 22px; margin-bottom: 24px;
-      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 18px;
-    }
-    .hero-stats-badge { font-size: 2.2rem; font-weight: 900; color: var(--primary); text-shadow: 0 0 18px rgba(0, 242, 254, 0.35); }
     .section-title { font-size: 1.25rem; font-weight: 800; color: #fff; margin: 28px 0 16px; display: flex; align-items: center; gap: 10px; }
 
     /* Exam Cards Grid */
-    .exam-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; }
+    .exam-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
     .exam-card { 
       background: var(--card); backdrop-filter: blur(10px);
       border: 1.5px solid rgba(35, 48, 78, 0.7); border-radius: 18px; padding: 22px; 
       cursor: pointer; transition: 0.28s; position: relative; 
     }
     .exam-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 12px 30px rgba(0, 242, 254, 0.2); }
-    .exam-icon { font-size: 2.3rem; margin-bottom: 12px; }
-    .exam-badge { 
-      position: absolute; top: 15px; right: 15px; 
-      background: rgba(0, 242, 254, 0.15); color: var(--primary); border: 1px solid rgba(0, 242, 254, 0.3);
-      font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: 800; 
+    .exam-icon { font-size: 2.2rem; margin-bottom: 12px; }
+
+    /* Test Series Listing Items */
+    .series-item {
+      background: rgba(15, 23, 42, 0.85); border: 1.5px solid #23355d;
+      border-radius: 16px; padding: 18px 22px; margin-bottom: 14px;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;
+      transition: 0.2s;
     }
-    .exam-meta { font-size: 0.85rem; color: var(--text-muted); margin-top: 10px; display: flex; gap: 15px; }
+    .series-item:hover { border-color: var(--primary); background: #131c33; }
 
     /* Buttons */
-    .btn-submit { background: linear-gradient(90deg, #00f59b, #00b4d8); color: #000; font-weight: 800; border: none; padding: 11px 24px; border-radius: 10px; cursor: pointer; }
-    .btn-nav { background: #263558; border: none; color: #fff; padding: 11px 22px; border-radius: 10px; cursor: pointer; font-weight: 700; }
-    .btn-sm { padding: 6px 14px; font-size: 0.8rem; border-radius: 6px; cursor: pointer; font-weight: bold; border: none; }
+    .btn-submit { background: linear-gradient(90deg, #00f59b, #00b4d8); color: #000; font-weight: 800; border: none; padding: 10px 22px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; }
+    .btn-nav { background: #263558; border: none; color: #fff; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 700; }
+    .btn-danger { background: #ff3366; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
     /* CBT Screen */
-    .cbt-container { background: var(--surface); border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 20px; padding: 25px; backdrop-filter: blur(12px); }
+    .cbt-container { background: var(--surface); border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 20px; padding: 25px; }
     .cbt-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #23355d; padding-bottom: 16px; margin-bottom: 22px; }
     .cbt-timer { font-size: 1.35rem; font-weight: 900; color: var(--gold); background: #221808; border: 1px solid rgba(255,183,3,0.3); padding: 6px 18px; border-radius: 25px; }
     .q-text { font-size: 1.2rem; line-height: 1.6; margin-bottom: 25px; }
@@ -96,7 +84,7 @@
     .cbt-nav { display: flex; justify-content: space-between; margin-top: 25px; padding-top: 20px; border-top: 1px solid #23355d; }
 
     /* Review Styles */
-    .review-card { background: rgba(13, 20, 38, 0.9); border: 1.5px solid #23355d; border-radius: 16px; padding: 20px; margin-bottom: 18px; }
+    .review-card { background: rgba(13, 20, 38, 0.95); border: 1.5px solid #23355d; border-radius: 16px; padding: 20px; margin-bottom: 18px; }
     .review-card.correct-card { border-left: 6px solid var(--green); }
     .review-card.wrong-card { border-left: 6px solid var(--red); }
     .review-card.unanswered-card { border-left: 6px solid var(--gold); }
@@ -108,28 +96,13 @@
     .status-pill.fail { background: rgba(255, 51, 102, 0.15); color: var(--red); }
     .status-pill.skipped { background: rgba(255, 183, 3, 0.15); color: var(--gold); }
 
-    /* Profile Specific */
-    .profile-avatar-wrap { position: relative; width: 100px; height: 100px; margin: 0 auto 15px; }
-    .profile-avatar-wrap img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; }
-    .avatar-edit-label { position: absolute; bottom: 0; right: 0; background: var(--primary); color: #000; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-
-    .history-card { background: rgba(13, 20, 38, 0.9); border: 1px solid #23355d; border-radius: 14px; padding: 14px 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-    .history-title { font-weight: bold; font-size: 1rem; color: #fff; }
-    .history-meta { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
-    .history-score { font-weight: 900; font-size: 1.1rem; }
-
-    /* Footer */
-    footer { background: #060a16; border-top: 1px solid #1e293b; padding: 24px 16px; margin-top: 40px; text-align: center; }
-    .footer-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 12px; }
-    .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: 0.2s; cursor: pointer; }
-    .footer-links a:hover { color: var(--primary); }
-
-    /* Modal */
+    /* Modals & Inputs */
     .modal-overlay { position: fixed; inset: 0; background: rgba(4, 7, 16, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
-    .modal-card { background: #0f162a; border: 1.5px solid rgba(0, 242, 254, 0.3); border-radius: 22px; width: 100%; max-width: 580px; max-height: 85vh; overflow-y: auto; padding: 28px; position: relative; }
+    .modal-card { background: #0f162a; border: 1.5px solid rgba(0, 242, 254, 0.3); border-radius: 22px; width: 100%; max-width: 650px; max-height: 90vh; overflow-y: auto; padding: 28px; position: relative; }
+    .form-input { width: 100%; padding: 12px; background: #070a13; border: 1px solid #23355d; color: #fff; border-radius: 10px; margin-bottom: 12px; font-size: 0.95rem; }
   </style>
 
-  <!-- Firebase SDKs -->
+  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
@@ -141,6 +114,7 @@
     <div class="logo" onclick="showDashboard()"><i class="fa-solid fa-graduation-cap"></i> <span id="txt-logo-title">PARIKSHA CBT</span></div>
     <div class="nav-actions">
       <button class="lang-btn-nav" onclick="toggleLanguage()" id="btn-active-lang">🌐 हिंदी</button>
+      <button id="admin-action-btn" class="btn-submit hidden" onclick="openAdminPaperModal()"><i class="fa-solid fa-plus"></i> Add Test Paper</button>
       <div id="nav-profile-pill" class="profile-pill hidden" onclick="openProfileView()">
         <img id="header-avatar" src="" alt="avatar">
         <span id="header-name" style="font-size:0.9rem; font-weight:700;">Candidate</span>
@@ -152,186 +126,84 @@
   <!-- MAIN CONTAINER -->
   <div class="container hidden" id="main-content">
 
-    <!-- CRASH COURSE BAR -->
-    <div class="crash-course-bar">
-      <div>
-        <h4 style="color:var(--gold); display:flex; align-items:center; gap:8px;">
-          <i class="fa-solid fa-bolt"></i> Exam Crash Course & Latest Revision Notes (41 Districts Updated)
-        </h4>
-        <p style="font-size:0.85rem; color:#cbd5e1; margin-top:3px;">
-          Rajasthan 41 Zile & 7 Sambhag, Sanvidhan Articles, BNS/CrPC Law & Quick GK Notes
-        </p>
-      </div>
-      <button class="btn-submit" style="padding:8px 18px; font-size:0.85rem;" onclick="openCrashCourseView()">
-        Open Crash Course <i class="fa-solid fa-arrow-right"></i>
-      </button>
+    <!-- Admin Notification Indicator -->
+    <div id="admin-banner" class="admin-indicator hidden">
+      <span><i class="fa-solid fa-shield-halved"></i> <b>Sunil Kumar (Master Admin Mode Active)</b> - Aap naye test paper upload kar sakte hain.</span>
+      <button class="btn-submit" style="background:#fff; color:#000; padding:4px 12px; font-size:0.8rem;" onclick="openAdminPaperModal()">Create Test Paper</button>
     </div>
 
-    <!-- 1. DASHBOARD VIEW -->
+    <!-- 1. DASHBOARD VIEW (CATEGORIES) -->
     <div id="screen-dashboard">
-      <div class="hero-banner">
-        <div>
-          <span style="color:var(--text-muted); font-size:0.88rem; font-weight:600;">Your Total Examination Points:</span>
-          <div class="hero-stats-badge"><i class="fa-solid fa-trophy" style="color:var(--gold);"></i> <span id="dash-score-points">0</span> PTS</div>
-        </div>
-        <button class="btn-submit" onclick="openProfileView()">View & Edit Profile</button>
-      </div>
-
-      <!-- Current Affairs Section -->
-      <div class="section-title"><i class="fa-solid fa-newspaper" style="color:var(--green);"></i> Daily Current Affairs (Segregated)</div>
+      <div class="section-title"><i class="fa-solid fa-file-signature" style="color:var(--gold);"></i> Full Competition Exams (Test Series Inside)</div>
       <div class="exam-grid">
-        <div class="exam-card" onclick="openExamSetup('india_current', 'India Daily Current Affairs', 20, 20)">
-          <span class="exam-badge">National Focus</span>
-          <div class="exam-icon" style="color:#00f2fe;"><i class="fa-solid fa-flag"></i></div>
-          <h3>🇮🇳 India Current Affairs</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">National Summits, Union Appointments, ISRO Missions & Central Schemes</p>
-          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 20 Mins (20 Qs)</span></div>
-        </div>
-
-        <div class="exam-card" onclick="openExamSetup('raj_current', 'Rajasthan Daily Current Affairs', 20, 20)">
-          <span class="exam-badge">State Special</span>
-          <div class="exam-icon" style="color:#ffb703;"><i class="fa-solid fa-feather-pointed"></i></div>
-          <h3>🐪 Rajasthan Current Affairs</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">41 Zile Reorganization, State Schemes, State Awards & GI Tags</p>
-          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 20 Mins (20 Qs)</span></div>
-        </div>
-      </div>
-
-      <!-- Full Competition Papers -->
-      <div class="section-title"><i class="fa-solid fa-file-signature" style="color:var(--gold);"></i> Full Competition Examination Papers (Latest Syllabus)</div>
-      <div class="exam-grid">
-        <div class="exam-card" onclick="openExamSetup('ssc_cgl', 'SSC CGL Tier-1 CBT Mock', 25, 20)">
-          <span class="exam-badge">Tier-1 Pattern</span>
+        <div class="exam-card" onclick="openSeriesListing('ssc_cgl', 'SSC CGL Tier-1 Examination')">
           <div class="exam-icon" style="color:#00f2fe;"><i class="fa-solid fa-building-columns"></i></div>
-          <h3>SSC CGL Mock Test</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">GK, Reasoning, English & Maths Mix</p>
-          <div class="exam-meta"><span><i class="fa-regular fa-circle-question"></i> 25 Questions</span><span><i class="fa-regular fa-clock"></i> 20 Mins</span></div>
+          <h3>SSC CGL Mock Series</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Test 1, Test 2, Test 3 & Upcoming Full Mocks</p>
         </div>
 
-        <div class="exam-card" onclick="openExamSetup('police_si', 'Police Sub-Inspector (SI) Exam', 20, 20)">
-          <span class="exam-badge">SI Paper-1</span>
+        <div class="exam-card" onclick="openSeriesListing('police_si', 'Police Sub-Inspector (SI) Exam')">
           <div class="exam-icon" style="color:#ffb703;"><i class="fa-solid fa-shield-cat"></i></div>
-          <h3>Police SI Sub-Inspector Exam</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Moolvidhi, Sanvidhan, Police Law, Rajasthan GK & Hindi</p>
-          <div class="exam-meta"><span><i class="fa-regular fa-circle-question"></i> 20 Questions</span><span><i class="fa-regular fa-clock"></i> 20 Mins</span></div>
+          <h3>Police SI Exam Series</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Moolvidhi, Sanvidhan, Police Law & Samanya Hindi</p>
         </div>
 
-        <div class="exam-card" onclick="openExamSetup('upsc_pre', 'UPSC / State PCS Prelims GS-1', 20, 25)">
-          <span class="exam-badge">Civil Services</span>
-          <div class="exam-icon" style="color:#a855f7;"><i class="fa-solid fa-landmark"></i></div>
-          <h3>UPSC & State PCS Prelims</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Polity Articles, Economy & Ecology</p>
-          <div class="exam-meta"><span><i class="fa-regular fa-circle-question"></i> 20 Questions</span><span><i class="fa-regular fa-clock"></i> 25 Mins</span></div>
-        </div>
-
-        <div class="exam-card" onclick="openExamSetup('rrb_ntpc', 'Railway RRB NTPC Stage-1 CBT', 20, 20)">
-          <span class="exam-badge">Railway NTPC</span>
+        <div class="exam-card" onclick="openSeriesListing('rrb_ntpc', 'Railway RRB NTPC Stage-1')">
           <div class="exam-icon" style="color:#00f59b;"><i class="fa-solid fa-train"></i></div>
-          <h3>Railway RRB NTPC CBT-1</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">General Science, Railways History & Numerical Math</p>
-          <div class="exam-meta"><span><i class="fa-regular fa-circle-question"></i> 20 Questions</span><span><i class="fa-regular fa-clock"></i> 20 Mins</span></div>
+          <h3>Railway RRB NTPC Series</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">General Science, Railways History & Aptitude</p>
         </div>
       </div>
 
-      <!-- Core Subjects -->
-      <div class="section-title"><i class="fa-solid fa-book-open-reader" style="color:var(--green);"></i> Subject-Wise Competition Tests</div>
+      <div class="section-title"><i class="fa-solid fa-book-open-reader" style="color:var(--green);"></i> Subject-Wise Tests (Test 1, Test 2, ...)</div>
       <div class="exam-grid">
-        <div class="exam-card" onclick="openExamSetup('raj_gk', 'Rajasthan GK (41 Zile & 7 Sambhag)', 20, 30)">
-          <span class="exam-badge">41 Zile (Valid)</span>
+        <div class="exam-card" onclick="openSeriesListing('raj_gk', 'Rajasthan GK (41 Zile & 7 Sambhag)')">
           <div class="exam-icon" style="color:#ffb703;"><i class="fa-solid fa-shield-halved"></i></div>
-          <h3>Rajasthan GK (Vartaman)</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">41 Districts, 7 Sambhag, Itihas & Kala-Sanskriti</p>
-          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
+          <h3>Rajasthan GK Tests</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">41 Districts, Sambhag, Itihas & Geography</p>
         </div>
 
-        <div class="exam-card" onclick="openExamSetup('india_gk', 'India GK (Updated Map & Polity)', 20, 30)">
+        <div class="exam-card" onclick="openSeriesListing('india_gk', 'India GK (National & Polity)')">
           <div class="exam-icon" style="color:#ff9933;"><i class="fa-solid fa-monument"></i></div>
-          <h3>India GK (National)</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">States, UTs, Sansad & Polity</p>
-          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
+          <h3>India GK Tests</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Updated Borders, Sansad & Constitution</p>
         </div>
 
-        <div class="exam-card" onclick="openExamSetup('hindi', 'Samanya Hindi (सामान्य हिंदी)', 20, 30)">
+        <div class="exam-card" onclick="openSeriesListing('hindi', 'Samanya Hindi (सामान्य हिंदी)')">
           <div class="exam-icon" style="color:#ff4d4d;"><i class="fa-solid fa-language"></i></div>
-          <h3>Samanya Hindi</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">संधि, समास, मुहावरे, वर्तनी</p>
-          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
+          <h3>Samanya Hindi Tests</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">संधि, समास, मुहावरे, शुद्ध वर्तनी</p>
         </div>
 
-        <div class="exam-card" onclick="openExamSetup('english', 'General English Grammar', 20, 30)">
-          <div class="exam-icon" style="color:#00f2fe;"><i class="fa-solid fa-spell-check"></i></div>
-          <h3>General English</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Synonyms, Antonyms, Idioms</p>
-          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
-        </div>
-
-        <div class="exam-card" onclick="openExamSetup('math', 'Quantitative Aptitude (Maths)', 20, 30)">
+        <div class="exam-card" onclick="openSeriesListing('math', 'Quantitative Aptitude (Maths)')">
           <div class="exam-icon" style="color:#ff3366;"><i class="fa-solid fa-calculator"></i></div>
-          <h3>Quantitative Math</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Arithmetic & Numerical Formulas</p>
-          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 30 Mins (20 Qs)</span></div>
-        </div>
-
-        <div class="exam-card" onclick="openExamSetup('reasoning', 'Reasoning (तर्कशक्ति)', 20, 20)">
-          <div class="exam-icon" style="color:#e879f9;"><i class="fa-solid fa-puzzle-piece"></i></div>
-          <h3>Reasoning Ability</h3>
-          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Coding-Decoding, Series & Direction</p>
-          <div class="exam-meta"><span><i class="fa-regular fa-clock"></i> 20 Mins (20 Qs)</span></div>
+          <h3>Quantitative Math Tests</h3>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Profit/Loss, Time-Work & Formulas</p>
         </div>
       </div>
     </div>
 
-    <!-- 2. PROFILE VIEW (CUSTOMIZATION, LANGUAGE & TEST HISTORY) -->
-    <div id="screen-profile" class="hidden">
-      <div style="background:var(--surface); border:1.5px solid rgba(0,242,254,0.25); border-radius:20px; padding:30px; text-align:center; margin-bottom:25px;">
-        <div class="profile-avatar-wrap">
-          <img id="prof-avatar-lg" src="" alt="avatar">
-          <label for="avatar-file-input" class="avatar-edit-label" title="Change Profile Picture">
-            <i class="fa-solid fa-camera"></i>
-          </label>
-          <input type="file" id="avatar-file-input" accept="image/*" style="display:none;" onchange="handleAvatarUpload(event)">
+    <!-- 2. SERIES LISTING VIEW (TEST 1, TEST 2, TEST 3...) -->
+    <div id="screen-series" class="hidden">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <div>
+          <h2 id="series-header-title" style="color:var(--primary);">Category Tests</h2>
+          <p style="color:var(--text-muted); font-size:0.85rem;">Apni pasand ka test select karein aur attempt karein:</p>
         </div>
-
-        <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-bottom:6px;">
-          <h2 id="prof-display-name">Candidate Name</h2>
-          <button onclick="editDisplayName()" class="btn-sm" style="background:#263558; color:#fff;"><i class="fa-solid fa-pen"></i> Edit</button>
-        </div>
-        <p id="prof-email" style="color:var(--text-muted); font-size:0.9rem;"></p>
-
-        <div style="margin-top:16px; display:inline-flex; align-items:center; gap:10px; background:#070d1e; padding:6px 14px; border-radius:20px; border:1px solid #23355d;">
-          <span style="font-size:0.85rem; color:#cbd5e1;">Medium / भाषा:</span>
-          <button onclick="setUserLanguageFromProfile('hi')" class="btn-sm" id="btn-prof-hi">हिंदी</button>
-          <button onclick="setUserLanguageFromProfile('en')" class="btn-sm" id="btn-prof-en">English</button>
-        </div>
-
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:12px; margin-top:22px;">
-          <div style="background:#0c1221; padding:14px; border-radius:12px; border:1px solid #1e293b;">Score Points<span style="font-size:1.5rem; font-weight:bold; color:var(--primary); display:block;" id="prof-score-points">0</span></div>
-          <div style="background:#0c1221; padding:14px; border-radius:12px; border:1px solid #1e293b;">Total Tests<span style="font-size:1.5rem; font-weight:bold; color:var(--gold); display:block;" id="prof-total">0</span></div>
-          <div style="background:#0c1221; padding:14px; border-radius:12px; border:1px solid #1e293b;">Qualified<span style="font-size:1.5rem; font-weight:bold; color:var(--green); display:block;" id="prof-won">0</span></div>
-          <div style="background:#0c1221; padding:14px; border-radius:12px; border:1px solid #1e293b;">Failed<span style="font-size:1.5rem; font-weight:bold; color:var(--red); display:block;" id="prof-lost">0</span></div>
-        </div>
-
-        <button class="btn-nav" style="margin-top:24px;" onclick="showDashboard()">Back to Dashboard</button>
+        <button class="btn-nav" onclick="showDashboard()"><i class="fa-solid fa-arrow-left"></i> Back</button>
       </div>
 
-      <div style="background:var(--surface); border:1.5px solid rgba(0,242,254,0.25); border-radius:20px; padding:25px;">
-        <h3 style="color:var(--primary); margin-bottom:16px; display:flex; align-items:center; gap:8px;">
-          <i class="fa-solid fa-clock-rotate-left"></i> Your Past Exam History & Question Review
-        </h3>
-        <div id="history-container">
-          <p style="color:var(--text-muted); font-size:0.9rem;">No tests attempted yet. Attempt exams to track your accuracy.</p>
-        </div>
-      </div>
+      <div id="series-cards-container"></div>
     </div>
 
-    <!-- 3. CBT EXAM SCREEN -->
+    <!-- 3. CBT REAL EXAM ENGINE -->
     <div id="screen-cbt" class="cbt-container hidden">
       <div class="cbt-header">
         <div>
           <h3 id="exam-title">CBT Examination</h3>
           <p style="color:var(--text-muted); font-size:0.85rem;" id="exam-q-counter">Question 1 of 20</p>
         </div>
-        <div class="cbt-timer" id="timer-display"><i class="fa-regular fa-clock"></i> 30:00</div>
+        <div class="cbt-timer" id="timer-display"><i class="fa-regular fa-clock"></i> 20:00</div>
       </div>
 
       <div class="q-text" id="cbt-question-text">Question loading...</div>
@@ -344,15 +216,15 @@
       </div>
     </div>
 
-    <!-- 4. RESULT & REVIEW SCREEN -->
+    <!-- 4. SCORECARD & DETAILED ANSWER KEY REVIEW -->
     <div id="screen-result" class="cbt-container hidden" style="text-align:center;">
       <i class="fa-solid fa-award" style="font-size:4rem; color:var(--gold); margin-bottom:12px;"></i>
       <h2 id="res-heading">Official Scorecard</h2>
       <p id="res-sub" style="margin: 8px 0; font-size: 1.05rem;"></p>
       
       <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:12px; margin:20px 0;">
-        <div style="background:#0c1221; padding:12px; border-radius:12px; border:1px solid #1e293b;">Points Earned<span style="font-size:1.4rem; font-weight:bold; color:var(--primary); display:block;" id="res-points-added">+0</span></div>
-        <div style="background:#0c1221; padding:12px; border-radius:12px; border:1px solid #1e293b;">Score<span style="font-size:1.4rem; font-weight:bold; color:var(--gold); display:block;" id="res-score">0</span></div>
+        <div style="background:#0c1221; padding:12px; border-radius:12px; border:1px solid #1e293b;">Score Points<span style="font-size:1.4rem; font-weight:bold; color:var(--primary); display:block;" id="res-points-added">+0</span></div>
+        <div style="background:#0c1221; padding:12px; border-radius:12px; border:1px solid #1e293b;">Correct / Total<span style="font-size:1.4rem; font-weight:bold; color:var(--gold); display:block;" id="res-score">0</span></div>
         <div style="background:#0c1221; padding:12px; border-radius:12px; border:1px solid #1e293b;">Accuracy<span style="font-size:1.4rem; font-weight:bold; color:#fff; display:block;" id="res-acc">0%</span></div>
         <div style="background:#0c1221; padding:12px; border-radius:12px; border:1px solid #1e293b;">Status<span style="font-size:1.2rem; font-weight:bold; display:block;" id="res-status">PASS</span></div>
       </div>
@@ -369,128 +241,92 @@
       <button class="btn-submit" style="margin-top:25px;" onclick="showDashboard()">Return to Dashboard</button>
     </div>
 
-    <!-- 5. CRASH COURSE VIEW -->
-    <div id="screen-crash-course" class="hidden">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-        <h2><i class="fa-solid fa-book-bookmark" style="color:var(--gold);"></i> Exam Crash Course Notes</h2>
-        <button class="btn-nav" onclick="showDashboard()"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</button>
-      </div>
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:14px;">
-        <div style="background:#0f172a; padding:18px; border-radius:14px; border:1px solid #23355d;">
-          <h4 style="color:var(--green); margin-bottom:8px;">🐪 राजस्थान प्रशासनिक स्थिति (41 जिले & 7 संभाग)</h4>
-          <p style="font-size:0.85rem; color:#cbd5e1; line-height:1.6;">
-            • <b>वर्तमान जिले:</b> राजस्थान में अब कुल <b>41 जिले</b> और <b>7 संभाग</b> हैं।<br>
-            • <b>रद्द जिले (9):</b> दूदू, केकड़ी, शाहपुरा, नीम का थाना, गंगापुर सिटी, जयपुर ग्रामीण, जोधपुर ग्रामीण, अनूपगढ़, सांचौर।<br>
-            • <b>रद्द संभाग (3):</b> सीकर, पाली, बांसवाड़ा।<br>
-            • <b>मान्य 8 नए जिले:</b> बालोतरा, ब्यावर, डीग, डीडवाना-कुचामन, कोटपूतली-बहरोड़, खैरथल-तिजारा, फलौदी, सलूम्बर।<br>
-            • <b>क्षेत्रफल:</b> सबसे बड़ा जिला जैसलमेर एवं सबसे छोटा जिला धौलपुर है।
-          </p>
-        </div>
-        <div style="background:#0f172a; padding:18px; border-radius:14px; border:1px solid #23355d;">
-          <h4 style="color:var(--primary); margin-bottom:8px;">📜 Moolvidhi & Police Law Sections</h4>
-          <p style="font-size:0.85rem; color:#cbd5e1; line-height:1.6;">
-            • Section 154 CrPC: FIR Registration.<br>
-            • Section 41 CrPC: Arrest without warrant.<br>
-            • Section 300 / 302 IPC (BNS Murder): Hatya ka dand.<br>
-            • Section 378 IPC (Theft): Chori ki paribhasha.
-          </p>
-        </div>
-        <div style="background:#0f172a; padding:18px; border-radius:14px; border:1px solid #23355d;">
-          <h4 style="color:var(--gold); margin-bottom:8px;">🏛️ Indian Constitution Key Articles</h4>
-          <p style="font-size:0.85rem; color:#cbd5e1; line-height:1.6;">
-            • Article 14: Equality before Law.<br>
-            • Article 21: Protection of Life and Personal Liberty.<br>
-            • Article 32: Right to Constitutional Remedies.<br>
-            • Article 324: Election Commission of India.
-          </p>
-        </div>
+    <!-- 5. PROFILE SCREEN -->
+    <div id="screen-profile" class="hidden">
+      <div style="background:var(--surface); border:1.5px solid rgba(0,242,254,0.25); border-radius:20px; padding:30px; text-align:center;">
+        <img id="prof-avatar-lg" style="width:90px; height:90px; border-radius:50%; border:3px solid var(--primary); margin-bottom:12px; object-fit:cover;" src="" alt="avatar">
+        <h2 id="prof-display-name">Candidate Name</h2>
+        <p id="prof-email" style="color:var(--text-muted); font-size:0.9rem;"></p>
+        <button class="btn-nav" style="margin-top:24px;" onclick="showDashboard()">Back to Dashboard</button>
       </div>
     </div>
 
   </div>
 
-  <!-- AUTH SCREEN -->
+  <!-- AUTH SCREEN (WITH SECRET PIN ADMIN LOGIN) -->
   <div id="screen-auth" style="max-width:440px; margin:40px auto; padding:0 15px;">
     <div style="background:var(--surface); border:1.5px solid rgba(0,242,254,0.3); border-radius:24px; padding:32px 24px; text-align:center;">
       <h2 style="font-size:1.6rem; font-weight:800; color:#fff;">Student CBT Portal</h2>
-      <p style="color:var(--text-muted); font-size:0.85rem; margin-top:5px;">Login to access official mock tests & subjects</p>
-      
-      <div style="display:flex; background:#070a13; border-radius:10px; padding:4px; margin:20px 0; border:1px solid #1e293b;">
-        <button id="tab-login" style="flex:1; padding:10px; border:none; background:var(--primary); color:#000; font-weight:bold; border-radius:8px; cursor:pointer;" onclick="setAuthTab('login')">Existing Login</button>
-        <button id="tab-signup" style="flex:1; padding:10px; border:none; background:transparent; color:#94a3b8; font-weight:bold; border-radius:8px; cursor:pointer;" onclick="setAuthTab('signup')">Create Account</button>
+      <p style="color:var(--text-muted); font-size:0.85rem; margin-top:5px;">Sign in to access your test series</p>
+
+      <div style="margin:20px 0;">
+        <input type="text" id="cand-name" class="form-input" placeholder="Enter Your Name (Candidate)">
+        <button class="btn-submit" style="width:100%;" onclick="loginDirectCandidate()">Start Practicing</button>
       </div>
 
-      <div id="auth-login-box">
-        <input type="email" id="login-email" style="width:100%; padding:12px; background:#070a13; border:1px solid #23355d; color:#fff; border-radius:10px; margin-bottom:10px;" placeholder="Email Address">
-        <input type="password" id="login-pass" style="width:100%; padding:12px; background:#070a13; border:1px solid #23355d; color:#fff; border-radius:10px; margin-bottom:12px;" placeholder="Password">
-        <button class="btn-submit" style="width:100%;" onclick="handleEmailLogin()">Sign In</button>
-      </div>
-
-      <div id="auth-signup-box" class="hidden">
-        <input type="text" id="signup-name" style="width:100%; padding:12px; background:#070a13; border:1px solid #23355d; color:#fff; border-radius:10px; margin-bottom:10px;" placeholder="Candidate Name">
-        <input type="email" id="signup-email" style="width:100%; padding:12px; background:#070a13; border:1px solid #23355d; color:#fff; border-radius:10px; margin-bottom:10px;" placeholder="Email Address">
-        <input type="password" id="signup-pass" style="width:100%; padding:12px; background:#070a13; border:1px solid #23355d; color:#fff; border-radius:10px; margin-bottom:12px;" placeholder="Password">
-        <button class="btn-submit" style="width:100%;" onclick="handleEmailSignup()">Create Account</button>
-      </div>
-
-      <div style="margin:18px 0; color:#64748b; font-size:0.8rem;">--- OR ---</div>
-      <button onclick="loginWithGoogle()" style="width:100%; background:#fff; color:#000; border:none; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px;">
-        <img width="18" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> Continue with Google
-      </button>
-
+      <!-- Secret Admin PIN Option -->
       <div style="margin-top:22px; padding-top:14px; border-top:1px dashed #23355d;">
         <button onclick="promptSecretAdmin()" style="background:transparent; border:none; color:#64748b; font-size:0.8rem; cursor:pointer; font-weight:bold;">
-          🔒 Admin Secret Testing Login (PIN Protected)
+          🔒 Admin & Testing Logins (PIN Protected)
         </button>
         <div id="guest-access-panel" class="hidden" style="margin-top:12px; display:grid; gap:8px;">
-          <button onclick="loginAsGuest('guest_01', 'Sunil Kumar (VIP Admin)', 'sunil.admin@test.com', 450)" style="background:#131c30; border:1px solid #23355d; color:#00f2fe; padding:10px; border-radius:8px; font-weight:bold; text-align:left; cursor:pointer;">
-            ⭐ <b>Admin ID 1:</b> Sunil Kumar (All Features Access)
+          <button onclick="loginAsAdmin()" style="background:#1c1333; border:1px solid #9d4edd; color:#00f2fe; padding:10px; border-radius:8px; font-weight:bold; text-align:left; cursor:pointer;">
+            👑 <b>Admin:</b> Sunil Kumar (Full Upload Rights)
           </button>
-          <button onclick="loginAsGuest('guest_02', 'Rahul Sharma (SSC Tester)', 'rahul.ssc@test.com', 280)" style="background:#131c30; border:1px solid #23355d; color:#38bdf8; padding:10px; border-radius:8px; font-weight:bold; text-align:left; cursor:pointer;">
-            ⭐ <b>Admin ID 2:</b> Rahul Sharma (SSC & Math Tester)
+          <button onclick="loginAsGuest('guest_01', 'Candidate Tester 1')" style="background:#131c30; border:1px solid #23355d; color:#38bdf8; padding:10px; border-radius:8px; font-weight:bold; text-align:left; cursor:pointer;">
+            👤 <b>Guest ID 1:</b> Testing Student 1
           </button>
-          <button onclick="loginAsGuest('guest_03', 'Priya Singh (SI Tester)', 'priya.si@test.com', 320)" style="background:#131c30; border:1px solid #23355d; color:#a855f7; padding:10px; border-radius:8px; font-weight:bold; text-align:left; cursor:pointer;">
-            ⭐ <b>Admin ID 3:</b> Priya Singh (Police SI & Hindi Tester)
+          <button onclick="loginAsGuest('guest_02', 'Candidate Tester 2')" style="background:#131c30; border:1px solid #23355d; color:#a855f7; padding:10px; border-radius:8px; font-weight:bold; text-align:left; cursor:pointer;">
+            👤 <b>Guest ID 2:</b> Testing Student 2
           </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- EXAM SETUP MODAL -->
-  <div id="exam-modal" class="modal-overlay hidden">
+  <!-- ADMIN: ADD PAPER MODAL WINDOW -->
+  <div id="admin-modal" class="modal-overlay hidden">
     <div class="modal-card">
-      <button onclick="closeExamSetup()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
-      <h3 style="color:var(--primary); margin-bottom:6px;" id="modal-exam-name">Exam Name</h3>
-      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:18px;">Select examination difficulty:</p>
-      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
-        <button class="btn-nav" style="color:var(--green); border:1px solid var(--green);" onclick="finalizeAndStart('easy')">Easy</button>
-        <button class="btn-nav" style="color:var(--gold); border:1px solid var(--gold);" onclick="finalizeAndStart('medium')">Medium</button>
-        <button class="btn-nav" style="color:var(--red); border:1px solid var(--red);" onclick="finalizeAndStart('hard')">Hard</button>
-      </div>
+      <button onclick="closeAdminPaperModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+      <h2 style="color:var(--primary); margin-bottom:12px;"><i class="fa-solid fa-plus-circle"></i> Create New Test Paper</h2>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">Yahan se aap kisi bhi subject me naya Test (Test 1, Test 2..) create kar sakte hain:</p>
+
+      <label style="font-size:0.85rem; color:#cbd5e1;">Select Exam Category:</label>
+      <select id="new-paper-cat" class="form-input">
+        <option value="ssc_cgl">SSC CGL Tier-1</option>
+        <option value="police_si">Police SI (Sub-Inspector)</option>
+        <option value="rrb_ntpc">Railway RRB NTPC</option>
+        <option value="raj_gk">Rajasthan GK (41 Districts)</option>
+        <option value="india_gk">India GK (National)</option>
+        <option value="hindi">Samanya Hindi</option>
+        <option value="math">Quantitative Math</option>
+      </select>
+
+      <label style="font-size:0.85rem; color:#cbd5e1;">Test Paper Title (e.g. Test 1, Test 2, Speed Test 3):</label>
+      <input type="text" id="new-paper-title" class="form-input" placeholder="e.g. Test 1 (Basic Pattern)">
+
+      <label style="font-size:0.85rem; color:#cbd5e1;">Exam Time (Minutes):</label>
+      <input type="number" id="new-paper-time" class="form-input" value="20">
+
+      <hr style="border-color:#23355d; margin:16px 0;">
+      <h3 style="color:var(--gold); margin-bottom:10px;">Add Question 1</h3>
+      <input type="text" id="q-input-text" class="form-input" placeholder="Question Text yahan likhein">
+      <input type="text" id="q-opt-0" class="form-input" placeholder="Option A">
+      <input type="text" id="q-opt-1" class="form-input" placeholder="Option B">
+      <input type="text" id="q-opt-2" class="form-input" placeholder="Option C">
+      <input type="text" id="q-opt-3" class="form-input" placeholder="Option D">
+      
+      <label style="font-size:0.85rem; color:#cbd5e1;">Correct Option Select Karein:</label>
+      <select id="q-correct-idx" class="form-input">
+        <option value="0">Option A</option>
+        <option value="1">Option B</option>
+        <option value="2">Option C</option>
+        <option value="3">Option D</option>
+      </select>
+
+      <button class="btn-submit" style="width:100%;" onclick="saveAdminTestPaper()">Publish Test Paper to Cloud</button>
     </div>
   </div>
-
-  <!-- POPUP MODAL FOR PRIVACY POLICY, TERMS, ABOUT & CONTACT -->
-  <div id="policy-modal" class="modal-overlay hidden">
-    <div class="modal-card">
-      <button onclick="closePolicyModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
-      <h2 id="policy-modal-title" style="color:var(--primary); margin-bottom:14px;">Policy Title</h2>
-      <div id="policy-modal-content" style="color:#cbd5e1; font-size:0.9rem; line-height:1.6; text-align:left;"></div>
-      <button class="btn-nav" style="margin-top:20px; width:100%;" onclick="closePolicyModal()">Close</button>
-    </div>
-  </div>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-links">
-      <a onclick="openPolicyModal('privacy')">Privacy Policy</a>
-      <a onclick="openPolicyModal('terms')">Terms & Conditions</a>
-      <a onclick="openPolicyModal('about')">About Us</a>
-      <a onclick="openPolicyModal('contact')">Contact Us</a>
-    </div>
-    <p style="font-size:0.8rem; color:#64748b;">© PARIKSHA CBT. Designed for Government Competition Aspirants.</p>
-  </footer>
 
   <script>
     // FIREBASE INITIALIZATION
@@ -505,298 +341,327 @@
     };
 
     firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
     const db = firebase.firestore();
 
     let currentUser = null;
-    let currentTest = [];
+    let isAdmin = false;
+    let currentSelectedCategory = '';
+    let currentActiveTest = null;
     let userAnswers = {};
     let currentIndex = 0;
     let timerTotalSeconds = 0;
     let timerInterval = null;
+    let userLang = 'hi';
 
-    let selectedExamType = '';
-    let selectedExamName = '';
-    let selectedQCount = 20;
-    let selectedTimeMinutes = 30;
-    let userLang = localStorage.getItem('user_cbt_lang') || 'hi';
-
-    // DYNAMIC MATH GENERATOR
-    function generateDynamicMath(count, diff) {
-      const list = [];
-      for (let i = 0; i < count; i++) {
-        let cp = (Math.floor(Math.random() * 20) + 10) * (diff === 'hard' ? 120 : 50);
-        let pct = (Math.floor(Math.random() * 6) + 2) * 5;
-        let sp = cp + (cp * pct / 100);
-
-        list.push({
-          q_hi: `यदि किसी वस्तु का क्रय-मूल्य ₹${cp} है और इसे ${pct}% लाभ पर बेचा जाए, तो उसका विक्रय-मूल्य क्या होगा?`,
-          q_en: `If the cost price of an item is ₹${cp} and it is sold at a profit of ${pct}%, what is the selling price?`,
-          o_hi: [`₹${sp}`, `₹${sp + 40}`, `₹${sp - 50}`, `₹${sp + 100}`],
-          o_en: [`₹${sp}`, `₹${sp + 40}`, `₹${sp - 50}`, `₹${sp + 100}`],
-          a: 0
-        });
-      }
-      return list;
-    }
-
-    // UPDATED REAL COMPETITION QUESTION BANK (100% REAL SYLLABUS & 41 DISTRICTS DATA)
-    const masterQuestionBank = {
-      raj_gk: [
+    // DEFAULT QUESTION PAPERS (HAR CATEGORY ME TEST 1, TEST 2..)
+    const localPreloadedPapers = {
+      ssc_cgl: [
         {
-          q_hi: "वर्तमान प्रशासनिक पुनर्गठन के अनुसार राजस्थान में कुल कितने जिले और संभाग हैं?",
-          q_en: "According to the current administrative reorganization, how many districts and divisions are there in Rajasthan?",
-          o_hi: ["41 जिले और 7 संभाग", "50 जिले और 10 संभाग", "33 जिले और 7 संभाग", "45 जिले और 8 संभाग"],
-          o_en: ["41 Districts & 7 Divisions", "50 Districts & 10 Divisions", "33 Districts & 7 Divisions", "45 Districts & 8 Divisions"],
-          a: 0
+          id: "ssc_t1",
+          title: "SSC CGL (Test 1 - Model Paper)",
+          time: 20,
+          questions: [
+            {
+              q: "भारतीय संविधान का कौन सा अनुच्छेद 'विधि के समक्ष समता' (Equality before Law) की गारंटी देता है?",
+              opts: ["अनुच्छेद 14", "अनुच्छेद 19", "अनुच्छेद 21", "अनुच्छेद 32"],
+              a: 0
+            },
+            {
+              q: "भारत के नियंत्रक एवं महालेखापरीक्षक (CAG) की नियुक्ति किस अनुच्छेद के तहत की जाती है?",
+              opts: ["अनुच्छेद 148", "अनुच्छेद 280", "अनुच्छेद 324", "अनुच्छेद 110"],
+              a: 0
+            }
+          ]
         },
         {
-          q_hi: "राजस्थान कैबिनेट द्वारा समीक्षा के बाद किन संभागों को निरस्त (रद्द) किया गया था?",
-          q_en: "Which administrative divisions were dissolved after the cabinet review in Rajasthan?",
-          o_hi: ["सीकर, पाली और बांसवाड़ा", "जयपुर, जोधपुर और बीकानेर", "अजमेर, कोटा और भरतपुर", "उदयपुर और बांसवाड़ा"],
-          o_en: ["Sikar, Pali & Banswara", "Jaipur, Jodhpur & Bikaner", "Ajmer, Kota & Bharatpur", "Udaipur & Banswara"],
-          a: 0
-        },
-        {
-          q_hi: "वर्तमान में राजस्थान का क्षेत्रफल की दृष्टि से सबसे छोटा जिला कौन सा है?",
-          q_en: "At present, which is the smallest district of Rajasthan in terms of land area?",
-          o_hi: ["धौलपुर (Dholpur)", "दूदू", "सलूम्बर", "दौसा"],
-          o_en: ["Dholpur", "Dudu", "Salumber", "Dausa"],
-          a: 0
-        },
-        {
-          q_hi: "निम्नलिखित में से कौन सा नया जिला वर्तमान में राजस्थान में बरकरार (मान्य) रखा गया है?",
-          q_en: "Which of the following new districts has been retained in Rajasthan?",
-          o_hi: ["बालोतरा (Balotra)", "दूदू (Dudu)", "केकड़ी (Kekri)", "अनूपगढ़ (Anupgarh)"],
-          o_en: ["Balotra", "Dudu", "Kekri", "Anupgarh"],
-          a: 0
+          id: "ssc_t2",
+          title: "SSC CGL (Test 2 - Tier-1 Speed Test)",
+          time: 20,
+          questions: [
+            {
+              q: "सिंधु घाटी सभ्यता का प्रसिद्ध बंदरगाह नगर (Port City) कौन सा था?",
+              opts: ["लोथल (Lothal)", "हड़प्पा", "मोहनजोदड़ो", "कालीबंगा"],
+              a: 0
+            },
+            {
+              q: "18वें ब्रिक्स (BRICS) शिखर सम्मेलन 2026 की मेजबानी भारत के किस शहर ने की?",
+              opts: ["नई दिल्ली (New Delhi)", "मुंबई", "बेंगलुरु", "अहमदाबाद"],
+              a: 0
+            }
+          ]
         }
       ],
 
       police_si: [
         {
-          q_hi: "[Police SI] किसी संज्ञेय अपराध (Cognizable Offense) की प्रथम सूचना रिपोर्ट (FIR) किस प्रक्रिया धारा के अंतर्गत दर्ज होती है?",
-          q_en: "[Police SI] Under which procedural section is an FIR for a cognizable offense registered?",
-          o_hi: ["धारा 154 CrPC (BNSS 173)", "धारा 161 CrPC", "धारा 100 CrPC", "धारा 41 CrPC"],
-          o_en: ["Section 154 CrPC (BNSS 173)", "Section 161 CrPC", "Section 100 CrPC", "Section 41 CrPC"],
-          a: 0
+          id: "si_t1",
+          title: "Police SI (Test 1 - Moolvidhi & Police Law)",
+          time: 20,
+          questions: [
+            {
+              q: "[Police SI] किसी संज्ञेय अपराध (Cognizable Offense) की FIR किस प्रक्रिया धारा में दर्ज की जाती है?",
+              opts: ["धारा 154 CrPC (BNSS 173)", "धारा 161 CrPC", "धारा 100 CrPC", "धारा 41 CrPC"],
+              a: 0
+            },
+            {
+              q: "[Police SI] पुलिस अधिकारी बिना वारंट के किसी संदिग्ध व्यक्ति को किस परिस्थिति में सीधे गिरफ्तार कर सकता है?",
+              opts: ["संज्ञेय अपराध घटित होने या संदेह पर", "केवल दीवानी मामलों में", "असंज्ञेय अपराध में बिना मजिस्ट्रेट आदेश", "जमानती मामलों में"],
+              a: 0
+            }
+          ]
         },
         {
-          q_hi: "[Police SI] पुलिस अधिकारी बिना वारंट के किसी संदिग्ध व्यक्ति को किस परिस्थिति में सीधे गिरफ्तार कर सकता है?",
-          q_en: "[Police SI] Under what condition can a police officer arrest a suspect without a warrant?",
-          o_hi: ["संज्ञेय अपराध घटित होने या संदेह पर", "केवल दीवानी मामलों में", "असंज्ञेय अपराध में बिना मजिस्ट्रेट आदेश", "जमानती मामलों में"],
-          o_en: ["In cognizable offense or credible suspicion", "Only in civil disputes", "Non-cognizable without magistrate order", "Bailable cases"],
-          a: 0
-        },
-        {
-          q_hi: "[Police SI] राजस्थान पुलिस का आधिकारिक ध्येय वाक्य (Motto) क्या है?",
-          q_en: "[Police SI] What is the official motto of Rajasthan Police?",
-          o_hi: ["आमजन में विश्वास, अपराधियों में डर", "सेवा, सुरक्षा, शांति", "सत्यमेव जयते", "वीरता और कर्तव्य"],
-          o_en: ["Trust in Public, Fear in Criminals", "Service, Security, Peace", "Satyameva Jayate", "Valor & Duty"],
-          a: 0
+          id: "si_t2",
+          title: "Police SI (Test 2 - Samanya Hindi & Sanvidhan)",
+          time: 20,
+          questions: [
+            {
+              q: "'यथाशक्ति' शब्द में व्याकरण की दृष्टि से कौन सा समास है?",
+              opts: ["अव्ययीभाव समास", "तत्पुरुष समास", "द्वंद्व समास", "कर्मधारय समास"],
+              a: 0
+            },
+            {
+              q: "राजस्थान पुलिस का आधिकारिक ध्येय वाक्य (Motto) क्या है?",
+              opts: ["आमजन में विश्वास, अपराधियों में डर", "सेवा, सुरक्षा, शांति", "सत्यमेव जयते", "वीरता और कर्तव्य"],
+              a: 0
+            }
+          ]
         }
       ],
 
-      raj_current: [
+      raj_gk: [
         {
-          q_hi: "[राजस्थान समसामयिकी] राजस्थान कैबिनेट द्वारा 9 जिलों को निरस्त करने के बाद राज्य में कार्यरत जिलों की कुल वैध संख्या कितनी है?",
-          q_en: "[Rajasthan Current Affairs] Following the dissolution of 9 districts, what is the official count of active districts in Rajasthan?",
-          o_hi: ["41 जिले", "50 जिले", "33 जिले", "48 जिले"],
-          o_en: ["41 Districts", "50 Districts", "33 Districts", "48 Districts"],
-          a: 0
+          id: "raj_t1",
+          title: "Rajasthan GK (Test 1 - 41 Zile & 7 Sambhag)",
+          time: 25,
+          questions: [
+            {
+              q: "वर्तमान प्रशासनिक पुनर्गठन के अनुसार राजस्थान में कुल कितने जिले और संभाग हैं?",
+              opts: ["41 जिले और 7 संभाग", "50 जिले और 10 संभाग", "33 जिले और 7 संभाग", "45 जिले और 8 संभाग"],
+              a: 0
+            },
+            {
+              q: "राजस्थान कैबिनेट द्वारा समीक्षा के बाद किन संभागों को निरस्त (रद्द) किया गया था?",
+              opts: ["सीकर, पाली और बांसवाड़ा", "जयपुर, जोधपुर और बीकानेर", "अजमेर, कोटा और भरतपुर", "उदयपुर और बांसवाड़ा"],
+              a: 0
+            }
+          ]
         },
         {
-          q_hi: "[राजस्थान समसामयिकी] हाल ही में राजस्थान के किस स्वदेशी उत्पाद को भारत सरकार द्वारा भौगोलिक संकेतक (GI Tag) मिला?",
-          q_en: "[Rajasthan Current Affairs] Which indigenous product from Rajasthan was recently conferred the GI Tag?",
-          o_hi: ["नागोरी अश्वगंधा (Nagori Ashwagandha)", "बीकानेरी भुजिया", "सांगानेरी प्रिंट", "मथानिया लाल मिर्च"],
-          o_en: ["Nagori Ashwagandha", "Bikaneri Bhujia", "Sanganeri Print", "Mathania Red Chilli"],
-          a: 0
-        }
-      ],
-
-      india_current: [
-        {
-          q_hi: "[भारत समसामयिकी] 18वें ब्रिक्स (BRICS) शिखर सम्मेलन का आयोजन भारत के किस प्रमुख शहर में किया गया?",
-          q_en: "[India Current Affairs] The 18th BRICS Summit was hosted in which Indian city?",
-          o_hi: ["नई दिल्ली (New Delhi)", "मुंबई", "बेंगलुरु", "अहमदाबाद"],
-          o_en: ["New Delhi", "Mumbai", "Bengaluru", "Ahmedabad"],
-          a: 0
-        },
-        {
-          q_hi: "[भारत समसामयिकी] भारतीय रिज़र्व बैंक (RBI) द्वारा हाल ही में लॉन्च किए गए वित्तीय धोखाधड़ी रोकथाम सिस्टम का नाम क्या है?",
-          q_en: "[India Current Affairs] What is the name of RBI's new financial fraud prevention platform?",
-          o_hi: ["म्यूलेहंटर (MuleHunter AI)", "साइबर सुरक्षा 2.0", "प्रहरी शील्ड", "डिजिटल रक्षा"],
-          o_en: ["MuleHunter AI", "Cyber Suraksha 2.0", "Prahari Shield", "Digital Raksha"],
-          a: 0
+          id: "raj_t2",
+          title: "Rajasthan GK (Test 2 - Itihas & Geography)",
+          time: 25,
+          questions: [
+            {
+              q: "वर्तमान में राजस्थान का क्षेत्रफल की दृष्टि से सबसे छोटा जिला कौन सा है?",
+              opts: ["धौलपुर (Dholpur)", "दूदू", "सलूम्बर", "दौसा"],
+              a: 0
+            },
+            {
+              q: "निम्नलिखित में से कौन सा नया जिला वर्तमान में राजस्थान में बरकरार (मान्य) रखा गया है?",
+              opts: ["बालोतरा (Balotra)", "दूदू (Dudu)", "केकड़ी (Kekri)", "अनूपगढ़ (Anupgarh)"],
+              a: 0
+            }
+          ]
         }
       ],
 
       india_gk: [
         {
-          q_hi: "वर्तमान में भारत में कुल कितने राज्य और केंद्र शासित प्रदेश (UTs) विद्यमान हैं?",
-          q_en: "Presently, how many States and Union Territories (UTs) are there in India?",
-          o_hi: ["28 राज्य और 8 UTs", "29 राज्य और 7 UTs", "28 राज्य और 9 UTs", "29 राज्य और 8 UTs"],
-          o_en: ["28 States & 8 UTs", "29 States & 7 UTs", "28 States & 9 UTs", "29 States & 8 UTs"],
-          a: 0
-        },
-        {
-          q_hi: "भारत के नए संसद भवन के मुख्य लोकसभा कक्ष की थीम किस राष्ट्रीय प्रतीक पर आधारित है?",
-          q_en: "The Lok Sabha chamber in India's new Parliament Building is themed on which national symbol?",
-          o_hi: ["मयूर (Peacock)", "कमल (Lotus)", "बाघ (Tiger)", "बरगद (Banyan)"],
-          o_en: ["Peacock", "Lotus", "Tiger", "Banyan"],
-          a: 0
+          id: "ind_t1",
+          title: "India GK (Test 1 - National Polity & Map)",
+          time: 20,
+          questions: [
+            {
+              q: "वर्तमान में भारत में कुल कितने राज्य और केंद्र शासित प्रदेश (UTs) विद्यमान हैं?",
+              opts: ["28 राज्य और 8 UTs", "29 राज्य और 7 UTs", "28 राज्य और 9 UTs", "29 राज्य और 8 UTs"],
+              a: 0
+            }
+          ]
         }
       ],
 
       hindi: [
         {
-          q_hi: "'परोपकार' शब्द में व्याकरण की दृष्टि से कौन सी संधि है?",
-          q_en: "Which grammatical Sandhi is present in the Hindi word 'Paropkar'?",
-          o_hi: ["गुण संधि", "वृद्धि संधि", "दीर्घ संधि", "यण संधि"],
-          o_en: ["Guna Sandhi", "Vriddhi Sandhi", "Dirgha Sandhi", "Yan Sandhi"],
-          a: 0
-        },
-        {
-          q_hi: "'यथाशक्ति' शब्द में कौन सा समास पाया जाता है?",
-          q_en: "Which compound (Samas) is present in the word 'Yathashakti'?",
-          o_hi: ["अव्ययीभाव समास", "तत्पुरुष समास", "द्वंद्व समास", "कर्मधारय"],
-          o_en: ["Avyayibhav Samas", "Tatpurush Samas", "Dvandva Samas", "Karmadharaya"],
-          a: 0
+          id: "hin_t1",
+          title: "Samanya Hindi (Test 1 - Sandhi & Vyakaran)",
+          time: 20,
+          questions: [
+            {
+              q: "'परोपकार' शब्द में व्याकरण की दृष्टि से कौन सी संधि है?",
+              opts: ["गुण संधि", "वृद्धि संधि", "दीर्घ संधि", "यण संधि"],
+              a: 0
+            }
+          ]
         }
       ],
 
-      english: [
+      math: [
         {
-          q_hi: "Choose the correct SYNONYM of the word 'METICULOUS':",
-          q_en: "Choose the correct SYNONYM of the word 'METICULOUS':",
-          o_hi: ["Careful and Thorough", "Careless", "Rapid", "Lazy"],
-          o_en: ["Careful and Thorough", "Careless", "Rapid", "Lazy"],
-          a: 0
-        },
-        {
-          q_hi: "Choose the correct ANTONYM of the word 'TRANSPARENT':",
-          q_en: "Choose the correct ANTONYM of the word 'TRANSPARENT':",
-          o_hi: ["Opaque", "Lucid", "Clear", "Bright"],
-          o_en: ["Opaque", "Lucid", "Clear", "Bright"],
-          a: 0
-        }
-      ],
-
-      reasoning: [
-        {
-          q_hi: "यदि 'ROSE' को 'ILHV' लिखा जाता है, तो 'LEAF' को क्या लिखा जाएगा?",
-          q_en: "If 'ROSE' is coded as 'ILHV', how is 'LEAF' coded?",
-          o_hi: ["OVZU", "OVRU", "OVSV", "NWST"],
-          o_en: ["OVZU", "OVRU", "OVSV", "NWST"],
-          a: 0
-        }
-      ],
-
-      ssc_cgl: [
-        {
-          q_hi: "[SSC CGL] भारतीय संविधान का कौन सा अनुच्छेद 'विधि के समक्ष समता' (Equality before Law) की गारंटी देता है?",
-          q_en: "[SSC CGL] Which Article of the Constitution guarantees 'Equality before Law'?",
-          o_hi: ["अनुच्छेद 14", "अनुच्छेद 19", "अनुच्छेद 21", "अनुच्छेद 32"],
-          o_en: ["Article 14", "Article 19", "Article 21", "Article 32"],
-          a: 0
-        }
-      ],
-
-      upsc_pre: [
-        {
-          q_hi: "[UPSC GS-1] 'मोंट्रेक्स रिकॉर्ड' (Montreux Record) अंतरराष्ट्रीय स्तर पर किससे संबंधित है?",
-          q_en: "[UPSC GS-1] The 'Montreux Record' is a register associated with:",
-          o_hi: ["रामसर संकटग्रस्त आर्द्रभूमियां", "लुप्तप्राय प्रजातियां", "जैव विविधता", "ओजोन परत"],
-          o_en: ["Ramsar Wetland Sites", "Endangered Species", "Biodiversity", "Ozone Layer"],
-          a: 0
+          id: "math_t1",
+          title: "Quantitative Math (Test 1 - Arithmetic)",
+          time: 20,
+          questions: [
+            {
+              q: "यदि किसी वस्तु का क्रय-मूल्य ₹500 है और इसे 20% लाभ पर बेचा जाए, तो विक्रय-मूल्य क्या होगा?",
+              opts: ["₹600", "₹550", "₹650", "₹700"],
+              a: 0
+            }
+          ]
         }
       ],
 
       rrb_ntpc: [
         {
-          q_hi: "[RRB NTPC] भारत में पहली रेलगाड़ी 1853 में बोरीबंदर (मुंबई) से कहाँ तक चलाई गई थी?",
-          q_en: "[RRB NTPC] In 1853, India's first passenger train operated to:",
-          o_hi: ["ठाणे (Thane)", "कल्याण", "पुणे", "सूरत"],
-          o_en: ["Thane", "Kalyan", "Pune", "Surat"],
-          a: 0
+          id: "ntpc_t1",
+          title: "RRB NTPC (Test 1 - Stage-1 CBT)",
+          time: 20,
+          questions: [
+            {
+              q: "भारत में पहली रेलगाड़ी 1853 में बोरीबंदर (मुंबई) से कहाँ तक चलाई गई थी?",
+              opts: ["ठाणे (Thane)", "कल्याण", "पुणे", "सूरत"],
+              a: 0
+            }
+          ]
         }
       ]
     };
 
-    function shuffle(arr) {
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-      return arr;
-    }
-
-    function randomizeItem(q) {
-      const allOpts = [...q.o_hi];
-      const correctVal = allOpts[q.a];
-      const shuffledOpts = shuffle([...allOpts]);
-      return {
-        q_hi: q.q_hi,
-        q_en: q.q_en,
-        o_hi: shuffledOpts,
-        o_en: shuffledOpts,
-        a: shuffledOpts.indexOf(correctVal)
+    // AUTHENTICATION & LOGIN LOGIC
+    function loginDirectCandidate() {
+      const name = document.getElementById("cand-name").value.trim() || "Candidate";
+      currentUser = {
+        name: name,
+        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=00f2fe&color=000`
       };
+      isAdmin = false;
+      initUserSession();
     }
 
-    function getExamQuestions(type, count, diff) {
-      if (type === 'math') return generateDynamicMath(count, diff);
+    function promptSecretAdmin() {
+      const pin = prompt("Admin Secret Security PIN:");
+      if (pin === "7890") {
+        document.getElementById("guest-access-panel").classList.remove("hidden");
+        alert("✅ Master Admin & Testing Logins Unlocked!");
+      } else if (pin !== null) {
+        alert("❌ Galat Security PIN!");
+      }
+    }
 
-      if (type === 'ssc_cgl') {
-        const p1 = masterQuestionBank.ssc_cgl.map(q => randomizeItem(q));
-        const p2 = masterQuestionBank.english.map(q => randomizeItem(q));
-        const p3 = masterQuestionBank.reasoning.map(q => randomizeItem(q));
-        const p4 = masterQuestionBank.india_current.map(q => randomizeItem(q));
-        const p5 = generateDynamicMath(6, diff);
-        let res = shuffle([...p1, ...p2, ...p3, ...p4, ...p5]);
-        while(res.length < count) res = res.concat(res);
-        return res.slice(0, count);
+    function loginAsAdmin() {
+      currentUser = {
+        name: "Sunil Kumar (Admin)",
+        avatar: "https://ui-avatars.com/api/?name=Sunil+Kumar&background=9d4edd&color=fff"
+      };
+      isAdmin = true;
+      initUserSession();
+    }
+
+    function loginAsGuest(id, name) {
+      currentUser = {
+        name: name,
+        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=00f59b&color=000`
+      };
+      isAdmin = false;
+      initUserSession();
+    }
+
+    function initUserSession() {
+      document.getElementById("screen-auth").classList.add("hidden");
+      document.getElementById("main-content").classList.remove("hidden");
+      document.getElementById("nav-profile-pill").classList.remove("hidden");
+      document.getElementById("logout-btn").classList.remove("hidden");
+      document.getElementById("header-name").innerText = currentUser.name.split(" ")[0];
+      document.getElementById("header-avatar").src = currentUser.avatar;
+
+      if (isAdmin) {
+        document.getElementById("admin-banner").classList.remove("hidden");
+        document.getElementById("admin-action-btn").classList.remove("hidden");
+      }
+      showDashboard();
+    }
+
+    function logout() {
+      location.reload();
+    }
+
+    // DASHBOARD & SERIES LISTING (TEST 1, TEST 2, TEST 3)
+    function hideAll() {
+      ["screen-dashboard", "screen-series", "screen-cbt", "screen-result", "screen-profile"].forEach(id => {
+        document.getElementById(id).classList.add("hidden");
+      });
+    }
+
+    function showDashboard() {
+      hideAll();
+      document.getElementById("screen-dashboard").classList.remove("hidden");
+    }
+
+    function openProfileView() {
+      hideAll();
+      document.getElementById("screen-profile").classList.remove("hidden");
+      document.getElementById("prof-display-name").innerText = currentUser.name;
+      document.getElementById("prof-avatar-lg").src = currentUser.avatar;
+    }
+
+    async function openSeriesListing(catKey, catTitle) {
+      currentSelectedCategory = catKey;
+      document.getElementById("series-header-title").innerText = `${catTitle} - Test Series`;
+      
+      const container = document.getElementById("series-cards-container");
+      container.innerHTML = `<p style="color:#94a3b8;">Loading available test papers...</p>`;
+      hideAll();
+      document.getElementById("screen-series").classList.remove("hidden");
+
+      // 1. Fetch default papers
+      let papers = localPreloadedPapers[catKey] ? [...localPreloadedPapers[catKey]] : [];
+
+      // 2. Fetch admin created papers from Firestore
+      try {
+        const snap = await db.collection("custom_tests").where("category", "==", catKey).get();
+        snap.forEach(doc => {
+          papers.push(doc.data());
+        });
+      } catch(e) {
+        console.log("Firestore read:", e);
       }
 
-      if (type === 'police_si') {
-        const p1 = masterQuestionBank.police_si.map(q => randomizeItem(q));
-        const p2 = masterQuestionBank.hindi.map(q => randomizeItem(q));
-        const p3 = masterQuestionBank.raj_gk.map(q => randomizeItem(q));
-        const p4 = masterQuestionBank.raj_current.map(q => randomizeItem(q));
-        let res = shuffle([...p1, ...p2, ...p3, ...p4]);
-        while(res.length < count) res = res.concat(res);
-        return res.slice(0, count);
+      container.innerHTML = "";
+      if (papers.length === 0) {
+        container.innerHTML = `<p style="color:#94a3b8;">Is category me abhi koi paper uplabdh nahi hai. Admin jald hi add karenge.</p>`;
+        return;
       }
 
-      let pool = masterQuestionBank[type] || masterQuestionBank.india_gk;
-      let res = shuffle([...pool]).map(item => randomizeItem(item));
-      while(res.length < count) {
-        res = res.concat(shuffle([...pool]).map(item => randomizeItem(item)));
-      }
-      return res.slice(0, count);
+      papers.forEach((test, idx) => {
+        const item = document.createElement("div");
+        item.className = "series-item";
+        item.innerHTML = `
+          <div>
+            <h3 style="color:#fff; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
+              <i class="fa-solid fa-file-lines" style="color:var(--primary);"></i> ${test.title}
+            </h3>
+            <p style="color:var(--text-muted); font-size:0.85rem; margin-top:4px;">
+              <i class="fa-regular fa-circle-question"></i> ${test.questions.length} Questions | <i class="fa-regular fa-clock"></i> ${test.time} Minutes
+            </p>
+          </div>
+          <div>
+            <button class="btn-submit" onclick="startSpecificTest(${idx})">Start Test <i class="fa-solid fa-play"></i></button>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+
+      window.activeCategoryPapers = papers;
     }
 
-    function openExamSetup(type, name, qCount, minutes) {
-      selectedExamType = type;
-      selectedExamName = name;
-      selectedQCount = qCount;
-      selectedTimeMinutes = minutes;
-      document.getElementById("modal-exam-name").innerText = name;
-      document.getElementById("exam-modal").classList.remove("hidden");
-    }
-
-    function closeExamSetup() {
-      document.getElementById("exam-modal").classList.add("hidden");
-    }
-
-    function finalizeAndStart(diff) {
-      closeExamSetup();
-      currentTest = getExamQuestions(selectedExamType, selectedQCount, diff);
+    // CBT ENGINE (ATTEMPTING SELECTED TEST)
+    function startSpecificTest(paperIndex) {
+      currentActiveTest = window.activeCategoryPapers[paperIndex];
       userAnswers = {};
       currentIndex = 0;
-      timerTotalSeconds = selectedTimeMinutes * 60;
+      timerTotalSeconds = currentActiveTest.time * 60;
 
-      document.getElementById("exam-title").innerText = `${selectedExamName} [${diff.toUpperCase()}]`;
+      document.getElementById("exam-title").innerText = currentActiveTest.title;
       hideAll();
       document.getElementById("screen-cbt").classList.remove("hidden");
       renderQuestion();
@@ -804,16 +669,14 @@
     }
 
     function renderQuestion() {
-      const q = currentTest[currentIndex];
-      const isHi = userLang === 'hi';
-      document.getElementById("exam-q-counter").innerText = `Question ${currentIndex + 1} / ${currentTest.length}`;
-      document.getElementById("cbt-question-text").innerText = `${currentIndex + 1}. ${isHi ? q.q_hi : q.q_en}`;
+      const q = currentActiveTest.questions[currentIndex];
+      document.getElementById("exam-q-counter").innerText = `Question ${currentIndex + 1} / ${currentActiveTest.questions.length}`;
+      document.getElementById("cbt-question-text").innerText = `${currentIndex + 1}. ${q.q}`;
 
       const box = document.getElementById("cbt-options-box");
       box.innerHTML = "";
-      const opts = isHi ? q.o_hi : q.o_en;
 
-      opts.forEach((opt, idx) => {
+      q.opts.forEach((opt, idx) => {
         const btn = document.createElement("button");
         btn.className = "cbt-opt" + (userAnswers[currentIndex] === idx ? " selected" : "");
         btn.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
@@ -825,11 +688,11 @@
       });
 
       document.getElementById("btn-prev").disabled = currentIndex === 0;
-      document.getElementById("btn-next").style.display = (currentIndex === currentTest.length - 1) ? "none" : "inline-block";
+      document.getElementById("btn-next").style.display = (currentIndex === currentActiveTest.questions.length - 1) ? "none" : "inline-block";
     }
 
     function nextQuestion() {
-      if (currentIndex < currentTest.length - 1) { currentIndex++; renderQuestion(); }
+      if (currentIndex < currentActiveTest.questions.length - 1) { currentIndex++; renderQuestion(); }
     }
     function prevQuestion() {
       if (currentIndex > 0) { currentIndex--; renderQuestion(); }
@@ -844,82 +707,45 @@
         document.getElementById("timer-display").innerHTML = `<i class="fa-regular fa-clock"></i> ${m}:${s < 10 ? '0' : ''}${s}`;
         if (timerTotalSeconds <= 0) {
           clearInterval(timerInterval);
-          alert("Time Out! Exam automatically submitted.");
+          alert("Time Out! Exam submitted.");
           submitExam();
         }
       }, 1000);
     }
 
-    async function submitExam() {
+    // SUBMISSION & REVIEW SHEET
+    function submitExam() {
       clearInterval(timerInterval);
       let correct = 0;
-      let wrong = 0;
-      let unattempted = 0;
+      let total = currentActiveTest.questions.length;
 
-      currentTest.forEach((item, idx) => {
-        if (userAnswers[idx] === undefined) unattempted++;
-        else if (userAnswers[idx] === item.a) correct++;
-        else wrong++;
+      currentActiveTest.questions.forEach((item, idx) => {
+        if (userAnswers[idx] === item.a) correct++;
       });
 
-      let total = currentTest.length;
       let pts = correct * 10;
-      currentUser.scorePoints = (currentUser.scorePoints || 0) + pts;
-      currentUser.totalTests = (currentUser.totalTests || 0) + 1;
       let passed = (correct / total) >= 0.5;
 
-      if (passed) currentUser.cleared = (currentUser.cleared || 0) + 1;
-      else currentUser.failed = (currentUser.failed || 0) + 1;
-
-      const testRecord = {
-        examName: selectedExamName,
-        date: new Date().toLocaleDateString('en-GB'),
-        total: total,
-        correct: correct,
-        wrong: wrong,
-        unattempted: unattempted,
-        points: pts,
-        passed: passed,
-        paperData: currentTest,
-        userPicks: userAnswers
-      };
-
-      if (!currentUser.testHistory) currentUser.testHistory = [];
-      currentUser.testHistory.unshift(testRecord);
-
-      try {
-        await db.collection("candidates").doc(currentUser.uid).update({
-          scorePoints: currentUser.scorePoints,
-          totalTests: currentUser.totalTests,
-          cleared: currentUser.cleared,
-          failed: currentUser.failed,
-          testHistory: currentUser.testHistory
-        });
-      } catch (e) {
-        console.error("Firestore error:", e);
-      }
-
       document.getElementById("res-heading").innerText = passed ? "🎉 EXAM QUALIFIED!" : "❌ RESULT: NOT QUALIFIED";
-      document.getElementById("res-sub").innerText = `Total Questions: ${total} | Correct: ${correct} | Wrong: ${wrong}`;
+      document.getElementById("res-sub").innerText = `${currentActiveTest.title} | Total Questions: ${total} | Sahi Uttar: ${correct}`;
       document.getElementById("res-points-added").innerText = `+${pts}`;
       document.getElementById("res-score").innerText = `${correct} / ${total}`;
       document.getElementById("res-acc").innerText = Math.round((correct / total) * 100) + "%";
-      document.getElementById("res-status").innerText = passed ? "QUALIFIED" : "FAILED";
+      document.getElementById("res-status").innerText = passed ? "PASSED" : "FAILED";
       document.getElementById("res-status").style.color = passed ? "var(--green)" : "var(--red)";
 
-      renderReviewCards(currentTest, userAnswers);
+      renderReviewCards();
       hideAll();
       document.getElementById("screen-result").classList.remove("hidden");
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function renderReviewCards(testPaper, picks) {
+    function renderReviewCards() {
       const container = document.getElementById("review-cards-container");
       container.innerHTML = "";
-      const isHi = userLang === 'hi';
 
-      testPaper.forEach((item, idx) => {
-        const userChoice = picks[idx];
+      currentActiveTest.questions.forEach((item, idx) => {
+        const userChoice = userAnswers[idx];
         const correctChoice = item.a;
         const isAns = userChoice !== undefined;
         const isCorr = isAns && userChoice === correctChoice;
@@ -933,8 +759,7 @@
                     : `<span class="status-pill fail"><i class="fa-solid fa-circle-xmark"></i> Galat Uttar (0 Pts)</span>`);
 
         let optHtml = "";
-        const opts = isHi ? item.o_hi : item.o_en;
-        opts.forEach((opt, oIdx) => {
+        item.opts.forEach((opt, oIdx) => {
           let cls = "review-opt-item";
           let tag = "";
           if (oIdx === correctChoice) {
@@ -950,318 +775,69 @@
 
         card.innerHTML = `
           ${badge}
-          <div style="font-size:1.05rem; font-weight:700; margin-bottom:10px;">${idx + 1}. ${isHi ? item.q_hi : item.q_en}</div>
+          <div style="font-size:1.05rem; font-weight:700; margin-bottom:10px;">${idx + 1}. ${item.q}</div>
           <div>${optHtml}</div>
         `;
         container.appendChild(card);
       });
     }
 
-    // PROFILE MANAGEMENT
-    async function editDisplayName() {
-      const newName = prompt("Naya Display Name darz karein:", currentUser.displayName);
-      if (newName && newName.trim().length > 0) {
-        currentUser.displayName = newName.trim();
-        document.getElementById("prof-display-name").innerText = currentUser.displayName;
-        document.getElementById("header-name").innerText = currentUser.displayName.split(" ")[0];
-        try {
-          await db.collection("candidates").doc(currentUser.uid).update({ displayName: currentUser.displayName });
-        } catch(e) {}
-      }
+    // ADMIN ACTIONS: CREATE AND UPLOAD QUESTIONS
+    function openAdminPaperModal() {
+      document.getElementById("admin-modal").classList.remove("hidden");
     }
 
-    function handleAvatarUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+    function closeAdminPaperModal() {
+      document.getElementById("admin-modal").classList.add("hidden");
+    }
 
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const base64Img = e.target.result;
-        currentUser.photoURL = base64Img;
-        document.getElementById("prof-avatar-lg").src = base64Img;
-        document.getElementById("header-avatar").src = base64Img;
+    async function saveAdminTestPaper() {
+      const cat = document.getElementById("new-paper-cat").value;
+      const title = document.getElementById("new-paper-title").value.trim();
+      const time = parseInt(document.getElementById("new-paper-time").value) || 20;
 
-        try {
-          await db.collection("candidates").doc(currentUser.uid).update({ photoURL: base64Img });
-          alert("Profile picture successfully updated!");
-        } catch (err) {
-          console.error("Avatar save error:", err);
-        }
+      const qText = document.getElementById("q-input-text").value.trim();
+      const o0 = document.getElementById("q-opt-0").value.trim();
+      const o1 = document.getElementById("q-opt-1").value.trim();
+      const o2 = document.getElementById("q-opt-2").value.trim();
+      const o3 = document.getElementById("q-opt-3").value.trim();
+      const correctIdx = parseInt(document.getElementById("q-correct-idx").value);
+
+      if (!title || !qText || !o0 || !o1) {
+        return alert("Kripya Test Title aur Question Options poora bharein!");
+      }
+
+      const newPaperPayload = {
+        category: cat,
+        title: title,
+        time: time,
+        createdAt: new Date().toISOString(),
+        questions: [
+          {
+            q: qText,
+            opts: [o0, o1, o2 || "None", o3 || "All"],
+            a: correctIdx
+          }
+        ]
       };
-      reader.readAsDataURL(file);
-    }
 
-    async function setUserLanguageFromProfile(lang) {
-      userLang = lang;
-      localStorage.setItem('user_cbt_lang', lang);
-      document.getElementById("btn-active-lang").innerText = userLang === 'hi' ? "🌐 हिंदी" : "🌐 English";
-      updateProfileLangButtons();
       try {
-        await db.collection("candidates").doc(currentUser.uid).update({ preferredLang: lang });
-      } catch(e) {}
-    }
-
-    function updateProfileLangButtons() {
-      if (userLang === 'hi') {
-        document.getElementById("btn-prof-hi").style.background = "var(--primary)";
-        document.getElementById("btn-prof-hi").style.color = "#000";
-        document.getElementById("btn-prof-en").style.background = "#263558";
-        document.getElementById("btn-prof-en").style.color = "#fff";
-      } else {
-        document.getElementById("btn-prof-en").style.background = "var(--primary)";
-        document.getElementById("btn-prof-en").style.color = "#000";
-        document.getElementById("btn-prof-hi").style.background = "#263558";
-        document.getElementById("btn-prof-hi").style.color = "#fff";
+        await db.collection("custom_tests").add(newPaperPayload);
+        alert(`✅ Test Paper "${title}" safaltapoorvak upload ho gaya! Ab sabhi candidates ise de sakte hain.`);
+        closeAdminPaperModal();
+        // Clear Inputs
+        document.getElementById("new-paper-title").value = "";
+        document.getElementById("q-input-text").value = "";
+        document.getElementById("q-opt-0").value = "";
+        document.getElementById("q-opt-1").value = "";
+      } catch (err) {
+        alert("Error saving test: " + err.message);
       }
-    }
-
-    function renderHistoryList() {
-      const box = document.getElementById("history-container");
-      box.innerHTML = "";
-
-      if (!currentUser.testHistory || currentUser.testHistory.length === 0) {
-        box.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">No tests attempted yet.</p>`;
-        return;
-      }
-
-      currentUser.testHistory.forEach((rec, idx) => {
-        const item = document.createElement("div");
-        item.className = "history-card";
-        item.innerHTML = `
-          <div>
-            <div class="history-title">${rec.examName}</div>
-            <div class="history-meta">Date: ${rec.date} | Total Qs: ${rec.total} | Correct: <b style="color:var(--green);">${rec.correct}</b> | Wrong: <b style="color:var(--red);">${rec.wrong}</b> | Unattempted: <b style="color:var(--gold);">${rec.unattempted}</b></div>
-          </div>
-          <div style="display:flex; align-items:center; gap:12px;">
-            <div class="history-score" style="color:${rec.passed ? 'var(--green)' : 'var(--red)'};">${rec.passed ? 'PASSED' : 'FAILED'} (+${rec.points} Pts)</div>
-            <button class="btn-sm" style="background:#00f2fe; color:#000;" onclick="reviewPastTest(${idx})">View Paper</button>
-          </div>
-        `;
-        box.appendChild(item);
-      });
-    }
-
-    function reviewPastTest(historyIndex) {
-      const rec = currentUser.testHistory[historyIndex];
-      if (!rec) return;
-
-      document.getElementById("res-heading").innerText = `Review: ${rec.examName}`;
-      document.getElementById("res-sub").innerText = `Date: ${rec.date} | Correct: ${rec.correct} | Wrong: ${rec.wrong} | Unattempted: ${rec.unattempted}`;
-      document.getElementById("res-points-added").innerText = `+${rec.points}`;
-      document.getElementById("res-score").innerText = `${rec.correct} / ${rec.total}`;
-      document.getElementById("res-acc").innerText = Math.round((rec.correct / rec.total) * 100) + "%";
-      document.getElementById("res-status").innerText = rec.passed ? "QUALIFIED" : "FAILED";
-      document.getElementById("res-status").style.color = rec.passed ? "var(--green)" : "var(--red)";
-
-      renderReviewCards(rec.paperData, rec.userPicks);
-      hideAll();
-      document.getElementById("screen-result").classList.remove("hidden");
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // NAVIGATION
-    function hideAll() {
-      ["screen-dashboard", "screen-cbt", "screen-result", "screen-profile", "screen-crash-course"].forEach(id => {
-        document.getElementById(id).classList.add("hidden");
-      });
-    }
-
-    function showDashboard() {
-      hideAll();
-      document.getElementById("screen-dashboard").classList.remove("hidden");
-      document.getElementById("dash-score-points").innerText = currentUser ? (currentUser.scorePoints || 0) : 0;
-    }
-
-    function openCrashCourseView() {
-      hideAll();
-      document.getElementById("screen-crash-course").classList.remove("hidden");
-    }
-
-    function openProfileView() {
-      hideAll();
-      document.getElementById("screen-profile").classList.remove("hidden");
-      document.getElementById("prof-display-name").innerText = currentUser.displayName;
-      document.getElementById("prof-email").innerText = currentUser.email;
-      document.getElementById("prof-avatar-lg").src = currentUser.photoURL;
-      document.getElementById("prof-score-points").innerText = currentUser.scorePoints || 0;
-      document.getElementById("prof-total").innerText = currentUser.totalTests || 0;
-      document.getElementById("prof-won").innerText = currentUser.cleared || 0;
-      document.getElementById("prof-lost").innerText = currentUser.failed || 0;
-      updateProfileLangButtons();
-      renderHistoryList();
-    }
-
-    // POLICY MODALS
-    function openPolicyModal(type) {
-      const modal = document.getElementById("policy-modal");
-      const title = document.getElementById("policy-modal-title");
-      const content = document.getElementById("policy-modal-content");
-
-      if (type === 'privacy') {
-        title.innerText = "Privacy Policy";
-        content.innerHTML = `
-          <p>At <b>PARIKSHA CBT</b>, we prioritize the privacy of our candidates and students:</p><br>
-          <p><b>1. Information Collection:</b> We collect candidate names, email addresses, profile avatars, and test performance data strictly for login verification, test history tracking, and leaderboards.</p><br>
-          <p><b>2. Data Protection:</b> Your email and personal scores are secured using Google Cloud Firestore encryption and will never be sold or shared.</p><br>
-          <p><b>3. Cookies & Advertising:</b> We may partner with third-party advertising partners like Google AdSense to serve non-intrusive educational advertisements.</p>
-        `;
-      } else if (type === 'terms') {
-        title.innerText = "Terms & Conditions";
-        content.innerHTML = `
-          <p><b>1. Fair Usage:</b> This mock test engine is intended for educational preparation and self-assessment for competitive examinations.</p><br>
-          <p><b>2. Prohibited Activities:</b> Any attempt to alter questions, inject malicious scripts, or scrape test databases is strictly forbidden.</p>
-        `;
-      } else if (type === 'about') {
-        title.innerText = "About Us";
-        content.innerHTML = `
-          <p><b>PARIKSHA CBT</b> is an open mock examination initiative designed to empower aspirants preparing for competitive examinations (SSC, Railway NTPC, Police SI, UPSC, Rajasthan 41-Districts Reorganized Services).</p>
-        `;
-      } else if (type === 'contact') {
-        title.innerText = "Contact Us";
-        content.innerHTML = `
-          <p>📧 <b>Official Support Email:</b> support@parikshacbt.edu.in</p><br>
-          <p>🌐 <b>Developer Desk:</b> PARIKSHA CBT Technical Team, Rajasthan, India</p>
-        `;
-      }
-      modal.classList.remove("hidden");
-    }
-
-    function closePolicyModal() {
-      document.getElementById("policy-modal").classList.add("hidden");
-    }
-
-    // AUTH ACTIONS
-    function setAuthTab(mode) {
-      if (mode === 'login') {
-        document.getElementById("tab-login").style.background = "var(--primary)";
-        document.getElementById("tab-login").style.color = "#000";
-        document.getElementById("tab-signup").style.background = "transparent";
-        document.getElementById("tab-signup").style.color = "#94a3b8";
-        document.getElementById("auth-login-box").classList.remove("hidden");
-        document.getElementById("auth-signup-box").classList.add("hidden");
-      } else {
-        document.getElementById("tab-signup").style.background = "var(--primary)";
-        document.getElementById("tab-signup").style.color = "#000";
-        document.getElementById("tab-login").style.background = "transparent";
-        document.getElementById("tab-login").style.color = "#94a3b8";
-        document.getElementById("auth-signup-box").classList.remove("hidden");
-        document.getElementById("auth-login-box").classList.add("hidden");
-      }
-    }
-
-    async function handleEmailLogin() {
-      const email = document.getElementById("login-email").value.trim();
-      const pass = document.getElementById("login-pass").value.trim();
-      if (!email || !pass) return alert("Fill details!");
-      try { await auth.signInWithEmailAndPassword(email, pass); } catch (e) { alert(e.message); }
-    }
-
-    async function handleEmailSignup() {
-      const name = document.getElementById("signup-name").value.trim();
-      const email = document.getElementById("signup-email").value.trim();
-      const pass = document.getElementById("signup-pass").value.trim();
-      if (!name || !email || !pass) return alert("Fill details!");
-      try {
-        const cred = await auth.createUserWithEmailAndPassword(email, pass);
-        await cred.user.updateProfile({ displayName: name });
-        const u = { 
-          uid: cred.user.uid, 
-          displayName: name, 
-          email: email, 
-          photoURL: `https://ui-avatars.com/api/?name=${name}&background=00f2fe&color=000`, 
-          scorePoints: 0, 
-          totalTests: 0, 
-          cleared: 0, 
-          failed: 0,
-          testHistory: []
-        };
-        await db.collection("candidates").doc(cred.user.uid).set(u);
-        currentUser = u;
-        onAuthSuccess();
-      } catch(e) { alert(e.message); }
-    }
-
-    function loginWithGoogle() {
-      const p = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(p).catch(() => auth.signInWithRedirect(p));
-    }
-
-    function promptSecretAdmin() {
-      const pin = prompt("Admin Secret Security PIN:");
-      if (pin === "7890") {
-        document.getElementById("guest-access-panel").classList.remove("hidden");
-        alert("✅ Admin Secret Testing IDs Unlocked!");
-      } else if (pin !== null) {
-        alert("❌ Invalid PIN!");
-      }
-    }
-
-    async function loginAsGuest(id, name, email, pts) {
-      currentUser = { 
-        uid: id, 
-        displayName: name, 
-        email: email, 
-        photoURL: `https://ui-avatars.com/api/?name=${name}&background=00f2fe&color=000`, 
-        scorePoints: pts, 
-        totalTests: 12, 
-        cleared: 9, 
-        failed: 3,
-        testHistory: []
-      };
-      try {
-        const doc = await db.collection("candidates").doc(id).get();
-        if (doc.exists) currentUser = doc.data();
-        else await db.collection("candidates").doc(id).set(currentUser);
-      } catch(e) {}
-      onAuthSuccess();
-    }
-
-    auth.onAuthStateChanged(async user => {
-      if (user) {
-        const doc = await db.collection("candidates").doc(user.uid).get();
-        if (doc.exists) currentUser = doc.data();
-        else {
-          currentUser = { 
-            uid: user.uid, 
-            displayName: user.displayName || "Candidate", 
-            email: user.email, 
-            photoURL: user.photoURL || `https://ui-avatars.com/api/?name=User&background=00f2fe&color=000`, 
-            scorePoints: 0, 
-            totalTests: 0, 
-            cleared: 0, 
-            failed: 0,
-            testHistory: []
-          };
-          await db.collection("candidates").doc(user.uid).set(currentUser);
-        }
-        onAuthSuccess();
-      } else if (!currentUser) {
-        document.getElementById("screen-auth").classList.remove("hidden");
-        document.getElementById("main-content").classList.add("hidden");
-      }
-    });
-
-    function onAuthSuccess() {
-      document.getElementById("screen-auth").classList.add("hidden");
-      document.getElementById("main-content").classList.remove("hidden");
-      document.getElementById("nav-profile-pill").classList.remove("hidden");
-      document.getElementById("logout-btn").classList.remove("hidden");
-      document.getElementById("header-name").innerText = currentUser.displayName.split(" ")[0];
-      document.getElementById("header-avatar").src = currentUser.photoURL;
-      showDashboard();
-    }
-
-    function logout() {
-      currentUser = null;
-      auth.signOut();
-      location.reload();
     }
 
     function toggleLanguage() {
       userLang = (userLang === 'hi') ? 'en' : 'hi';
-      localStorage.setItem('user_cbt_lang', userLang);
       document.getElementById("btn-active-lang").innerText = userLang === 'hi' ? "🌐 हिंदी" : "🌐 English";
-      if (currentTest.length > 0) renderQuestion();
     }
   </script>
 </body>
