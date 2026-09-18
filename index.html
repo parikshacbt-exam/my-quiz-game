@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PARIKSHA CBT - Portal</title>
+  <title>PARIKSHA CBT - Secure Payment & Examination Portal</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -35,7 +35,6 @@
     .nav-actions { display: flex; align-items: center; gap: 12px; position: relative; }
     .lang-btn-nav { background: rgba(0, 242, 254, 0.1); border: 1.5px solid var(--primary); color: #fff; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
     
-    /* 3-Dot Profile Pill */
     .profile-pill { 
       display: flex; align-items: center; gap: 8px; background: rgba(31, 43, 72, 0.6); 
       padding: 5px 12px; border-radius: 30px; cursor: pointer; border: 1px solid rgba(255,255,255,0.15); 
@@ -45,11 +44,10 @@
     .profile-pill img { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--primary); object-fit: cover; }
     .dot-menu-icon { font-size: 1rem; color: var(--text-muted); margin-left: 4px; }
 
-    /* Dropdown Menu (3-Dots Style) */
     .dropdown-menu {
       position: absolute; top: 52px; right: 0; background: #0f172a; 
       border: 1.5px solid rgba(0, 242, 254, 0.3); border-radius: 14px; 
-      width: 240px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); z-index: 200; overflow: hidden;
+      width: 250px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); z-index: 200; overflow: hidden;
       display: none;
     }
     .dropdown-menu.show { display: block; }
@@ -85,11 +83,17 @@
     .badge-paid { position: absolute; top: 14px; right: 14px; background: rgba(255, 183, 3, 0.2); border: 1px solid var(--gold); color: var(--gold); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
     .badge-free { position: absolute; top: 14px; right: 14px; background: rgba(0, 245, 155, 0.2); border: 1px solid var(--green); color: var(--green); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
 
-    .btn-submit { background: linear-gradient(90deg, #00f59b, #00b4d8); color: #000; font-weight: 800; border: none; padding: 9px 20px; border-radius: 10px; cursor: pointer; font-size: 0.88rem; }
-    .btn-batch { background: linear-gradient(90deg, #ffb703, #fb8500); color: #000; font-weight: 800; border: none; padding: 9px 18px; border-radius: 10px; cursor: pointer; font-size: 0.88rem; }
-    .btn-pay { background: linear-gradient(90deg, #9d4edd, #ff3366); color: #fff; font-weight: 800; border: none; padding: 9px 18px; border-radius: 10px; cursor: pointer; font-size: 0.88rem; }
+    .btn-submit { background: linear-gradient(90deg, #00f59b, #00b4d8); color: #000; font-weight: 800; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 0.88rem; }
+    .btn-batch { background: linear-gradient(90deg, #ffb703, #fb8500); color: #000; font-weight: 800; border: none; padding: 10px 18px; border-radius: 10px; cursor: pointer; font-size: 0.88rem; }
+    .btn-pay { background: linear-gradient(90deg, #9d4edd, #ff3366); color: #fff; font-weight: 800; border: none; padding: 10px 18px; border-radius: 10px; cursor: pointer; font-size: 0.88rem; }
+    .btn-danger { background: #ff3366; color: #fff; font-weight: 800; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 0.88rem; }
     .btn-nav { background: #263558; border: none; color: #fff; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 700; }
     .btn-sm { padding: 6px 14px; font-size: 0.8rem; border-radius: 6px; cursor: pointer; font-weight: bold; border: none; }
+
+    /* App Redirect Grid */
+    .app-pay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
+    .app-pay-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 10px; border: 1px solid #334155; background: #131c33; color: #fff; font-size: 0.9rem; font-weight: bold; cursor: pointer; text-decoration: none; transition: 0.2s; }
+    .app-pay-btn:hover { border-color: var(--primary); background: #1a2748; }
 
     .cbt-container { background: var(--surface); border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 20px; padding: 25px; }
     .cbt-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #23355d; padding-bottom: 16px; margin-bottom: 22px; }
@@ -115,9 +119,6 @@
     .profile-avatar-wrap { position: relative; width: 100px; height: 100px; margin: 0 auto 15px; }
     .profile-avatar-wrap img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; }
     .avatar-edit-label { position: absolute; bottom: 0; right: 0; background: var(--primary); color: #000; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-    .batch-badge { background: rgba(157, 78, 221, 0.2); border: 1px solid var(--accent); color: #e879f9; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; display: inline-block; margin: 4px; }
-
-    .history-card { background: rgba(13, 20, 38, 0.9); border: 1px solid #23355d; border-radius: 14px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
 
     .modal-overlay { position: fixed; inset: 0; background: rgba(4, 7, 16, 0.88); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
     .modal-card { background: #0f162a; border: 1.5px solid rgba(0, 242, 254, 0.3); border-radius: 22px; width: 100%; max-width: 650px; max-height: 90vh; overflow-y: auto; padding: 28px; position: relative; }
@@ -170,7 +171,6 @@
         </div>
       </div>
 
-      <!-- Batch Syllabus Box -->
       <div id="batch-syllabus-card" style="background:#0c1221; border:1px solid #23355d; border-radius:14px; padding:16px 20px; margin-bottom:20px;">
         <h4 style="color:var(--green); margin-bottom:6px;"><i class="fa-solid fa-list-check"></i> Is Batch Me Kya-Kya Samlit Hai (Syllabus & Inclusions):</h4>
         <p id="batch-inclusions-text" style="color:#cbd5e1; font-size:0.9rem; line-height:1.6;"></p>
@@ -251,7 +251,7 @@
       </div>
     </div>
 
-    <!-- 6. MY ENROLLED BATCHES SCREEN (COURSES PURCHASED) -->
+    <!-- 6. MY ENROLLED BATCHES SCREEN -->
     <div id="screen-enrolled-batches" class="hidden">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
         <h2><i class="fa-solid fa-box-open" style="color:var(--gold);"></i> My Enrolled Batches / Purchased Courses</h2>
@@ -278,9 +278,92 @@
       <div id="history-container"></div>
     </div>
 
+    <!-- 8. DEDICATED SEPARATE CHECKOUT / PAYMENT SCREEN -->
+    <div id="screen-checkout" class="hidden">
+      <div style="max-width:580px; margin:0 auto; background:var(--surface); border:1.5px solid rgba(0,242,254,0.3); border-radius:24px; padding:28px 22px;">
+        
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #23355d; padding-bottom:12px;">
+          <div>
+            <h2 style="color:var(--gold); font-size:1.3rem;"><i class="fa-solid fa-lock-open"></i> Checkout & Payment</h2>
+            <p style="font-size:0.8rem; color:var(--text-muted);">Step-by-step Batch Unlock Process</p>
+          </div>
+          <button class="btn-sm" style="background:#263558; color:#fff;" onclick="showDashboard()"><i class="fa-solid fa-xmark"></i> Close</button>
+        </div>
+
+        <!-- STEP 1: SCAN QR / DIRECT UPI REDIRECT -->
+        <div id="checkout-step-1">
+          <div style="background:#070a13; border:1.5px dashed var(--gold); border-radius:14px; padding:18px; text-align:center; margin-bottom:15px;">
+            <h3 id="checkout-batch-name" style="color:var(--primary); margin-bottom:4px;">Batch Name</h3>
+            <div style="font-size:2rem; font-weight:900; color:var(--gold); margin:4px 0;" id="checkout-price">₹99</div>
+            
+            <div style="margin:12px 0;">
+              <img id="checkout-qr-img" src="" style="width:190px; height:190px; border-radius:12px; border:2px solid #334155; object-fit:contain; background:#fff; padding:4px;">
+              <div style="margin-top:6px;">
+                <a id="checkout-download-qr" href="" download="pariksha_cbt_qr.png" class="btn-sm" style="background:#263558; color:#fff; text-decoration:none; display:inline-block;">
+                  <i class="fa-solid fa-download"></i> Save QR Code
+                </a>
+              </div>
+            </div>
+
+            <div style="background:#131c33; padding:10px; border-radius:8px; margin-top:8px; font-weight:bold; color:#00f59b; font-size:0.95rem; display:flex; justify-content:center; align-items:center; gap:8px;">
+              <span>UPI: <span id="checkout-upi-id">sunil.official8094@ybl</span></span>
+              <button onclick="copyCheckoutUpiId()" class="btn-sm" style="background:#00f2fe; color:#000;"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+          </div>
+
+          <h4 style="color:#cbd5e1; font-size:0.9rem; margin-bottom:8px; text-align:center;">Click App Icon to Pay Directly:</h4>
+          <div class="app-pay-grid">
+            <a id="link-pay-phonepe" href="#" class="app-pay-btn" onclick="triggerAppPay()"><i class="fa-solid fa-mobile-screen" style="color:#8a3ffc;"></i> PhonePe</a>
+            <a id="link-pay-gpay" href="#" class="app-pay-btn" onclick="triggerAppPay()"><i class="fa-brands fa-google" style="color:#4285f4;"></i> Google Pay</a>
+            <a id="link-pay-paytm" href="#" class="app-pay-btn" onclick="triggerAppPay()"><i class="fa-solid fa-wallet" style="color:#00b9f5;"></i> Paytm</a>
+            <a id="link-pay-mobikwik" href="#" class="app-pay-btn" onclick="triggerAppPay()"><i class="fa-solid fa-bolt" style="color:#ff5722;"></i> Mobikwik / BHIM</a>
+          </div>
+
+          <!-- PAYMENT DONE / CANCEL PROMPT -->
+          <div style="margin-top:20px; background:#070d1e; border:1px solid #23355d; border-radius:14px; padding:15px; text-align:center;">
+            <p style="font-size:0.9rem; font-weight:700; color:#fff; margin-bottom:12px;">Payment complete karne ke baad agla step open karein:</p>
+            <div style="display:flex; gap:10px; justify-content:center;">
+              <button class="btn-submit" style="flex:1;" onclick="goToCheckoutStep2()"><i class="fa-solid fa-circle-check"></i> Payment Done (Next Step)</button>
+              <button class="btn-danger" style="flex:1;" onclick="showDashboard()"><i class="fa-solid fa-circle-xmark"></i> Payment Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: SUBMIT UTR & PAYMENT SCREENSHOT -->
+        <div id="checkout-step-2" class="hidden">
+          <div style="background:rgba(0,245,155,0.1); border-left:4px solid var(--green); padding:10px 14px; border-radius:8px; margin-bottom:14px;">
+            <p style="font-size:0.85rem; color:var(--green); font-weight:bold;">
+              Step 2: Verification Details Submit Karein
+            </p>
+          </div>
+
+          <label style="font-size:0.85rem; color:#cbd5e1;">Aapki UPI ID (Jisse payment kiya):</label>
+          <input type="text" id="chk-user-upi" class="form-input" placeholder="e.g. rahul@oksbi">
+
+          <label style="font-size:0.85rem; color:#cbd5e1;">UTR / Transaction Ref Number (12 Digits):</label>
+          <input type="text" id="chk-user-utr" class="form-input" placeholder="e.g. 423587912456">
+
+          <label style="font-size:0.85rem; color:#cbd5e1;">Payment Screenshot (SS) Upload Karein:</label>
+          <input type="file" id="chk-user-ss" accept="image/*" class="form-input" style="padding:8px;">
+
+          <div style="background:rgba(255,183,3,0.1); border-left:4px solid var(--gold); padding:10px 14px; border-radius:8px; margin-bottom:14px;">
+            <p style="font-size:0.8rem; color:#ffb703; font-weight:600;">
+              ⏳ <b>24 Hours Verification:</b> Details submit hone ke baad hamari team <b>24 ghante ke andar</b> aapka batch unlock kar degi.
+            </p>
+          </div>
+
+          <div style="display:flex; gap:10px;">
+            <button class="btn-nav" onclick="backToCheckoutStep1()"><i class="fa-solid fa-arrow-left"></i> Back</button>
+            <button class="btn-submit" style="flex:1;" onclick="submitCheckoutPaymentProof()">Submit Payment Proof</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 
-  <!-- AUTH SCREEN (CLEAN BUTTONS - NO PIN SHOWN) -->
+  <!-- AUTH SCREEN (CLEAN BUTTONS) -->
   <div id="screen-auth" style="max-width:440px; margin:40px auto; padding:0 15px;">
     <div style="background:var(--surface); border:1.5px solid rgba(0,242,254,0.3); border-radius:24px; padding:32px 24px; text-align:center;">
       <h2 style="font-size:1.6rem; font-weight:800; color:#fff;">Student CBT Portal</h2>
@@ -309,7 +392,6 @@
         <img width="18" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> Continue with Google
       </button>
 
-      <!-- Clean Admin / Guest Login Options (NO PIN DISPLAYED) -->
       <div style="margin-top:24px; padding-top:16px; border-top:1px dashed #23355d; display:flex; gap:12px; justify-content:center;">
         <button onclick="promptAdminLogin()" style="background:#1c1333; border:1px solid #9d4edd; color:#00f2fe; padding:10px 16px; border-radius:10px; font-size:0.85rem; cursor:pointer; font-weight:bold; display:flex; align-items:center; gap:6px;">
           👑 Admin Login
@@ -321,38 +403,25 @@
     </div>
   </div>
 
-  <!-- PAYMENT REQUEST MODAL -->
-  <div id="payment-modal" class="modal-overlay hidden">
+  <!-- ADMIN: PAYMENT SETTINGS (MANAGE QR & UPI ID) -->
+  <div id="admin-payment-settings-modal" class="modal-overlay hidden">
     <div class="modal-card">
-      <button onclick="closePaymentModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
-      <h2 style="color:var(--gold); margin-bottom:8px;"><i class="fa-solid fa-lock-open"></i> Unlock Premium Batch</h2>
-      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:14px;">2 Free Tests ke baad agle sabhi tests unlock karne ke liye payment karein:</p>
+      <button onclick="closeAdminPaySettingsModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+      <h2 style="color:var(--primary); margin-bottom:12px;"><i class="fa-solid fa-qrcode"></i> Manage Admin Payment Settings</h2>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">Yahan aap apni UPI ID aur QR Code badal sakte hain. Jo yahan save karenge wahi sabhi students ko checkout screen par dikhega:</p>
 
-      <div style="background:#070a13; border:1.5px dashed var(--gold); border-radius:14px; padding:16px; text-align:center; margin-bottom:15px;">
-        <h3 id="pay-modal-batch-name" style="color:var(--primary); margin-bottom:4px;">Batch Name</h3>
-        <div style="font-size:1.8rem; font-weight:900; color:var(--gold); margin:6px 0;" id="pay-modal-price">₹99</div>
-        <p style="font-size:0.85rem; color:#cbd5e1;">Pay via PhonePe / Google Pay / Paytm QR or UPI</p>
-        <div style="background:#131c33; padding:8px; border-radius:8px; margin-top:8px; font-weight:bold; color:#00f59b; font-size:0.9rem;">
-          UPI ID: <span>sunil.official8094@ybl</span>
-        </div>
+      <label style="font-size:0.85rem; color:#cbd5e1;">Admin UPI ID:</label>
+      <input type="text" id="admin-setting-upi" class="form-input" placeholder="e.g. yourname@ybl ya yourname@paytm">
+
+      <label style="font-size:0.85rem; color:#cbd5e1;">Upload Official Payment QR Code (Image):</label>
+      <input type="file" id="admin-setting-qr-file" accept="image/*" class="form-input" style="padding:8px;" onchange="previewAdminQR(event)">
+
+      <div style="text-align:center; margin:15px 0;">
+        <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:6px;">Current QR Preview:</p>
+        <img id="admin-setting-qr-preview" src="" style="width:160px; height:160px; border-radius:10px; border:1px solid #334155; object-fit:contain; background:#fff; padding:4px;">
       </div>
 
-      <label style="font-size:0.85rem; color:#cbd5e1;">Aapki UPI ID (Jisse payment kiya):</label>
-      <input type="text" id="pay-user-upi" class="form-input" placeholder="e.g. rahul@oksbi">
-
-      <label style="font-size:0.85rem; color:#cbd5e1;">UTR / Transaction Ref Number (12 Digits):</label>
-      <input type="text" id="pay-user-utr" class="form-input" placeholder="e.g. 423587912456">
-
-      <label style="font-size:0.85rem; color:#cbd5e1;">Payment Screenshot (SS) Upload Karein:</label>
-      <input type="file" id="pay-user-ss" accept="image/*" class="form-input" style="padding:8px;">
-
-      <div style="background:rgba(255,183,3,0.1); border-left:4px solid var(--gold); padding:10px 14px; border-radius:8px; margin-bottom:14px;">
-        <p style="font-size:0.8rem; color:#ffb703; font-weight:600;">
-          ⏳ <b>Verification Notice:</b> Details submit karne ke baad hamari team <b>24 Hours ke andar</b> verify karke aapka batch unlock kar degi.
-        </p>
-      </div>
-
-      <button class="btn-submit" style="width:100%;" onclick="submitPaymentProof()">Submit Payment for Verification</button>
+      <button class="btn-submit" style="width:100%;" onclick="saveAdminPaymentSettings()">Save Payment Settings</button>
     </div>
   </div>
 
@@ -461,6 +530,12 @@
     let timerInterval = null;
     let userLang = localStorage.getItem('user_cbt_lang') || 'hi';
 
+    // GLOBAL PAYMENT CONFIG (DEFAULT + FIRESTORE SYNCED)
+    let paymentConfig = {
+      upiId: "sunil.official8094@ybl",
+      qrCodeUrl: "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=sunil.official8094@ybl&pn=Sunil%20Kumar"
+    };
+
     const defaultBatches = [
       { 
         id: "batch_ssc_cgl", 
@@ -547,7 +622,6 @@
       auth.signInWithPopup(p).catch(() => auth.signInWithRedirect(p));
     }
 
-    // PIN PROMPTS (WITHOUT SHOWING PIN ON BUTTON)
     function promptAdminLogin() {
       const pin = prompt("Admin Security PIN darz karein:");
       if (pin === "9988") {
@@ -620,6 +694,15 @@
       }
     });
 
+    async function fetchPaymentConfig() {
+      try {
+        const doc = await db.collection("settings").doc("payment_config").get();
+        if (doc.exists) {
+          paymentConfig = doc.data();
+        }
+      } catch(e) {}
+    }
+
     function onAuthSuccess() {
       document.getElementById("screen-auth").classList.add("hidden");
       document.getElementById("main-content").classList.remove("hidden");
@@ -627,12 +710,12 @@
       document.getElementById("header-name").innerText = currentUser.displayName.split(" ")[0];
       document.getElementById("header-avatar").src = currentUser.photoURL;
 
+      fetchPaymentConfig();
       buildDropdownMenu();
       loadAllBatches();
       showDashboard();
     }
 
-    // 3-DOT DROPDOWN MENU BUILDER
     function buildDropdownMenu() {
       const menu = document.getElementById("user-dropdown-menu");
       menu.innerHTML = "";
@@ -646,16 +729,15 @@
       menu.appendChild(headerDiv);
 
       if (isAdmin) {
-        // ADMIN SPECIFIC OPTIONS (No purchase/course buying)
         menu.innerHTML += `
+          <div class="dropdown-item" onclick="openAdminPaySettingsModal()"><i class="fa-solid fa-qrcode" style="color:var(--gold);"></i> Payment Settings (UPI & QR)</div>
           <div class="dropdown-item" onclick="openAdminRequestsModal()"><i class="fa-solid fa-receipt" style="color:var(--primary);"></i> Payment Requests</div>
-          <div class="dropdown-item" onclick="openAdminBatchModal()"><i class="fa-solid fa-folder-plus" style="color:var(--gold);"></i> Create New Batch</div>
+          <div class="dropdown-item" onclick="openAdminBatchModal()"><i class="fa-solid fa-folder-plus" style="color:var(--accent);"></i> Create New Batch</div>
           <div class="dropdown-item" onclick="openAdminPaperModal()"><i class="fa-solid fa-plus-circle" style="color:var(--green);"></i> Add Test Paper</div>
-          <div class="dropdown-item" onclick="openProfileView()"><i class="fa-solid fa-user-gear" style="color:var(--accent);"></i> Profile Settings</div>
+          <div class="dropdown-item" onclick="openProfileView()"><i class="fa-solid fa-user-gear" style="color:#38bdf8;"></i> Profile Settings</div>
           <div class="dropdown-item" onclick="logout()" style="color:var(--red); border-top:1px solid #1e293b;"><i class="fa-solid fa-power-off"></i> Logout Admin</div>
         `;
       } else {
-        // USER / CANDIDATE SPECIFIC OPTIONS
         menu.innerHTML += `
           <div class="dropdown-item" onclick="openProfileView()"><i class="fa-solid fa-user" style="color:var(--primary);"></i> Profile Details</div>
           <div class="dropdown-item" onclick="openEnrolledBatchesView()"><i class="fa-solid fa-box-open" style="color:var(--gold);"></i> My Enrolled Batches</div>
@@ -684,7 +766,7 @@
     }
 
     function hideAll() {
-      ["screen-dashboard", "screen-series", "screen-cbt", "screen-result", "screen-profile", "screen-enrolled-batches", "screen-history"].forEach(id => {
+      ["screen-dashboard", "screen-series", "screen-cbt", "screen-result", "screen-profile", "screen-enrolled-batches", "screen-history", "screen-checkout"].forEach(id => {
         document.getElementById(id).classList.add("hidden");
       });
       document.getElementById("user-dropdown-menu").classList.remove("show");
@@ -735,7 +817,6 @@
         grid.appendChild(card);
       });
 
-      // Update Modals
       const sel = document.getElementById("new-paper-cat");
       sel.innerHTML = "";
       allBatches.forEach(b => {
@@ -756,14 +837,13 @@
     }
 
     function isBatchUnlockedForUser(batchId) {
-      if (isAdmin) return true; // Admin never pays
+      if (isAdmin) return true;
       if (!currentUser) return false;
       const b = allBatches.find(x => x.id === batchId);
       if (b && !b.isPaid) return true;
       return (currentUser.unlockedBatches || []).includes(batchId);
     }
 
-    // SERIES LISTING (TEST 1 & 2 FREE RULE)
     async function openSeriesListing(batchObj) {
       currentSelectedBatch = batchObj;
       document.getElementById("series-header-title").innerText = batchObj.title;
@@ -807,12 +887,11 @@
         const item = document.createElement("div");
         item.className = "series-item";
 
-        // First 2 Tests are FREE
         const isTestFree = (idx < 2) || !batchObj.isPaid || isBatchUnlocked;
 
         let actionBtn = isTestFree 
           ? `<button class="btn-submit" onclick="startSpecificTest(${idx})">Start Test <i class="fa-solid fa-play"></i></button>`
-          : `<button class="btn-pay" onclick="openPaymentModal()"><i class="fa-solid fa-lock"></i> Unlock at ₹${batchObj.price}</button>`;
+          : `<button class="btn-pay" onclick="openDedicatedCheckoutScreen()"><i class="fa-solid fa-lock"></i> Unlock at ₹${batchObj.price}</button>`;
 
         let tag = (idx < 2 && batchObj.isPaid && !isBatchUnlocked) 
           ? `<span style="color:var(--green); font-size:0.75rem; font-weight:bold; margin-left:8px;">[FREE DEMO]</span>` 
@@ -835,21 +914,53 @@
       window.activeCategoryPapers = papers;
     }
 
-    // PAYMENT FLOW
-    function openPaymentModal() {
-      document.getElementById("pay-modal-batch-name").innerText = currentSelectedBatch.title;
-      document.getElementById("pay-modal-price").innerText = `₹${currentSelectedBatch.price}`;
-      document.getElementById("payment-modal").classList.remove("hidden");
+    // DEDICATED SEPARATE CHECKOUT SCREEN HANDLERS
+    function openDedicatedCheckoutScreen() {
+      hideAll();
+      document.getElementById("screen-checkout").classList.remove("hidden");
+
+      document.getElementById("checkout-batch-name").innerText = currentSelectedBatch.title;
+      document.getElementById("checkout-price").innerText = `₹${currentSelectedBatch.price}`;
+      document.getElementById("checkout-upi-id").innerText = paymentConfig.upiId || "sunil.official8094@ybl";
+      document.getElementById("checkout-qr-img").src = paymentConfig.qrCodeUrl;
+      document.getElementById("checkout-download-qr").href = paymentConfig.qrCodeUrl;
+
+      // Set Universal UPI Deep Link for App Buttons
+      const upiLink = `upi://pay?pa=${encodeURIComponent(paymentConfig.upiId)}&pn=Sunil%20Kumar&am=${currentSelectedBatch.price}&cu=INR&tn=${encodeURIComponent(currentSelectedBatch.title)}`;
+      document.getElementById("link-pay-phonepe").href = upiLink;
+      document.getElementById("link-pay-gpay").href = upiLink;
+      document.getElementById("link-pay-paytm").href = upiLink;
+      document.getElementById("link-pay-mobikwik").href = upiLink;
+
+      backToCheckoutStep1();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function closePaymentModal() {
-      document.getElementById("payment-modal").classList.add("hidden");
+    function triggerAppPay() {
+      // Informs user and keeps prompt active
+      console.log("App redirect triggered");
     }
 
-    async function submitPaymentProof() {
-      const userUpi = document.getElementById("pay-user-upi").value.trim();
-      const utr = document.getElementById("pay-user-utr").value.trim();
-      const file = document.getElementById("pay-user-ss").files[0];
+    function copyCheckoutUpiId() {
+      const upi = document.getElementById("checkout-upi-id").innerText;
+      navigator.clipboard.writeText(upi);
+      alert("✅ UPI ID Copied: " + upi);
+    }
+
+    function goToCheckoutStep2() {
+      document.getElementById("checkout-step-1").classList.add("hidden");
+      document.getElementById("checkout-step-2").classList.remove("hidden");
+    }
+
+    function backToCheckoutStep1() {
+      document.getElementById("checkout-step-2").classList.add("hidden");
+      document.getElementById("checkout-step-1").classList.remove("hidden");
+    }
+
+    async function submitCheckoutPaymentProof() {
+      const userUpi = document.getElementById("chk-user-upi").value.trim();
+      const utr = document.getElementById("chk-user-utr").value.trim();
+      const file = document.getElementById("chk-user-ss").files[0];
 
       if (!userUpi || !utr || !file) {
         return alert("Kripya apni UPI ID, UTR Number aur Screenshot teeno upload karein!");
@@ -875,7 +986,7 @@
         try {
           await db.collection("payment_requests").add(reqPayload);
           alert("✅ Payment details safaltapoorvak submit ho gayi!\n\nHamari team 24 Hours ke andar verify karke aapka batch unlock kar degi.");
-          closePaymentModal();
+          showDashboard();
         } catch (err) {
           alert("Error: " + err.message);
         }
@@ -883,11 +994,57 @@
       reader.readAsDataURL(file);
     }
 
-    // ADMIN PAYMENT APPROVALS
+    // ADMIN: QR CODE & UPI MANAGER
+    function openAdminPaySettingsModal() {
+      document.getElementById("admin-setting-upi").value = paymentConfig.upiId || "";
+      document.getElementById("admin-setting-qr-preview").src = paymentConfig.qrCodeUrl;
+      document.getElementById("admin-payment-settings-modal").classList.remove("hidden");
+      document.getElementById("user-dropdown-menu").classList.remove("show");
+    }
+
+    function closeAdminPaySettingsModal() {
+      document.getElementById("admin-payment-settings-modal").classList.add("hidden");
+    }
+
+    function previewAdminQR(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          document.getElementById("admin-setting-qr-preview").src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    async function saveAdminPaymentSettings() {
+      const upi = document.getElementById("admin-setting-upi").value.trim();
+      const qrSrc = document.getElementById("admin-setting-qr-preview").src;
+
+      if (!upi) return alert("Kripya valid UPI ID likhein!");
+
+      const payload = {
+        upiId: upi,
+        qrCodeUrl: qrSrc || `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=${encodeURIComponent(upi)}&pn=Sunil%20Kumar`,
+        updatedAt: new Date().toISOString()
+      };
+
+      try {
+        await db.collection("settings").doc("payment_config").set(payload, { merge: true });
+        paymentConfig = payload;
+        alert("✅ UPI ID aur Payment QR Code safaltapoorvak update ho gaya!");
+        closeAdminPaySettingsModal();
+      } catch(err) {
+        alert("Settings save error: " + err.message);
+      }
+    }
+
+    // ADMIN PAYMENT APPROVALS (SHOWS USER UID & DETAILS)
     async function openAdminRequestsModal() {
       const container = document.getElementById("admin-reqs-list-container");
       container.innerHTML = `<p style="color:#94a3b8;">Loading requests...</p>`;
       document.getElementById("admin-requests-modal").classList.remove("hidden");
+      document.getElementById("user-dropdown-menu").classList.remove("show");
 
       const snap = await db.collection("payment_requests").where("status", "==", "pending").get();
       container.innerHTML = "";
@@ -905,10 +1062,11 @@
           <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px;">
             <div>
               <h4 style="color:#fff;">Candidate: ${req.userName} (<span style="color:var(--primary);">${req.userEmail}</span>)</h4>
-              <p style="font-size:0.85rem; color:var(--gold); margin-top:2px;">Batch: <b>${req.batchTitle}</b> (Amount: ₹${req.amount})</p>
+              <p style="font-size:0.8rem; color:#94a3b8; margin:2px 0;">CBT User ID (UID): <b style="color:#e879f9;">${req.userId}</b></p>
+              <p style="font-size:0.85rem; color:var(--gold); margin-top:2px;">Requested Batch: <b>${req.batchTitle}</b> (Amount: ₹${req.amount})</p>
               <p style="font-size:0.85rem; color:#cbd5e1; margin-top:4px;">Candidate UPI: <b>${req.userUpi}</b> | UTR: <b style="color:var(--green);">${req.utrNumber}</b></p>
             </div>
-            <button class="btn-submit" onclick="approvePayment('${doc.id}', '${req.userId}', '${req.batchId}')"><i class="fa-solid fa-check"></i> Approve & Unlock</button>
+            <button class="btn-submit" onclick="approvePayment('${doc.id}', '${req.userId}', '${req.batchId}')"><i class="fa-solid fa-unlock"></i> Approve & Unlock Batch</button>
           </div>
           <div style="margin-top:10px;">
             <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:6px;">Payment Screenshot:</p>
@@ -929,7 +1087,7 @@
         await db.collection("candidates").doc(userId).update({
           unlockedBatches: firebase.firestore.FieldValue.arrayUnion(batchId)
         });
-        alert("✅ Payment Approved! Student ka batch unlock ho gaya.");
+        alert("✅ Payment Approved! Candidate ka batch unlock ho gaya.");
         openAdminRequestsModal();
       } catch (e) {
         alert("Error approving: " + e.message);
@@ -945,6 +1103,7 @@
       document.getElementById("batch-syllabus-input").value = "";
       document.getElementById("batch-price-input").value = "99";
       document.getElementById("admin-batch-modal").classList.remove("hidden");
+      document.getElementById("user-dropdown-menu").classList.remove("show");
     }
 
     function editCurrentBatch() {
@@ -1167,7 +1326,7 @@
       });
     }
 
-    // USER VIEWS: PROFILE, PURCHASED COURSES, HISTORY
+    // USER VIEWS
     function openProfileView() {
       hideAll();
       document.getElementById("screen-profile").classList.remove("hidden");
