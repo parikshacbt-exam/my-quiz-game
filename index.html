@@ -7,7 +7,7 @@
   
   <!-- PWA Manifest & Theme Settings -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#00f2fe">
+  <meta name="theme-color" content="#060913">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135755.png">
@@ -26,24 +26,73 @@
       --text-muted: #94a3b8;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
-    body { background: radial-gradient(circle at top, #111a36 0%, #060913 75%); color: #fff; min-height: 100vh; display: flex; flex-direction: column; }
+    body { background: radial-gradient(circle at top, #111a36 0%, #060913 75%); color: #fff; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
     .hidden { display: none !important; }
 
+    /* ============================================================
+       APP STARTING SPLASH SCREEN & LOGO STYLING
+       ============================================================ */
+    #app-splash-screen {
+      position: fixed; inset: 0; background: radial-gradient(circle at center, #111a3b 0%, #050811 100%);
+      z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
+    }
+    .splash-logo-wrap {
+      width: 130px; height: 130px; position: relative; display: flex; align-items: center; justify-content: center;
+      animation: splashPulse 2s ease-in-out infinite alternate;
+    }
+    .splash-logo-wrap svg {
+      width: 100%; height: 100%; filter: drop-shadow(0 0 25px rgba(0, 242, 254, 0.6));
+    }
+    .splash-app-title {
+      font-size: 2.2rem; font-weight: 900; letter-spacing: 2px; margin-top: 18px;
+      background: linear-gradient(90deg, var(--primary), #a855f7, var(--green));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-transform: uppercase; animation: fadeInUp 0.8s ease-out;
+    }
+    .splash-sub-text {
+      font-size: 0.85rem; color: var(--gold); font-weight: 700; letter-spacing: 1.5px;
+      margin-top: 6px; text-transform: uppercase; animation: fadeInUp 1s ease-out;
+    }
+    .splash-loader-bar {
+      width: 160px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 25px; overflow: hidden; position: relative;
+    }
+    .splash-loader-progress {
+      width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary), var(--green));
+      border-radius: 10px; animation: splashLoad 2.2s forwards cubic-bezier(0.1, 0.5, 0.5, 1);
+    }
+    @keyframes splashPulse {
+      0% { transform: scale(0.95); }
+      100% { transform: scale(1.05); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes splashLoad {
+      0% { width: 0%; }
+      70% { width: 85%; }
+      100% { width: 100%; }
+    }
+
+    /* HEADER & BRANDING */
     header { 
       background: rgba(10, 16, 32, 0.95); backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(0, 242, 254, 0.2); 
-      padding: 14px 22px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; 
+      padding: 12px 22px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; 
     }
     .logo { 
       font-size: 1.35rem; font-weight: 900; 
+      display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none;
+    }
+    .nav-brand-logo-svg { width: 34px; height: 34px; filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.5)); }
+    .logo-text-gradient {
       background: linear-gradient(90deg, var(--primary), #a855f7, var(--green)); 
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-      display: flex; align-items: center; gap: 10px; cursor: pointer; 
     }
     .nav-actions { display: flex; align-items: center; gap: 10px; position: relative; }
     .lang-btn-nav { background: rgba(0, 242, 254, 0.1); border: 1.5px solid var(--primary); color: #fff; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
     
-    /* PWA Install Button in Header */
     .pwa-install-btn {
       background: linear-gradient(90deg, #ffb703, #fb8500);
       color: #000; border: none; padding: 6px 14px; border-radius: 20px;
@@ -111,7 +160,6 @@
     .btn-nav { background: #263558; border: none; color: #fff; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 700; }
     .btn-sm { padding: 6px 14px; font-size: 0.8rem; border-radius: 6px; cursor: pointer; font-weight: bold; border: none; }
 
-    /* Sub-Batch Tabs */
     .subfolder-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 18px; }
     .subfolder-tab { background: #131c33; border: 1.5px solid #23355d; color: #cbd5e1; padding: 8px 18px; border-radius: 25px; font-size: 0.88rem; font-weight: 700; cursor: pointer; white-space: nowrap; transition: 0.2s; }
     .subfolder-tab.active { background: linear-gradient(90deg, var(--primary), #3b82f6); color: #000; border-color: var(--primary); }
@@ -156,9 +204,65 @@
 </head>
 <body onclick="closeDropdownMenuOutside(event)">
 
+  <!-- ============================================================
+       1. ANIMATED APP SPLASH SCREEN (ON STARTUP)
+       ============================================================ -->
+  <div id="app-splash-screen">
+    <div class="splash-logo-wrap">
+      <!-- High-Tech PARIKSHA CBT Shield Logo SVG -->
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00f2fe"/>
+            <stop offset="50%" stop-color="#7928ca"/>
+            <stop offset="100%" stop-color="#00f59b"/>
+          </linearGradient>
+          <linearGradient id="capGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffb703"/>
+            <stop offset="100%" stop-color="#fb8500"/>
+          </linearGradient>
+        </defs>
+        <!-- Outer Glowing Tech Hexagon -->
+        <polygon points="50,5 92,26 92,74 50,95 8,74 8,26" stroke="url(#shieldGrad)" stroke-width="4" fill="rgba(10, 18, 38, 0.85)" />
+        <polygon points="50,12 85,29 85,71 50,88 15,71 15,29" stroke="rgba(0, 242, 254, 0.3)" stroke-width="1.5" stroke-dasharray="3,3" />
+        
+        <!-- Center CBT Laptop/Screen Base -->
+        <rect x="30" y="48" width="40" height="24" rx="3" fill="#131c33" stroke="#00f2fe" stroke-width="2" />
+        <rect x="34" y="52" width="32" height="16" rx="2" fill="#070a14" />
+        <line x1="38" y1="58" x2="62" y2="58" stroke="#00f59b" stroke-width="2" stroke-linecap="round" />
+        <line x1="38" y1="63" x2="52" y2="63" stroke="#00f2fe" stroke-width="2" stroke-linecap="round" />
+        <path d="M24 74 L76 74 L72 77 L28 77 Z" fill="#00f2fe" />
+
+        <!-- Academic Cap on Top -->
+        <path d="M50 20 L76 32 L50 44 L24 32 Z" fill="url(#capGrad)" />
+        <path d="M34 37 L34 46 C34 52 66 52 66 46 L66 37" stroke="url(#capGrad)" stroke-width="2" fill="none" />
+        <path d="M72 34 L72 48" stroke="#ffb703" stroke-width="2" stroke-linecap="round" />
+        <circle cx="72" cy="49" r="2.5" fill="#ffb703" />
+      </svg>
+    </div>
+
+    <!-- App Name Under Logo -->
+    <div class="splash-app-title">PARIKSHA CBT</div>
+    <div class="splash-sub-text">Smart Examination Portal</div>
+
+    <!-- Progress Loader Bar -->
+    <div class="splash-loader-bar">
+      <div class="splash-loader-progress"></div>
+    </div>
+  </div>
+
   <!-- HEADER -->
   <header>
-    <div class="logo" onclick="showDashboard()"><i class="fa-solid fa-graduation-cap"></i> <span id="txt-logo-title">PARIKSHA CBT</span></div>
+    <div class="logo" onclick="showDashboard()">
+      <!-- In-App Logo Icon -->
+      <svg class="nav-brand-logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="50,6 90,27 90,73 50,94 10,73 10,27" stroke="#00f2fe" stroke-width="5" fill="rgba(16, 24, 44, 0.9)" />
+        <rect x="30" y="48" width="40" height="23" rx="3" fill="#131c33" stroke="#00f59b" stroke-width="2.5" />
+        <path d="M50 22 L74 33 L50 44 L26 33 Z" fill="#ffb703" />
+      </svg>
+      <span class="logo-text-gradient" id="txt-logo-title">PARIKSHA CBT</span>
+    </div>
+    
     <div class="nav-actions">
       <!-- PWA Install App Button -->
       <button id="pwa-install-header-btn" class="pwa-install-btn" onclick="triggerPwaInstall()">
@@ -562,6 +666,17 @@
   </div>
 
   <script>
+    // SPLASH SCREEN AUTO DISMISS (2.2 SECONDS)
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const splash = document.getElementById('app-splash-screen');
+        if (splash) {
+          splash.style.opacity = '0';
+          setTimeout(() => { splash.classList.add('hidden'); }, 600);
+        }
+      }, 2200);
+    });
+
     // PWA Service Worker Registration
     let deferredPrompt = null;
     if ('serviceWorker' in navigator) {
@@ -732,7 +847,6 @@
       }
     }
 
-    // GUEST PIN UPDATED TO 8094
     function promptGuestLogin() {
       const pin = prompt("Guest Security PIN darz karein:");
       if (pin === "8094") {
