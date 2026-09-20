@@ -153,17 +153,16 @@
     .avatar-edit-label { position: absolute; bottom: 0; right: 0; background: var(--primary); color: #000; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
     .modal-overlay { position: fixed; inset: 0; background: rgba(4, 7, 16, 0.88); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
-    .modal-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 22px; width: 100%; max-width: 720px; max-height: 90vh; overflow-y: auto; padding: 28px; position: relative; }
+    .modal-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 22px; width: 100%; max-width: 780px; max-height: 90vh; overflow-y: auto; padding: 28px; position: relative; }
     .form-input { width: 100%; padding: 12px; background: var(--input-bg); border: 1px solid var(--border); color: var(--text); border-radius: 10px; margin-bottom: 12px; font-size: 0.95rem; }
 
-    /* MULTI-QUESTION BLOCK */
     .question-builder-block {
-      background: var(--sub-card); border: 1.5px solid var(--border); border-radius: 14px;
-      padding: 16px; margin-bottom: 16px; position: relative;
+      background: var(--sub-card); border: 1.5px solid var(--border); border-radius: 16px;
+      padding: 18px; margin-bottom: 18px; position: relative;
     }
     .q-block-header {
-      display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
-      border-bottom: 1px solid var(--border); padding-bottom: 8px;
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;
+      border-bottom: 1px solid var(--border); padding-bottom: 10px; flex-wrap: wrap; gap: 10px;
     }
   </style>
 
@@ -256,12 +255,12 @@
       <div id="series-cards-container"></div>
     </div>
 
-    <!-- 3. CBT TEST SCREEN (WITH REAL-TIME LANGUAGE SWITCHER) -->
+    <!-- 3. CBT TEST SCREEN (MIXED QUESTIONS & CLEAN VIEW - NO SUBJECT SPOILER) -->
     <div id="screen-cbt" class="cbt-container hidden">
       <div class="cbt-header">
         <div>
           <h3 id="exam-title">CBT Examination</h3>
-          <p style="color:var(--text-muted); font-size:0.85rem;" id="exam-q-counter">Question 1</p>
+          <p style="color:var(--text-muted); font-size:0.85rem; margin-top:3px;" id="exam-q-counter">Question 1</p>
         </div>
         <div style="display:flex; align-items:center; gap:10px;">
           <button class="lang-btn-nav" onclick="toggleLanguageInExam()" id="exam-lang-indicator">🌐 हिंदी</button>
@@ -577,11 +576,11 @@
     </div>
   </div>
 
-  <!-- ADMIN: MULTI-QUESTION BILINGUAL TEST CREATOR -->
+  <!-- ADMIN: MULTI-QUESTION WITH SUBJECT SELECTOR & AUTO-TRANSLATE -->
   <div id="admin-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <button onclick="closeAdminPaperModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
-      <h2 id="modal-test-action-heading" style="color:var(--primary); margin-bottom:12px;"><i class="fa-solid fa-plus-circle"></i> Create Test Paper (Multi-Question & Bilingual)</h2>
+      <h2 id="modal-test-action-heading" style="color:var(--primary); margin-bottom:12px;"><i class="fa-solid fa-plus-circle"></i> Create Test Paper</h2>
       <input type="hidden" id="edit-test-id" value="">
       
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
@@ -608,10 +607,8 @@
         </select>
       </div>
 
-      <!-- DYNAMIC QUESTION BUILDER CONTAINER -->
       <div id="questions-builder-container"></div>
 
-      <!-- ADD QUESTION BUTTON -->
       <div style="display:flex; gap:10px; margin-bottom:15px;">
         <button type="button" class="btn-subfolder" style="flex:1;" onclick="addNewQuestionBlock()">
           <i class="fa-solid fa-plus"></i> + Add Another Question (Naya Sawaal Jodein)
@@ -625,7 +622,6 @@
   </div>
 
   <script>
-    // THEME MANAGEMENT
     let currentTheme = localStorage.getItem('pariksha_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', currentTheme);
 
@@ -679,8 +675,6 @@
     let currentIndex = 0;
     let timerTotalSeconds = 0;
     let timerInterval = null;
-    
-    // LANGUAGE STATE ('hi' for Hindi, 'en' for English)
     let userLang = localStorage.getItem('user_cbt_lang') || 'hi';
 
     let paymentConfig = {
@@ -689,7 +683,7 @@
     };
 
     const defaultBatches = [
-      { id: "batch_ssc_cgl", title: "SSC CGL Mock Batch", desc: "Tier-1 Mock Series", syllabus: "Mock tests and solutions", isPaid: true, mrp: 99, price: 49, discountPercent: 50, icon: "fa-building-columns" },
+      { id: "batch_ssc_cgl", title: "SSC CGL Mock Batch", desc: "Tier-1 Mock Series", syllabus: "Full mock tests and solutions", isPaid: true, mrp: 99, price: 49, discountPercent: 50, icon: "fa-building-columns" },
       { id: "batch_police_si", title: "Police SI Batch", desc: "Moolvidhi & Hindi", syllabus: "Complete Law & GK", isPaid: true, mrp: 199, price: 99, discountPercent: 50, icon: "fa-shield-halved" },
       { id: "batch_raj_gk", title: "Rajasthan GK (Free Batch)", desc: "41 Zile & Geography", syllabus: "Districts & History", isPaid: false, mrp: 0, price: 0, discountPercent: 0, icon: "fa-landmark" }
     ];
@@ -960,7 +954,7 @@
       if (b) { currentSelectedBatch = b; openDedicatedCheckoutScreen(); }
     }
 
-    // SERIES & SUB-BATCHES
+    // SERIES LISTING
     async function openSeriesListing(batchObj) {
       currentSelectedBatch = batchObj;
       currentActiveSubBatch = "all";
@@ -1094,7 +1088,7 @@
               <i class="fa-solid fa-file-lines" style="color:var(--primary); margin-right:8px;"></i> ${test.title} ${statusTag}
             </h3>
             <p style="color:var(--text-muted); font-size:0.85rem; margin-top:4px;">
-              ${test.questions.length} Questions | ${test.time} Min | Section: ${test.subFolderName || 'Main'}
+              ${test.questions.length} Questions (Mixed Test) | ${test.time} Min | Section: ${test.subFolderName || 'Main'}
             </p>
           </div>
           <div style="display:flex; align-items:center;">
@@ -1108,9 +1102,61 @@
       window.activeCategoryPapers = papers;
     }
 
-    // ==========================================
-    // MULTI-QUESTION BUILDER IN ADMIN MODAL
-    // ==========================================
+    // AUTO-TRANSLATE HELPER
+    async function translateTextOnline(text, fromLang, toLang) {
+      if (!text || text.trim() === "") return "";
+      try {
+        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${fromLang}&tl=${toLang}&dt=t&q=${encodeURIComponent(text)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        let translated = "";
+        if (data && data[0]) {
+          data[0].forEach(item => { if (item[0]) translated += item[0]; });
+        }
+        return translated || text;
+      } catch(e) {
+        return text;
+      }
+    }
+
+    async function triggerAutoTranslateForBlock(blockIdx) {
+      syncCurrentQuestionsFromDOM();
+      const item = currentQuestionsList[blockIdx];
+      if (!item) return;
+
+      const subject = item.subject || "General";
+      if (subject === "General English" || subject === "General Hindi") {
+        return alert(`⚠️ '${subject}' subject mono-lingual hai, isko translate karne ki zaroorat nahi hoti.`);
+      }
+
+      const btn = document.getElementById(`btn-auto-tr-${blockIdx}`);
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Translating...`;
+      }
+
+      if (item.q_en && (!item.q_hi || item.q_hi.trim() === "")) {
+        item.q_hi = await translateTextOnline(item.q_en, "en", "hi");
+        for (let i = 0; i < 4; i++) {
+          const optVal = (item.opts_en && item.opts_en[i]) ? item.opts_en[i].trim() : "";
+          if (/^[A-Z0-9\s\:\-]+$/.test(optVal) || optVal.length <= 4) {
+            item.opts_hi[i] = optVal;
+          } else {
+            item.opts_hi[i] = await translateTextOnline(optVal, "en", "hi");
+          }
+        }
+      } else if (item.q_hi && (!item.q_en || item.q_en.trim() === "")) {
+        item.q_en = await translateTextOnline(item.q_hi, "hi", "en");
+        for (let i = 0; i < 4; i++) {
+          const optVal = (item.opts_hi && item.opts_hi[i]) ? item.opts_hi[i].trim() : "";
+          item.opts_en[i] = await translateTextOnline(optVal, "hi", "en");
+        }
+      }
+
+      renderQuestionBuilderBlocks();
+    }
+
+    // MULTI-QUESTION BUILDER
     let currentQuestionsList = [];
 
     function renderQuestionBuilderBlocks() {
@@ -1120,57 +1166,79 @@
       currentQuestionsList.forEach((qItem, qIdx) => {
         const div = document.createElement("div");
         div.className = "question-builder-block";
+        const isMonoLang = (qItem.subject === "General English" || qItem.subject === "General Hindi");
+
         div.innerHTML = `
           <div class="q-block-header">
-            <span style="font-weight:bold; color:var(--gold);">Question #${qIdx + 1}</span>
-            <button type="button" class="btn-sm" style="background:var(--red); color:#fff;" onclick="removeQuestionBlock(${qIdx})">
-              <i class="fa-solid fa-trash"></i> Remove
-            </button>
+            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+              <span style="font-weight:bold; color:var(--gold);">Question #${qIdx + 1}</span>
+              
+              <select class="form-input q-subject-select" style="width:auto; padding:6px 12px; margin-bottom:0; font-size:0.85rem;" onchange="onSubjectChangedInBlock(${qIdx}, this.value)">
+                <option value="General Intelligence & Reasoning" ${qItem.subject === 'General Intelligence & Reasoning' ? 'selected' : ''}>🧠 Reasoning (तर्कशक्ति)</option>
+                <option value="Quantitative Aptitude / Math" ${qItem.subject === 'Quantitative Aptitude / Math' ? 'selected' : ''}>🔢 Math (गणित)</option>
+                <option value="General Knowledge & Science" ${qItem.subject === 'General Knowledge & Science' ? 'selected' : ''}>🌍 GK & General Science</option>
+                <option value="Current Affairs" ${qItem.subject === 'Current Affairs' ? 'selected' : ''}>📰 Current Affairs</option>
+                <option value="General English" ${qItem.subject === 'General English' ? 'selected' : ''}>🇬🇧 General English</option>
+                <option value="General Hindi" ${qItem.subject === 'General Hindi' ? 'selected' : ''}>🇮🇳 Samanya Hindi</option>
+                <option value="Moolvidhi & Constitution / Law" ${qItem.subject === 'Moolvidhi & Constitution / Law' ? 'selected' : ''}>⚖️ Moolvidhi & Law</option>
+              </select>
+            </div>
+
+            <div style="display:flex; gap:6px;">
+              ${!isMonoLang ? `
+                <button type="button" id="btn-auto-tr-${qIdx}" class="btn-sm" style="background:#3b82f6; color:#fff;" onclick="triggerAutoTranslateForBlock(${qIdx})">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i> ⚡ Auto-Translate
+                </button>
+              ` : ''}
+              <button type="button" class="btn-sm" style="background:var(--red); color:#fff;" onclick="removeQuestionBlock(${qIdx})">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
           </div>
 
-          <div style="margin-bottom:8px;">
+          <div style="margin-bottom:8px; ${qItem.subject === 'General English' ? 'display:none;' : ''}">
             <label style="font-size:0.82rem; color:var(--primary); font-weight:bold;">🇮🇳 Hindi Version (Question):</label>
-            <input type="text" class="form-input q-hi-input" placeholder="हिंदी में सवाल (e.g. दिए गए विकल्पों में से संबंधित शब्द का चयन करें:)" value="${qItem.q_hi || ''}">
+            <input type="text" class="form-input q-hi-input" placeholder="हिंदी में सवाल daalein" value="${qItem.q_hi || ''}">
           </div>
 
-          <div style="margin-bottom:12px;">
+          <div style="margin-bottom:12px; ${qItem.subject === 'General Hindi' ? 'display:none;' : ''}">
             <label style="font-size:0.82rem; color:var(--green); font-weight:bold;">🇬🇧 English Version (Question):</label>
-            <input type="text" class="form-input q-en-input" placeholder="English Question (e.g. Select the related word from the given alternatives:)" value="${qItem.q_en || ''}">
+            <input type="text" class="form-input q-en-input" placeholder="English Question" value="${qItem.q_en || ''}">
           </div>
 
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-            <div>
+            <div style="${qItem.subject === 'General English' ? 'display:none;' : ''}">
               <label style="font-size:0.8rem; color:var(--text-muted);">Option A (Hindi):</label>
               <input type="text" class="form-input opt-hi-0" placeholder="विकल्प A" value="${qItem.opts_hi ? qItem.opts_hi[0] : ''}">
             </div>
-            <div>
+            <div style="${qItem.subject === 'General Hindi' ? 'display:none;' : ''}">
               <label style="font-size:0.8rem; color:var(--text-muted);">Option A (English / Reasoning Code):</label>
-              <input type="text" class="form-input opt-en-0" placeholder="Option A (e.g. OWN)" value="${qItem.opts_en ? qItem.opts_en[0] : ''}">
+              <input type="text" class="form-input opt-en-0" placeholder="Option A" value="${qItem.opts_en ? qItem.opts_en[0] : ''}">
             </div>
 
-            <div>
+            <div style="${qItem.subject === 'General English' ? 'display:none;' : ''}">
               <label style="font-size:0.8rem; color:var(--text-muted);">Option B (Hindi):</label>
               <input type="text" class="form-input opt-hi-1" placeholder="विकल्प B" value="${qItem.opts_hi ? qItem.opts_hi[1] : ''}">
             </div>
-            <div>
+            <div style="${qItem.subject === 'General Hindi' ? 'display:none;' : ''}">
               <label style="font-size:0.8rem; color:var(--text-muted);">Option B (English / Reasoning Code):</label>
-              <input type="text" class="form-input opt-en-1" placeholder="Option B (e.g. PSM)" value="${qItem.opts_en ? qItem.opts_en[1] : ''}">
+              <input type="text" class="form-input opt-en-1" placeholder="Option B" value="${qItem.opts_en ? qItem.opts_en[1] : ''}">
             </div>
 
-            <div>
+            <div style="${qItem.subject === 'General English' ? 'display:none;' : ''}">
               <label style="font-size:0.8rem; color:var(--text-muted);">Option C (Hindi):</label>
               <input type="text" class="form-input opt-hi-2" placeholder="विकल्प C" value="${qItem.opts_hi ? qItem.opts_hi[2] : ''}">
             </div>
-            <div>
+            <div style="${qItem.subject === 'General Hindi' ? 'display:none;' : ''}">
               <label style="font-size:0.8rem; color:var(--text-muted);">Option C (English / Code):</label>
               <input type="text" class="form-input opt-en-2" placeholder="Option C" value="${qItem.opts_en ? qItem.opts_en[2] : ''}">
             </div>
 
-            <div>
+            <div style="${qItem.subject === 'General English' ? 'display:none;' : ''}">
               <label style="font-size:0.8rem; color:var(--text-muted);">Option D (Hindi):</label>
               <input type="text" class="form-input opt-hi-3" placeholder="विकल्प D" value="${qItem.opts_hi ? qItem.opts_hi[3] : ''}">
             </div>
-            <div>
+            <div style="${qItem.subject === 'General Hindi' ? 'display:none;' : ''}">
               <label style="font-size:0.8rem; color:var(--text-muted);">Option D (English / Code):</label>
               <input type="text" class="form-input opt-en-3" placeholder="Option D" value="${qItem.opts_en ? qItem.opts_en[3] : ''}">
             </div>
@@ -1190,30 +1258,38 @@
       });
     }
 
+    function onSubjectChangedInBlock(idx, val) {
+      syncCurrentQuestionsFromDOM();
+      if (currentQuestionsList[idx]) currentQuestionsList[idx].subject = val;
+      renderQuestionBuilderBlocks();
+    }
+
     function syncCurrentQuestionsFromDOM() {
       const blocks = document.querySelectorAll(".question-builder-block");
       const updated = [];
       blocks.forEach(b => {
-        const q_hi = b.querySelector(".q-hi-input").value.trim();
-        const q_en = b.querySelector(".q-en-input").value.trim();
+        const subject = b.querySelector(".q-subject-select").value;
+        const q_hi = b.querySelector(".q-hi-input") ? b.querySelector(".q-hi-input").value.trim() : "";
+        const q_en = b.querySelector(".q-en-input") ? b.querySelector(".q-en-input").value.trim() : "";
 
-        const opt_hi_0 = b.querySelector(".opt-hi-0").value.trim();
-        const opt_en_0 = b.querySelector(".opt-en-0").value.trim();
+        const opt_hi_0 = b.querySelector(".opt-hi-0") ? b.querySelector(".opt-hi-0").value.trim() : "";
+        const opt_en_0 = b.querySelector(".opt-en-0") ? b.querySelector(".opt-en-0").value.trim() : "";
 
-        const opt_hi_1 = b.querySelector(".opt-hi-1").value.trim();
-        const opt_en_1 = b.querySelector(".opt-en-1").value.trim();
+        const opt_hi_1 = b.querySelector(".opt-hi-1") ? b.querySelector(".opt-hi-1").value.trim() : "";
+        const opt_en_1 = b.querySelector(".opt-en-1") ? b.querySelector(".opt-en-1").value.trim() : "";
 
-        const opt_hi_2 = b.querySelector(".opt-hi-2").value.trim();
-        const opt_en_2 = b.querySelector(".opt-en-2").value.trim();
+        const opt_hi_2 = b.querySelector(".opt-hi-2") ? b.querySelector(".opt-hi-2").value.trim() : "";
+        const opt_en_2 = b.querySelector(".opt-en-2") ? b.querySelector(".opt-en-2").value.trim() : "";
 
-        const opt_hi_3 = b.querySelector(".opt-hi-3").value.trim();
-        const opt_en_3 = b.querySelector(".opt-en-3").value.trim();
+        const opt_hi_3 = b.querySelector(".opt-hi-3") ? b.querySelector(".opt-hi-3").value.trim() : "";
+        const opt_en_3 = b.querySelector(".opt-en-3") ? b.querySelector(".opt-en-3").value.trim() : "";
 
         const correctIdx = parseInt(b.querySelector(".opt-correct-select").value);
 
         updated.push({
-          q_hi: q_hi || q_en,
-          q_en: q_en || q_hi,
+          subject: subject,
+          q_hi: q_hi || (subject === "General English" ? q_en : q_en),
+          q_en: q_en || (subject === "General Hindi" ? q_hi : q_hi),
           opts_hi: [
             opt_hi_0 || opt_en_0,
             opt_hi_1 || opt_en_1,
@@ -1235,6 +1311,7 @@
     function addNewQuestionBlock() {
       syncCurrentQuestionsFromDOM();
       currentQuestionsList.push({
+        subject: "General Intelligence & Reasoning",
         q_hi: "",
         q_en: "",
         opts_hi: ["", "", "", ""],
@@ -1259,12 +1336,13 @@
     }
 
     function openAdminPaperModal() {
-      document.getElementById("modal-test-action-heading").innerHTML = `Create Test Paper (Multi-Question)`;
+      document.getElementById("modal-test-action-heading").innerHTML = `Create Test Paper`;
       document.getElementById("edit-test-id").value = "";
       document.getElementById("new-paper-title").value = "";
       document.getElementById("test-access-type").value = "free";
 
       currentQuestionsList = [{
+        subject: "General Intelligence & Reasoning",
         q_hi: "",
         q_en: "",
         opts_hi: ["", "", "", ""],
@@ -1314,7 +1392,7 @@
       try {
         if (editDocId) await db.collection("custom_tests").doc(editDocId).update(payload);
         else await db.collection("custom_tests").add(payload);
-        alert(`✅ Test "${title}" (${currentQuestionsList.length} Questions) safaltapoorvak save ho gaya!`);
+        alert(`✅ Test "${title}" (${currentQuestionsList.length} Questions) publish ho gaya!`);
         closeAdminPaperModal();
         if (currentSelectedBatch && currentSelectedBatch.id === batchId) await loadSubFoldersAndPapers();
       } catch(e) { alert(e.message); }
@@ -1333,6 +1411,7 @@
 
       currentQuestionsList = (test.questions || []).map(q => {
         return {
+          subject: q.subject || "General Intelligence & Reasoning",
           q_hi: q.q_hi || q.q || "",
           q_en: q.q_en || q.q || "",
           opts_hi: q.opts_hi || q.opts || ["", "", "", ""],
@@ -1354,10 +1433,26 @@
     }
 
     // ==========================================
-    // CBT TEST RUNTIME (BILINGUAL)
+    // CBT RUNTIME (MIXED / SHUFFLED QUESTIONS)
     // ==========================================
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
     function startSpecificTest(paperIndex) {
-      currentActiveTest = window.activeCategoryPapers[paperIndex];
+      const rawTest = window.activeCategoryPapers[paperIndex];
+      
+      // Questions ko mix (shuffle) karna taaki subject-wise pattern na dikhe
+      currentActiveTest = {
+        ...rawTest,
+        questions: shuffleArray(rawTest.questions || [])
+      };
+
       userAnswers = {};
       currentIndex = 0;
       timerTotalSeconds = currentActiveTest.time * 60;
@@ -1380,16 +1475,20 @@
       document.getElementById("exam-q-counter").innerText = `Question ${currentIndex + 1} / ${currentActiveTest.questions.length}`;
       document.getElementById("exam-lang-indicator").innerText = (userLang === 'hi') ? "🌐 हिंदी" : "🌐 English";
 
-      // Select Language Font/Text
       let questionText = (userLang === 'hi') 
         ? (q.q_hi || q.q || "सवाल उपलब्ध नहीं")
         : (q.q_en || q.q || "Question not available");
+
+      if (q.subject === "General English") questionText = q.q_en || q.q_hi;
+      if (q.subject === "General Hindi") questionText = q.q_hi || q.q_en;
 
       document.getElementById("cbt-question-text").innerText = `${currentIndex + 1}. ${questionText}`;
       const box = document.getElementById("cbt-options-box");
       box.innerHTML = "";
 
       let optionsList = (userLang === 'hi') ? (q.opts_hi || q.opts || []) : (q.opts_en || q.opts || []);
+      if (q.subject === "General English") optionsList = q.opts_en || q.opts_hi;
+      if (q.subject === "General Hindi") optionsList = q.opts_hi || q.opts_en;
 
       optionsList.forEach((opt, idx) => {
         const btn = document.createElement("button");
@@ -1417,12 +1516,15 @@
       }, 1000);
     }
 
-    // SUBMIT & RANKING
+    // AUTOMATIC RESULT & RANK ENGINE
     async function submitExam() {
       clearInterval(timerInterval);
       let correct = 0;
       let total = currentActiveTest.questions.length;
-      currentActiveTest.questions.forEach((item, idx) => { if (userAnswers[idx] === item.a) correct++; });
+      
+      currentActiveTest.questions.forEach((item, idx) => {
+        if (userAnswers[idx] === item.a) correct++;
+      });
 
       let pts = correct * 10;
       let acc = Math.round((correct / total) * 100);
@@ -1555,7 +1657,12 @@
           optHtml += `<div style="${style}">${String.fromCharCode(65 + oIdx)}. ${opt}</div>`;
         });
 
-        card.innerHTML = `<div style="width:100%;"><h4 style="color:var(--text);">${idx + 1}. ${qTitle}</h4><div>${optHtml}</div></div>`;
+        card.innerHTML = `
+          <div style="width:100%;">
+            <h4 style="color:var(--text); margin-top:6px;">${idx + 1}. ${qTitle}</h4>
+            <div>${optHtml}</div>
+          </div>
+        `;
         container.appendChild(card);
       });
     }
