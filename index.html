@@ -70,7 +70,27 @@
     .nav-actions { display: flex; align-items: center; gap: 10px; position: relative; }
     .lang-btn-nav { background: rgba(0, 242, 254, 0.1); border: 1.5px solid var(--primary); color: var(--text); padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
 
-    .pwa-install-btn { background: linear-gradient(90deg, #ffb703, #fb8500); color: #000; border: none; padding: 6px 14px; border-radius: 20px; font-weight: 800; font-size: 0.85rem; cursor: pointer; display: none; align-items: center; gap: 6px; }
+    /* PWA INSTALL BUTTON - PERMANENTLY VISIBLE & STYLED */
+    .pwa-install-btn {
+      background: linear-gradient(90deg, #ffb703, #fb8500);
+      color: #000;
+      border: none;
+      padding: 7px 15px;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 0 12px rgba(255, 183, 3, 0.4);
+      animation: pulseInstall 2s infinite;
+    }
+    @keyframes pulseInstall {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
     .profile-pill { display: flex; align-items: center; gap: 8px; background: var(--sub-card); padding: 5px 12px; border-radius: 30px; cursor: pointer; border: 1px solid var(--border); user-select: none; }
     .profile-pill img { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--primary); object-fit: cover; }
     .dot-menu-icon { font-size: 1rem; color: var(--text-muted); margin-left: 4px; }
@@ -208,6 +228,7 @@
     </div>
     
     <div class="nav-actions">
+      <!-- RESTORED: PERMANENT PWA DOWNLOAD / INSTALL BUTTON -->
       <button id="pwa-install-header-btn" class="pwa-install-btn" onclick="triggerPwaInstall()">
         <i class="fa-solid fa-download"></i> Install App
       </button>
@@ -266,7 +287,7 @@
       <div id="series-cards-container"></div>
     </div>
 
-    <!-- 3. CBT TEST SCREEN (MIXED QUESTIONS WITHOUT SUBJECT SPOILERS) -->
+    <!-- 3. CBT TEST SCREEN (MIXED QUESTIONS WITHOUT LABELS) -->
     <div id="screen-cbt" class="cbt-container hidden">
       <div class="cbt-header">
         <div>
@@ -673,6 +694,35 @@
         if (s) { s.style.opacity = '0'; setTimeout(() => s.classList.add('hidden'), 600); }
       }, 2000);
     });
+
+    // PWA INSTALL SCRIPT
+    let deferredPrompt = null;
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const pwaBtn = document.getElementById('pwa-install-header-btn');
+      if (pwaBtn) pwaBtn.style.display = 'inline-flex';
+    });
+
+    function triggerPwaInstall() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            document.getElementById('pwa-install-header-btn').style.display = 'none';
+          }
+          deferredPrompt = null;
+        });
+      } else {
+        alert("Mobile ya PC me install karne ke liye Chrome Browser ke upar bane (⋮ 3 Dots) par tap karke 'Add to Home screen' ya 'Install app' par click karein!");
+      }
+    }
 
     const firebaseConfig = {
       apiKey: "AIzaSyCmhR0Y8BGjwy_w1SwWBgSoYc7AWtNbmro",
@@ -1296,7 +1346,7 @@
     async function translateTextOnline(text, fromLang, toLang) {
       if (!text || text.trim() === "") return "";
       
-      // Method 1: Google Translate Primary Web Engine
+      // Primary: Google Translate Engine
       try {
         const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${fromLang}&tl=${toLang}&dt=t&q=${encodeURIComponent(text)}`;
         const res = await fetch(url);
@@ -1310,7 +1360,7 @@
         }
       } catch(e) {}
 
-      // Method 2: MyMemory Translation Engine (CORS Protected Fail-Safe)
+      // Secondary: MyMemory Fallback Engine
       try {
         const pair = `${fromLang}|${toLang}`;
         const url2 = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${pair}`;
@@ -2050,7 +2100,7 @@
         alert("✅ Dhanyawad! Aapka feedback team tak pahuch gaya hai.");
         closeFeedbackModal();
         document.getElementById("feed-msg").value = "";
-      } catch(e) { alert(e.message); }
+      } catch(e) { alert("Error: " + e.message); }
     }
 
     // CHECKOUT
@@ -2200,10 +2250,6 @@
       userLang = (userLang === 'hi') ? 'en' : 'hi';
       localStorage.setItem('user_cbt_lang', userLang);
       document.getElementById("btn-active-lang").innerText = (userLang === 'hi') ? "🌐 हिंदी" : "🌐 English";
-    }
-
-    function triggerPwaInstall() {
-      alert("Aapka browser installation support karta hai Chrome menu (3-dots) > 'Install App' se.");
     }
   </script>
 </body>
