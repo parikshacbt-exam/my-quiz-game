@@ -165,7 +165,6 @@
       border-bottom: 1px solid var(--border); padding-bottom: 10px; flex-wrap: wrap; gap: 10px;
     }
 
-    /* PURE SUBJECT CHIPS */
     .subject-chips-grid {
       display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 16px;
     }
@@ -249,7 +248,6 @@
           
           <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
             <div id="series-action-btn-placeholder"></div>
-            <!-- UPDATED LABEL: ALL RANK BATCH -->
             <button class="btn-subfolder" onclick="openBatchLeaderboard()"><i class="fa-solid fa-trophy"></i> All Rank Batch</button>
             <button id="btn-add-subfolder" class="btn-subfolder hidden" onclick="openCreateSubBatchModal()"><i class="fa-solid fa-folder-plus"></i> Add Folder</button>
             <button id="btn-upload-test-in-batch" class="btn-submit hidden" onclick="openUploadTestInCurrentBatch()"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Test</button>
@@ -296,7 +294,7 @@
       <h3 style="color:var(--gold); margin-bottom:10px;" id="res-podium-title"><i class="fa-solid fa-crown"></i> Batch Top 3 Rank Holders (Podium)</h3>
       <div class="podium-container" id="res-podium-box"></div>
 
-      <div style="background:var(--sub-card); border:2px solid var(--primary); border-radius:18px; padding:20px; margin:20px 0; display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:12px;">
+      <div style="background:var(--sub-card); border:2px solid var(--primary); border-radius:18px; padding:20px; margin-bottom:20px; display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:12px;">
         <div>
           <span style="font-size:0.8rem; color:var(--text-muted);">Batch Rank</span>
           <div style="font-size:2rem; font-weight:900; color:var(--gold);" id="res-user-air">#1</div>
@@ -540,7 +538,7 @@
     </div>
   </div>
 
-  <!-- ADMIN: BATCH MODAL (PURE SUBJECTS ONLY - NO COMPETITION NAMES) -->
+  <!-- ADMIN: BATCH MODAL -->
   <div id="admin-batch-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <button onclick="closeAdminBatchModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -553,7 +551,6 @@
       <label style="font-size:0.85rem;">Description:</label>
       <input type="text" id="batch-desc-input" class="form-input" placeholder="Short description">
 
-      <!-- PURE SUBJECTS SELECTION ONLY -->
       <label style="font-size:0.85rem; color:var(--primary); font-weight:bold;">
         <i class="fa-solid fa-book"></i> Is Batch Ke Subjects Select Karein:
       </label>
@@ -604,7 +601,7 @@
     </div>
   </div>
 
-  <!-- ADMIN: MULTI-QUESTION PAPER CREATOR (BATCH'S SUBJECTS ONLY) -->
+  <!-- ADMIN: MULTI-QUESTION PAPER CREATOR -->
   <div id="admin-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <button onclick="closeAdminPaperModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -705,7 +702,6 @@
     let timerInterval = null;
     let userLang = localStorage.getItem('user_cbt_lang') || 'hi';
 
-    // PURE SUBJECTS ONLY (NO COMPETITION NAMES)
     const MASTER_COMPETITION_SUBJECTS = [
       "General Intelligence & Reasoning",
       "Quantitative Aptitude (Math)",
@@ -1173,7 +1169,7 @@
     }
 
     // ==========================================
-    // BATCH SETUP: PURE SUBJECTS ONLY (NO EXAM NAMES)
+    // BATCH SETUP: PURE SUBJECTS SELECTION
     // ==========================================
     function renderBatchSubjectChips() {
       const container = document.getElementById("batch-subject-chips");
@@ -1283,7 +1279,7 @@
 
       try {
         await db.collection("custom_batches").doc(batchId).set(payload, { merge: true });
-        alert(`✅ Batch "${title}" saved!`);
+        alert(`✅ Batch "${title}" (${currentModalSelectedSubjects.length} Subjects) saved!`);
         closeAdminBatchModal();
         loadAllBatches();
         if (currentSelectedBatch && currentSelectedBatch.id === batchId) openSeriesListing(payload);
@@ -1291,22 +1287,43 @@
     }
 
     // ==========================================
-    // AUTO-TRANSLATE HELPER (GOOGLE TRANSLATE)
+    // ROBUST BI-DIRECTIONAL AUTO-TRANSLATE HELPER
     // ==========================================
+    function isDevanagari(text) {
+      return /[\u0900-\u097F]/.test(text);
+    }
+
     async function translateTextOnline(text, fromLang, toLang) {
       if (!text || text.trim() === "") return "";
+      
+      // Method 1: Google Translate Primary Web Engine
       try {
         const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${fromLang}&tl=${toLang}&dt=t&q=${encodeURIComponent(text)}`;
         const res = await fetch(url);
-        const data = await res.json();
-        let translated = "";
-        if (data && data[0]) {
-          data[0].forEach(item => { if (item[0]) translated += item[0]; });
+        if (res.ok) {
+          const data = await res.json();
+          let translated = "";
+          if (data && data[0]) {
+            data[0].forEach(item => { if (item[0]) translated += item[0]; });
+          }
+          if (translated && translated.trim().length > 0) return translated.trim();
         }
-        return translated || text;
-      } catch(e) {
-        return text;
-      }
+      } catch(e) {}
+
+      // Method 2: MyMemory Translation Engine (CORS Protected Fail-Safe)
+      try {
+        const pair = `${fromLang}|${toLang}`;
+        const url2 = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${pair}`;
+        const res2 = await fetch(url2);
+        if (res2.ok) {
+          const data2 = await res2.json();
+          if (data2 && data2.responseData && data2.responseData.translatedText) {
+            return data2.responseData.translatedText.trim();
+          }
+        }
+      } catch(e) {}
+
+      return text;
     }
 
     async function triggerAutoTranslateForBlock(blockIdx) {
@@ -1325,29 +1342,45 @@
         btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Translating...`;
       }
 
-      if (item.q_en && (!item.q_hi || item.q_hi.trim() === "")) {
-        item.q_hi = await translateTextOnline(item.q_en, "en", "hi");
-        for (let i = 0; i < 4; i++) {
-          const optVal = (item.opts_en && item.opts_en[i]) ? item.opts_en[i].trim() : "";
-          if (/^[A-Z0-9\s\:\-]+$/.test(optVal) || optVal.length <= 4) {
-            item.opts_hi[i] = optVal;
-          } else {
-            item.opts_hi[i] = await translateTextOnline(optVal, "en", "hi");
-          }
-        }
-      } else if (item.q_hi && (!item.q_en || item.q_en.trim() === "")) {
-        item.q_en = await translateTextOnline(item.q_hi, "hi", "en");
+      const qHi = (item.q_hi || "").trim();
+      const qEn = (item.q_en || "").trim();
+
+      // SCENARIO 1: HINDI WRITTEN -> TRANSLATE TO ENGLISH
+      if (qHi.length > 0 && isDevanagari(qHi)) {
+        item.q_en = await translateTextOnline(qHi, "hi", "en");
         for (let i = 0; i < 4; i++) {
           const optVal = (item.opts_hi && item.opts_hi[i]) ? item.opts_hi[i].trim() : "";
-          item.opts_en[i] = await translateTextOnline(optVal, "hi", "en");
+          if (optVal.length > 0) {
+            if (/^[A-Z0-9\s\:\-]+$/.test(optVal) || optVal.length <= 4) {
+              item.opts_en[i] = optVal;
+            } else {
+              item.opts_en[i] = await translateTextOnline(optVal, "hi", "en");
+            }
+          }
         }
+      }
+      // SCENARIO 2: ENGLISH WRITTEN -> TRANSLATE TO HINDI
+      else if (qEn.length > 0) {
+        item.q_hi = await translateTextOnline(qEn, "en", "hi");
+        for (let i = 0; i < 4; i++) {
+          const optVal = (item.opts_en && item.opts_en[i]) ? item.opts_en[i].trim() : "";
+          if (optVal.length > 0) {
+            if (/^[A-Z0-9\s\:\-]+$/.test(optVal) || optVal.length <= 4) {
+              item.opts_hi[i] = optVal;
+            } else {
+              item.opts_hi[i] = await translateTextOnline(optVal, "en", "hi");
+            }
+          }
+        }
+      } else {
+        alert("Pehle Hindi ya English me se kisi ek box me sawaal likhein!");
       }
 
       renderQuestionBuilderBlocks();
     }
 
     // ==========================================
-    // MULTI-QUESTION BUILDER (USING BATCH'S SUBJECTS ONLY)
+    // MULTI-QUESTION BUILDER (BATCH'S SUBJECTS ONLY)
     // ==========================================
     let currentQuestionsList = [];
 
@@ -1400,7 +1433,7 @@
 
           <div style="margin-bottom:12px; ${qItem.subject === 'Samanya Hindi' ? 'display:none;' : ''}">
             <label style="font-size:0.82rem; color:var(--green); font-weight:bold;">🇬🇧 English Version (Question):</label>
-            <input type="text" class="form-input q-en-input" placeholder="English Question" value="${qItem.q_en || ''}">
+            <input type="text" class="form-input q-en-input" placeholder="English Question (Auto-Translate par click karein)" value="${qItem.q_en || ''}">
           </div>
 
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
@@ -1485,20 +1518,10 @@
 
         updated.push({
           subject: subject,
-          q_hi: q_hi || (subject === "General English" ? q_en : q_en),
-          q_en: q_en || (subject === "Samanya Hindi" ? q_hi : q_hi),
-          opts_hi: [
-            opt_hi_0 || opt_en_0,
-            opt_hi_1 || opt_en_1,
-            opt_hi_2 || opt_en_2 || "इनमें से कोई नहीं",
-            opt_hi_3 || opt_en_3 || "उपरोक्त सभी"
-          ],
-          opts_en: [
-            opt_en_0 || opt_hi_0,
-            opt_en_1 || opt_hi_1,
-            opt_en_2 || opt_hi_2 || "None of these",
-            opt_en_3 || opt_hi_3 || "All of the above"
-          ],
+          q_hi: q_hi,
+          q_en: q_en,
+          opts_hi: [opt_hi_0, opt_hi_1, opt_hi_2, opt_hi_3],
+          opts_en: [opt_en_0, opt_en_1, opt_en_2, opt_en_3],
           a: correctIdx
         });
       });
@@ -1746,7 +1769,6 @@
       currentUser.scorePoints = (currentUser.scorePoints || 0) + pts;
       currentUser.totalTests = (currentUser.totalTests || 0) + 1;
 
-      // Update isolated batch-specific points
       if (!currentUser.batchScores) currentUser.batchScores = {};
       if (!currentUser.batchScores[batchId]) currentUser.batchScores[batchId] = { points: 0, tests: 0 };
       currentUser.batchScores[batchId].points += pts;
@@ -1810,7 +1832,6 @@
         });
       } catch(e) {}
 
-      // Fallback if empty
       if (batchCandidates.length === 0) {
         const myBPoints = (currentUser.batchScores && currentUser.batchScores[batchId]) ? currentUser.batchScores[batchId].points : 10;
         const myBTests = (currentUser.batchScores && currentUser.batchScores[batchId]) ? currentUser.batchScores[batchId].tests : 1;
@@ -1823,7 +1844,6 @@
         });
       }
 
-      // Sort strictly by this batch's score
       batchCandidates.sort((a, b) => b.points - a.points);
 
       const userIdx = batchCandidates.findIndex(c => c.uid === currentUser.uid);
@@ -1832,7 +1852,6 @@
       document.getElementById("res-user-air").innerText = `#${userRank}`;
       document.getElementById("res-total-students").innerText = `${batchCandidates.length}`;
 
-      // TOP 3 PODIUM FOR THIS BATCH
       const podiumBox = document.getElementById("res-podium-box");
       podiumBox.innerHTML = "";
 
@@ -1861,7 +1880,6 @@
         </div>
       `;
 
-      // FULL BATCH RANK TABLE
       const tbody = document.getElementById("res-leaderboard-tbody");
       tbody.innerHTML = "";
       batchCandidates.forEach((c, idx) => {
@@ -2032,7 +2050,7 @@
         alert("✅ Dhanyawad! Aapka feedback team tak pahuch gaya hai.");
         closeFeedbackModal();
         document.getElementById("feed-msg").value = "";
-      } catch(e) { alert("Error: " + e.message); }
+      } catch(e) { alert(e.message); }
     }
 
     // CHECKOUT
