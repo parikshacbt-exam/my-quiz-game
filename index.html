@@ -153,8 +153,16 @@
     .avatar-edit-label { position: absolute; bottom: 0; right: 0; background: var(--primary); color: #000; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
     .modal-overlay { position: fixed; inset: 0; background: rgba(4, 7, 16, 0.88); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
-    .modal-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 22px; width: 100%; max-width: 780px; max-height: 90vh; overflow-y: auto; padding: 28px; position: relative; }
+    .modal-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 22px; width: 100%; max-width: 800px; max-height: 90vh; overflow-y: auto; padding: 28px; position: relative; }
     .form-input { width: 100%; padding: 12px; background: var(--input-bg); border: 1px solid var(--border); color: var(--text); border-radius: 10px; margin-bottom: 12px; font-size: 0.95rem; }
+
+    /* CHECKBOX GRID FOR MASTER SUBJECTS IN BATCH */
+    .subject-checkbox-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px;
+      background: var(--sub-card); padding: 14px; border-radius: 12px; border: 1px solid var(--border);
+      max-height: 180px; overflow-y: auto; margin-bottom: 12px;
+    }
+    .subject-check-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text); cursor: pointer; }
 
     .question-builder-block {
       background: var(--sub-card); border: 1.5px solid var(--border); border-radius: 16px;
@@ -283,7 +291,7 @@
       <h3 style="color:var(--gold); margin-bottom:10px;"><i class="fa-solid fa-crown"></i> Series Top 3 Rank Holders (Podium)</h3>
       <div class="podium-container" id="res-podium-box"></div>
 
-      <div style="background:var(--sub-card); border:2px solid var(--primary); border-radius:18px; padding:20px; margin:20px 0; display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:12px;">
+      <div style="background:var(--sub-card); border:2px solid var(--primary); border-radius:18px; padding:20px; margin-20px 0; display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:12px;">
         <div>
           <span style="font-size:0.8rem; color:var(--text-muted);">Your All India Rank</span>
           <div style="font-size:2rem; font-weight:900; color:var(--gold);" id="res-user-air">#1</div>
@@ -527,18 +535,28 @@
     </div>
   </div>
 
-  <!-- ADMIN: BATCH MODAL -->
+  <!-- ADMIN: BATCH MODAL (WITH MASTER SUBJECT SELECTOR CHECKBOXES) -->
   <div id="admin-batch-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <button onclick="closeAdminBatchModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
       <h2 id="batch-modal-heading" style="color:var(--gold); margin-bottom:12px;"><i class="fa-solid fa-folder-plus"></i> Course Settings</h2>
       <input type="hidden" id="edit-batch-id" value="">
-      <label style="font-size:0.85rem;">Batch Name:</label>
-      <input type="text" id="batch-title-input" class="form-input">
+      
+      <label style="font-size:0.85rem;">Batch Name / Exam Title:</label>
+      <input type="text" id="batch-title-input" class="form-input" placeholder="e.g. UPSC CSE, SSC CGL, IIT-JEE, NEET">
+      
       <label style="font-size:0.85rem;">Description:</label>
       <input type="text" id="batch-desc-input" class="form-input">
-      <label style="font-size:0.85rem;">Syllabus:</label>
+
+      <!-- MASTER SUBJECT SELECTOR FOR THIS BATCH -->
+      <label style="font-size:0.85rem; color:var(--primary); font-weight:bold; display:block; margin-bottom:4px;">
+        <i class="fa-solid fa-list-check"></i> Is Batch Me Kaun-Kaun Se Subjects Shamil Hain? (Tick Karein):
+      </label>
+      <div class="subject-checkbox-grid" id="batch-subjects-checkbox-container"></div>
+
+      <label style="font-size:0.85rem;">Syllabus & Details:</label>
       <textarea id="batch-syllabus-input" class="form-input" rows="3"></textarea>
+
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
         <div>
           <label style="font-size:0.85rem;">Type:</label>
@@ -562,7 +580,7 @@
           <input type="number" id="batch-discount-input" class="form-input" value="50" oninput="calculatePriceFromDiscount()">
         </div>
       </div>
-      <button class="btn-batch" style="width:100%; margin-top:10px;" onclick="saveAdminBatch()">Save Batch</button>
+      <button class="btn-batch" style="width:100%; margin-top:10px;" onclick="saveAdminBatch()">Save Batch Settings</button>
     </div>
   </div>
 
@@ -571,12 +589,12 @@
     <div class="modal-card">
       <button onclick="closeCreateSubBatchModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
       <h2 style="color:var(--primary); margin-bottom:12px;">Create Folder / Subject</h2>
-      <input type="text" id="subbatch-title-input" class="form-input" placeholder="e.g. Reasoning, Math">
+      <input type="text" id="subbatch-title-input" class="form-input" placeholder="e.g. Tier-1 Mocks, Previous Year">
       <button class="btn-subfolder" style="width:100%;" onclick="saveAdminSubBatch()">Save Folder</button>
     </div>
   </div>
 
-  <!-- ADMIN: MULTI-QUESTION WITH SUBJECT SELECTOR & AUTO-TRANSLATE -->
+  <!-- ADMIN: MULTI-QUESTION TEST CREATOR (DYNAMIC SUBJECTS) -->
   <div id="admin-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <button onclick="closeAdminPaperModal()" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -622,6 +640,27 @@
   </div>
 
   <script>
+    // MASTER SUBJECTS REPOSITORY (FOR ALL EXAMS: SSC, UPSC, JEE, NEET, DEFENCE, STATE EXAMS)
+    const MASTER_SUBJECTS_LIST = [
+      "General Intelligence & Reasoning",
+      "Quantitative Aptitude / Math",
+      "General Knowledge & Current Affairs",
+      "General Science (Physics, Chem, Bio)",
+      "Physics (JEE / NEET)",
+      "Chemistry (JEE / NEET)",
+      "Biology / Zoology (NEET)",
+      "General English",
+      "Samanya Hindi",
+      "History & Art / Culture (UPSC / State PCS)",
+      "Geography & Environment (UPSC / State PCS)",
+      "Indian Polity & Constitution",
+      "Economics & Banking Awareness",
+      "Moolvidhi & Police Law",
+      "Computer Knowledge & IT",
+      "Ethics & Aptitude (GS-4)",
+      "Child Development & Pedagogy (CTET / REET)"
+    ];
+
     let currentTheme = localStorage.getItem('pariksha_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', currentTheme);
 
@@ -683,9 +722,30 @@
     };
 
     const defaultBatches = [
-      { id: "batch_ssc_cgl", title: "SSC CGL Mock Batch", desc: "Tier-1 Mock Series", syllabus: "Full mock tests and solutions", isPaid: true, mrp: 99, price: 49, discountPercent: 50, icon: "fa-building-columns" },
-      { id: "batch_police_si", title: "Police SI Batch", desc: "Moolvidhi & Hindi", syllabus: "Complete Law & GK", isPaid: true, mrp: 199, price: 99, discountPercent: 50, icon: "fa-shield-halved" },
-      { id: "batch_raj_gk", title: "Rajasthan GK (Free Batch)", desc: "41 Zile & Geography", syllabus: "Districts & History", isPaid: false, mrp: 0, price: 0, discountPercent: 0, icon: "fa-landmark" }
+      { 
+        id: "batch_ssc_cgl", 
+        title: "SSC CGL Mock Batch", 
+        desc: "Tier-1 Mock Series", 
+        syllabus: "Full mock tests and solutions", 
+        isPaid: true, mrp: 99, price: 49, discountPercent: 50, icon: "fa-building-columns",
+        selectedSubjects: ["General Intelligence & Reasoning", "Quantitative Aptitude / Math", "General Knowledge & Current Affairs", "General English"]
+      },
+      { 
+        id: "batch_police_si", 
+        title: "Police SI Batch", 
+        desc: "Moolvidhi & Hindi", 
+        syllabus: "Complete Law & GK", 
+        isPaid: true, mrp: 199, price: 99, discountPercent: 50, icon: "fa-shield-halved",
+        selectedSubjects: ["Samanya Hindi", "Moolvidhi & Police Law", "General Knowledge & Current Affairs", "Quantitative Aptitude / Math", "General Intelligence & Reasoning"]
+      },
+      { 
+        id: "batch_raj_gk", 
+        title: "Rajasthan GK (Free Batch)", 
+        desc: "41 Zile & Geography", 
+        syllabus: "Districts & History", 
+        isPaid: false, mrp: 0, price: 0, discountPercent: 0, icon: "fa-landmark",
+        selectedSubjects: ["General Knowledge & Current Affairs", "History & Art / Culture (UPSC / State PCS)", "Geography & Environment (UPSC / State PCS)"]
+      }
     ];
 
     function setAuthTab(mode) {
@@ -1125,7 +1185,7 @@
       if (!item) return;
 
       const subject = item.subject || "General";
-      if (subject === "General English" || subject === "General Hindi") {
+      if (subject.includes("English") || subject.includes("Hindi")) {
         return alert(`⚠️ '${subject}' subject mono-lingual hai, isko translate karne ki zaroorat nahi hoti.`);
       }
 
@@ -1156,6 +1216,18 @@
       renderQuestionBuilderBlocks();
     }
 
+    // =========================================================================
+    // DYNAMIC SUBJECTS: FETCH FROM BATCH FOR QUESTION BUILDER
+    // =========================================================================
+    function getSelectedBatchAllowedSubjects() {
+      const selectedBatchId = document.getElementById("new-paper-cat").value;
+      const b = allBatches.find(x => x.id === selectedBatchId);
+      if (b && b.selectedSubjects && b.selectedSubjects.length > 0) {
+        return b.selectedSubjects;
+      }
+      return MASTER_SUBJECTS_LIST;
+    }
+
     // MULTI-QUESTION BUILDER
     let currentQuestionsList = [];
 
@@ -1163,24 +1235,32 @@
       const box = document.getElementById("questions-builder-container");
       box.innerHTML = "";
 
+      const allowedSubjects = getSelectedBatchAllowedSubjects();
+
       currentQuestionsList.forEach((qItem, qIdx) => {
         const div = document.createElement("div");
         div.className = "question-builder-block";
-        const isMonoLang = (qItem.subject === "General English" || qItem.subject === "General Hindi");
+        
+        // Ensure valid subject
+        if (!allowedSubjects.includes(qItem.subject)) {
+          qItem.subject = allowedSubjects[0] || MASTER_SUBJECTS_LIST[0];
+        }
+
+        const isMonoLang = (qItem.subject.includes("English") || qItem.subject.includes("Hindi"));
+
+        let subjectOptionsHtml = "";
+        allowedSubjects.forEach(sub => {
+          subjectOptionsHtml += `<option value="${sub}" ${qItem.subject === sub ? 'selected' : ''}>${sub}</option>`;
+        });
 
         div.innerHTML = `
           <div class="q-block-header">
             <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
               <span style="font-weight:bold; color:var(--gold);">Question #${qIdx + 1}</span>
               
+              <!-- DYNAMIC FILTERED SUBJECT DROPDOWN -->
               <select class="form-input q-subject-select" style="width:auto; padding:6px 12px; margin-bottom:0; font-size:0.85rem;" onchange="onSubjectChangedInBlock(${qIdx}, this.value)">
-                <option value="General Intelligence & Reasoning" ${qItem.subject === 'General Intelligence & Reasoning' ? 'selected' : ''}>🧠 Reasoning (तर्कशक्ति)</option>
-                <option value="Quantitative Aptitude / Math" ${qItem.subject === 'Quantitative Aptitude / Math' ? 'selected' : ''}>🔢 Math (गणित)</option>
-                <option value="General Knowledge & Science" ${qItem.subject === 'General Knowledge & Science' ? 'selected' : ''}>🌍 GK & General Science</option>
-                <option value="Current Affairs" ${qItem.subject === 'Current Affairs' ? 'selected' : ''}>📰 Current Affairs</option>
-                <option value="General English" ${qItem.subject === 'General English' ? 'selected' : ''}>🇬🇧 General English</option>
-                <option value="General Hindi" ${qItem.subject === 'General Hindi' ? 'selected' : ''}>🇮🇳 Samanya Hindi</option>
-                <option value="Moolvidhi & Constitution / Law" ${qItem.subject === 'Moolvidhi & Constitution / Law' ? 'selected' : ''}>⚖️ Moolvidhi & Law</option>
+                ${subjectOptionsHtml}
               </select>
             </div>
 
@@ -1196,49 +1276,49 @@
             </div>
           </div>
 
-          <div style="margin-bottom:8px; ${qItem.subject === 'General English' ? 'display:none;' : ''}">
+          <div style="margin-bottom:8px; ${qItem.subject.includes('English') ? 'display:none;' : ''}">
             <label style="font-size:0.82rem; color:var(--primary); font-weight:bold;">🇮🇳 Hindi Version (Question):</label>
             <input type="text" class="form-input q-hi-input" placeholder="हिंदी में सवाल daalein" value="${qItem.q_hi || ''}">
           </div>
 
-          <div style="margin-bottom:12px; ${qItem.subject === 'General Hindi' ? 'display:none;' : ''}">
+          <div style="margin-bottom:12px; ${qItem.subject.includes('Hindi') ? 'display:none;' : ''}">
             <label style="font-size:0.82rem; color:var(--green); font-weight:bold;">🇬🇧 English Version (Question):</label>
             <input type="text" class="form-input q-en-input" placeholder="English Question" value="${qItem.q_en || ''}">
           </div>
 
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-            <div style="${qItem.subject === 'General English' ? 'display:none;' : ''}">
+            <div style="${qItem.subject.includes('English') ? 'display:none;' : ''}">
               <label style="font-size:0.8rem; color:var(--text-muted);">Option A (Hindi):</label>
               <input type="text" class="form-input opt-hi-0" placeholder="विकल्प A" value="${qItem.opts_hi ? qItem.opts_hi[0] : ''}">
             </div>
-            <div style="${qItem.subject === 'General Hindi' ? 'display:none;' : ''}">
-              <label style="font-size:0.8rem; color:var(--text-muted);">Option A (English / Reasoning Code):</label>
+            <div style="${qItem.subject.includes('Hindi') ? 'display:none;' : ''}">
+              <label style="font-size:0.8rem; color:var(--text-muted);">Option A (English / Code):</label>
               <input type="text" class="form-input opt-en-0" placeholder="Option A" value="${qItem.opts_en ? qItem.opts_en[0] : ''}">
             </div>
 
-            <div style="${qItem.subject === 'General English' ? 'display:none;' : ''}">
+            <div style="${qItem.subject.includes('English') ? 'display:none;' : ''}">
               <label style="font-size:0.8rem; color:var(--text-muted);">Option B (Hindi):</label>
               <input type="text" class="form-input opt-hi-1" placeholder="विकल्प B" value="${qItem.opts_hi ? qItem.opts_hi[1] : ''}">
             </div>
-            <div style="${qItem.subject === 'General Hindi' ? 'display:none;' : ''}">
-              <label style="font-size:0.8rem; color:var(--text-muted);">Option B (English / Reasoning Code):</label>
+            <div style="${qItem.subject.includes('Hindi') ? 'display:none;' : ''}">
+              <label style="font-size:0.8rem; color:var(--text-muted);">Option B (English / Code):</label>
               <input type="text" class="form-input opt-en-1" placeholder="Option B" value="${qItem.opts_en ? qItem.opts_en[1] : ''}">
             </div>
 
-            <div style="${qItem.subject === 'General English' ? 'display:none;' : ''}">
+            <div style="${qItem.subject.includes('English') ? 'display:none;' : ''}">
               <label style="font-size:0.8rem; color:var(--text-muted);">Option C (Hindi):</label>
               <input type="text" class="form-input opt-hi-2" placeholder="विकल्प C" value="${qItem.opts_hi ? qItem.opts_hi[2] : ''}">
             </div>
-            <div style="${qItem.subject === 'General Hindi' ? 'display:none;' : ''}">
+            <div style="${qItem.subject.includes('Hindi') ? 'display:none;' : ''}">
               <label style="font-size:0.8rem; color:var(--text-muted);">Option C (English / Code):</label>
               <input type="text" class="form-input opt-en-2" placeholder="Option C" value="${qItem.opts_en ? qItem.opts_en[2] : ''}">
             </div>
 
-            <div style="${qItem.subject === 'General English' ? 'display:none;' : ''}">
+            <div style="${qItem.subject.includes('English') ? 'display:none;' : ''}">
               <label style="font-size:0.8rem; color:var(--text-muted);">Option D (Hindi):</label>
               <input type="text" class="form-input opt-hi-3" placeholder="विकल्प D" value="${qItem.opts_hi ? qItem.opts_hi[3] : ''}">
             </div>
-            <div style="${qItem.subject === 'General Hindi' ? 'display:none;' : ''}">
+            <div style="${qItem.subject.includes('Hindi') ? 'display:none;' : ''}">
               <label style="font-size:0.8rem; color:var(--text-muted);">Option D (English / Code):</label>
               <input type="text" class="form-input opt-en-3" placeholder="Option D" value="${qItem.opts_en ? qItem.opts_en[3] : ''}">
             </div>
@@ -1288,8 +1368,8 @@
 
         updated.push({
           subject: subject,
-          q_hi: q_hi || (subject === "General English" ? q_en : q_en),
-          q_en: q_en || (subject === "General Hindi" ? q_hi : q_hi),
+          q_hi: q_hi || (subject.includes("English") ? q_en : q_en),
+          q_en: q_en || (subject.includes("Hindi") ? q_hi : q_hi),
           opts_hi: [
             opt_hi_0 || opt_en_0,
             opt_hi_1 || opt_en_1,
@@ -1310,8 +1390,9 @@
 
     function addNewQuestionBlock() {
       syncCurrentQuestionsFromDOM();
+      const allowedSubjects = getSelectedBatchAllowedSubjects();
       currentQuestionsList.push({
-        subject: "General Intelligence & Reasoning",
+        subject: allowedSubjects[0] || MASTER_SUBJECTS_LIST[0],
         q_hi: "",
         q_en: "",
         opts_hi: ["", "", "", ""],
@@ -1341,8 +1422,9 @@
       document.getElementById("new-paper-title").value = "";
       document.getElementById("test-access-type").value = "free";
 
+      const allowed = getSelectedBatchAllowedSubjects();
       currentQuestionsList = [{
-        subject: "General Intelligence & Reasoning",
+        subject: allowed[0] || MASTER_SUBJECTS_LIST[0],
         q_hi: "",
         q_en: "",
         opts_hi: ["", "", "", ""],
@@ -1366,6 +1448,7 @@
           const opt = document.createElement("option"); opt.value = sf.id; opt.innerText = sf.title; subSelect.appendChild(opt);
         });
       } catch(e) {}
+      renderQuestionBuilderBlocks();
     }
 
     async function saveAdminTestPaper() {
@@ -1411,7 +1494,7 @@
 
       currentQuestionsList = (test.questions || []).map(q => {
         return {
-          subject: q.subject || "General Intelligence & Reasoning",
+          subject: q.subject || MASTER_SUBJECTS_LIST[0],
           q_hi: q.q_hi || q.q || "",
           q_en: q.q_en || q.q || "",
           opts_hi: q.opts_hi || q.opts || ["", "", "", ""],
@@ -1447,7 +1530,6 @@
     function startSpecificTest(paperIndex) {
       const rawTest = window.activeCategoryPapers[paperIndex];
       
-      // Questions ko mix (shuffle) karna taaki subject-wise pattern na dikhe
       currentActiveTest = {
         ...rawTest,
         questions: shuffleArray(rawTest.questions || [])
@@ -1479,16 +1561,16 @@
         ? (q.q_hi || q.q || "सवाल उपलब्ध नहीं")
         : (q.q_en || q.q || "Question not available");
 
-      if (q.subject === "General English") questionText = q.q_en || q.q_hi;
-      if (q.subject === "General Hindi") questionText = q.q_hi || q.q_en;
+      if (q.subject.includes("English")) questionText = q.q_en || q.q_hi;
+      if (q.subject.includes("Hindi")) questionText = q.q_hi || q.q_en;
 
       document.getElementById("cbt-question-text").innerText = `${currentIndex + 1}. ${questionText}`;
       const box = document.getElementById("cbt-options-box");
       box.innerHTML = "";
 
       let optionsList = (userLang === 'hi') ? (q.opts_hi || q.opts || []) : (q.opts_en || q.opts || []);
-      if (q.subject === "General English") optionsList = q.opts_en || q.opts_hi;
-      if (q.subject === "General Hindi") optionsList = q.opts_hi || q.opts_en;
+      if (q.subject.includes("English")) optionsList = q.opts_en || q.opts_hi;
+      if (q.subject.includes("Hindi")) optionsList = q.opts_hi || q.opts_en;
 
       optionsList.forEach((opt, idx) => {
         const btn = document.createElement("button");
@@ -1912,6 +1994,25 @@
       if (mrp > 0) document.getElementById("batch-price-input").value = Math.round(mrp - (mrp * (discount / 100)));
     }
 
+    // =========================================================================
+    // RENDER CHECKBOXES IN CREATE/EDIT BATCH MODAL
+    // =========================================================================
+    function renderBatchSubjectsCheckboxes(selectedList = []) {
+      const container = document.getElementById("batch-subjects-checkbox-container");
+      container.innerHTML = "";
+
+      MASTER_SUBJECTS_LIST.forEach((sub, idx) => {
+        const isChecked = selectedList.length === 0 ? true : selectedList.includes(sub);
+        const label = document.createElement("label");
+        label.className = "subject-check-item";
+        label.innerHTML = `
+          <input type="checkbox" value="${sub}" class="batch-subject-check" ${isChecked ? 'checked' : ''}>
+          <span>${sub}</span>
+        `;
+        container.appendChild(label);
+      });
+    }
+
     function openAdminBatchModal() {
       document.getElementById("batch-modal-heading").innerHTML = `<i class="fa-solid fa-folder-plus"></i> Create New Batch`;
       document.getElementById("edit-batch-id").value = "";
@@ -1923,6 +2024,7 @@
       document.getElementById("batch-price-input").value = "49";
       document.getElementById("batch-discount-input").value = "50";
       toggleBatchPriceInput();
+      renderBatchSubjectsCheckboxes([]);
       document.getElementById("admin-batch-modal").classList.remove("hidden");
     }
 
@@ -1938,6 +2040,7 @@
       document.getElementById("batch-price-input").value = currentSelectedBatch.price || 49;
       document.getElementById("batch-discount-input").value = currentSelectedBatch.discountPercent || 50;
       toggleBatchPriceInput();
+      renderBatchSubjectsCheckboxes(currentSelectedBatch.selectedSubjects || []);
       document.getElementById("admin-batch-modal").classList.remove("hidden");
     }
     function closeAdminBatchModal() { document.getElementById("admin-batch-modal").classList.add("hidden"); }
@@ -1955,13 +2058,31 @@
       const mrp = isPaid ? (parseFloat(document.getElementById("batch-mrp-input").value) || 0) : 0;
       const price = isPaid ? (parseFloat(document.getElementById("batch-price-input").value) || 0) : 0;
       const discountPercent = isPaid ? (parseInt(document.getElementById("batch-discount-input").value) || 0) : 0;
+
+      // Collect checked subjects for this batch
+      const checkedSubjects = [];
+      document.querySelectorAll(".batch-subject-check:checked").forEach(cb => checkedSubjects.push(cb.value));
+
       if (!title) return alert("Batch title likhein!");
+      if (checkedSubjects.length === 0) return alert("Kam se kam 1 subject zaroor select karein!");
 
       const batchId = editId || ("batch_" + Date.now());
-      const payload = { id: batchId, title, desc, syllabus, isPaid, mrp, price, discountPercent, icon: "fa-graduation-cap" };
+      const payload = {
+        id: batchId,
+        title,
+        desc,
+        syllabus,
+        isPaid,
+        mrp,
+        price,
+        discountPercent,
+        icon: "fa-graduation-cap",
+        selectedSubjects: checkedSubjects
+      };
+
       try {
         await db.collection("custom_batches").doc(batchId).set(payload, { merge: true });
-        alert(`✅ Batch "${title}" saved!`);
+        alert(`✅ Batch "${title}" subjects ke sath saved ho gaya!`);
         closeAdminBatchModal();
         loadAllBatches();
         if (currentSelectedBatch && currentSelectedBatch.id === batchId) openSeriesListing(payload);
